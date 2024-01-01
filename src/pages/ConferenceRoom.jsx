@@ -1,3 +1,3 @@
-export default function Conference() {
+export default function ConferenceRoom() {
   return <div>Book the onference room</div>;
 }

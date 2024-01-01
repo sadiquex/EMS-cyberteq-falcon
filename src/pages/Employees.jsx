@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Table from "../components/manage-employees/Table";
+import EmployeesTable from "../components/manage-employees/EmployeesTable";
 import { employeesData as data } from "../data";
 import Add from "../components/manage-employees/Add";
 import Edit from "../components/manage-employees/Edit";
@@ -14,12 +14,11 @@ export default function Employees() {
     // employee which has been clicked
     const [employee] = employees.filter((employee) => employee.id === id);
     setSelectedEmployee(employee);
-    // console.log(selectedEmployee);
     setIsEditing(true);
   };
 
   return (
-    <div className="flex-1 p-10 flex flex-col gap-4">
+    <div className="flex-1 p-10 flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <h2>Manage Employees</h2>
         <button
@@ -30,7 +29,7 @@ export default function Employees() {
         </button>
       </div>
       <div className="w-full">
-        <Table
+        <EmployeesTable
           employees={employees}
           setEmployees={setEmployees}
           editHandler={editHandler}

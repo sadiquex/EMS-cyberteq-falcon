@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 
 export default function Edit({
   selectedEmployee,
@@ -34,37 +35,61 @@ export default function Edit({
       }
     }
 
-    // setEmployees(employees);
     setEmployees([...employees]);
     setIsEditing(false);
   };
 
   return (
-    <div className="h-[80vh] w-[800px] mx-auto bg-red-50 absolute top-0 mt-5">
-      <form onSubmit={handleUpdate}>
-        <h2 className="text-[30px] font-bold text-center text-slate-900">
-          Update Employee
-        </h2>
-        <label htmlFor="firstName">First Name</label>
-        <input
-          id="firstName"
-          name="firstName"
-          value={newEmployee.firstName}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, firstName: e.target.value })
-          }
-        />
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          id="lastName"
-          name="lastName"
-          value={newEmployee.lastName}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, lastName: e.target.value })
-          }
-        />
-        <button type="submit">update</button>
-      </form>
+    // modal container
+    <div className="bg-gray-500 bg-opacity-25	 z-50 h-screen w-full fixed top-0 left-0 flex items-center justify-center">
+      {/* main modal */}
+      <div className="overflow-y-auto overflow-x-hidden  justify-center items-center bg-white md:inset-0 w-[30vw] min-h-[calc(90%-1rem)] p-4 ">
+        <form onSubmit={handleUpdate} className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-[30px] font-bold text-center text-slate-900">
+              Update Employee
+            </h2>
+            <button
+              type="button"
+              className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+              onClick={() => setIsEditing(false)}
+            >
+              <IoCloseSharp />
+            </button>
+          </div>
+          {/* input fields */}
+          <label htmlFor="firstName" className="block text-sm font-medium ">
+            First Name
+          </label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            // id="firstName"
+            name="firstName"
+            value={newEmployee.firstName}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, firstName: e.target.value })
+            }
+          />
+          <label htmlFor="lastName" className="block text-sm font-medium ">
+            Last Name
+          </label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            // id="lastName"
+            name="lastName"
+            value={newEmployee.lastName}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, lastName: e.target.value })
+            }
+          />
+          <button
+            type="submit"
+            className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
+          >
+            Update
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function Sidebar() {
   const links = [
     {
       name: "Dashboard",
-      route: "/",
+      route: "/dashboard",
       icon: <MdDashboard />,
       child: "",
     },
@@ -75,7 +75,7 @@ export default function Sidebar() {
           ))}
         </ul>
         <Link
-          to="/login"
+          to="/"
           className="mb-10 py-4 text-white flex justify-center gap-1 bg-secondaryColor"
         >
           <span>

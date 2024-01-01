@@ -4,7 +4,8 @@ export const employeesData = [
     firstName: "Susan",
     lastName: "Jordon",
     email: "susan@example.com",
-    salary: "95000",
+    department: "Cyberteq",
+    role: "UI/UX",
     date: "2019-04-11",
   },
   {
@@ -12,7 +13,8 @@ export const employeesData = [
     firstName: "Adrienne",
     lastName: "Doak",
     email: "adrienne@example.com",
-    salary: "80000",
+    department: "SOC",
+    role: "Project Manager",
     date: "2019-04-17",
   },
   {
@@ -20,7 +22,8 @@ export const employeesData = [
     firstName: "Rolf",
     lastName: "Hegdal",
     email: "rolf@example.com",
-    salary: "79000",
+    department: "Falcon",
+    role: "UI/UX",
     date: "2019-05-01",
   },
   {
@@ -28,7 +31,8 @@ export const employeesData = [
     firstName: "Kent",
     lastName: "Rosner",
     email: "kent@example.com",
-    salary: "56000",
+    department: "InfoSec",
+    role: "Software Engineer",
     date: "2019-05-03",
   },
   {
@@ -36,7 +40,8 @@ export const employeesData = [
     firstName: "Arsenio",
     lastName: "Grant",
     email: "arsenio@example.com",
-    salary: "65000",
+    department: "Cyberteq",
+    role: "Administrator",
     date: "2019-06-13",
   },
   {
@@ -44,7 +49,8 @@ export const employeesData = [
     firstName: "Laurena",
     lastName: "Lurie",
     email: "laurena@example.com",
-    salary: "120000",
+    department: "Cyberteq",
+    role: "UX Engineer",
     date: "2019-07-30",
   },
   {
@@ -52,7 +58,8 @@ export const employeesData = [
     firstName: "George",
     lastName: "Tallman",
     email: "george@example.com",
-    salary: "90000",
+    department: "Falcon",
+    role: "Backend developer",
     date: "2019-08-15",
   },
   {
@@ -60,7 +67,8 @@ export const employeesData = [
     firstName: "Jesica",
     lastName: "Watlington",
     email: "jesica@example.com",
-    salary: "60000",
+    department: "InfoSec",
+    role: "UI/UX",
     date: "2019-10-10",
   },
   {
@@ -68,7 +76,8 @@ export const employeesData = [
     firstName: "Matthew",
     lastName: "Warren",
     email: "matthew@example.com",
-    salary: "71000",
+    department: "Falcon",
+    role: "Graphic Designer",
     date: "2019-10-15",
   },
   {
@@ -76,7 +85,51 @@ export const employeesData = [
     firstName: "Lyndsey",
     lastName: "Follette",
     email: "lyndsey@example.com",
-    salary: "110000",
+    department: "Cyberteq",
+    role: "UI/UX Developer",
     date: "2020-01-15",
+  },
+];
+
+export const leavesData = [
+  {
+    id: 1,
+    employeeName: "Joseph Boyce",
+    leaveType: "Annual Leave",
+    startDate: "2020-01-23",
+    endDate: "2020-01-30",
+    status: "Pending",
+  },
+  {
+    id: 2,
+    employeeName: "William Jill",
+    leaveType: "Emergency Leave",
+    startDate: "2020-01-23",
+    endDate: "2020-01-30",
+    status: "Approved",
+  },
+  {
+    id: 3,
+    employeeName: "Joseph Boyce",
+    leaveType: "Annual Leave",
+    startDate: "2020-01-23",
+    endDate: "2020-01-30",
+    status: "Declined",
+  },
+  {
+    id: 4,
+    employeeName: "Adjetey Marie",
+    leaveType: "Maternity Leave",
+    startDate: "2020-01-23",
+    endDate: "2020-01-30",
+    status: "Pending",
+  },
+  {
+    id: 5,
+    employeeName: "John Smith",
+    leaveType: "Sick Leave",
+    startDate: "2020-01-23",
+    endDate: "2020-01-30",
+    status: "Approved",
   },
 ];

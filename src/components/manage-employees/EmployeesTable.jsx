@@ -1,8 +1,15 @@
 import { useState } from "react";
+import Modal from "../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
+import { FaEye } from "react-icons/fa";
 
-export default function Table({ employees, setEmployees, editHandler }) {
+export default function EmployeesTable({
+  employees,
+  setEmployees,
+  editHandler,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -39,6 +46,7 @@ export default function Table({ employees, setEmployees, editHandler }) {
         placeholder="Search by First Name"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="block w-1/3 p-3 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 mb-4"
       />
 
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -49,8 +57,9 @@ export default function Table({ employees, setEmployees, editHandler }) {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Salary</th>
-            <th>Date</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Date Added</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -59,28 +68,22 @@ export default function Table({ employees, setEmployees, editHandler }) {
           {filteredEmployees?.length > 0 ? (
             filteredEmployees?.map((employee, i) => (
               // row
-              <tr
-                key={i}
-                className="bg-white hover:bg-gray-50 "
-                onClick={() => viewDetailsHandler(employee.id)}
-              >
+              <tr key={i} className="bg-white hover:bg-gray-50 ">
                 <td className="py-3">{i + 1}</td>
                 <td>{employee.firstName}</td>
                 <td>{employee.lastName}</td>
                 <td>{employee.email}</td>
-                <td>{employee.salary}</td>
+                <td>{employee.department}</td>
+                <td>{employee.role}</td>
                 <td>{employee.date}</td>
-                <td>
-                  <button
-                    onClick={() => editHandler(employee.id)}
-                    className="text-[20px]"
-                  >
+                <td className="space-x-2 text-[20px]">
+                  <button onClick={() => viewDetailsHandler(employee.id)}>
+                    <FaEye />
+                  </button>
+                  <button onClick={() => editHandler(employee.id)}>
                     <FaEdit />
                   </button>
-                  <button
-                    onClick={() => deleteEmployee(employee.id)}
-                    className="text-[24px]"
-                  >
+                  <button onClick={() => deleteEmployee(employee.id)}>
                     <MdDelete />
                   </button>
                 </td>
@@ -96,20 +99,29 @@ export default function Table({ employees, setEmployees, editHandler }) {
 
       {/* Modal for View Details */}
       {selectedEmployee && (
-        <div className="modal">
+        <Modal>
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <h2>Employee Details</h2>
+            <div className="flex justify-between items-center">
+              <h2 className="text-[30px] font-bold text-center text-slate-900">
+                Employee Details
+              </h2>
+
+              <button
+                type="button"
+                className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                onClick={closeModal}
+              >
+                <IoCloseSharp />
+              </button>
+            </div>
             <p>ID: {selectedEmployee.id}</p>
             <p>First Name: {selectedEmployee.firstName}</p>
             <p>Last Name: {selectedEmployee.lastName}</p>
             <p>Email: {selectedEmployee.email}</p>
-            <p>Salary: {selectedEmployee.salary}</p>
-            <p>Date: {selectedEmployee.date}</p>
+            <p>Department: {selectedEmployee.department}</p>
+            <p>Date Added: {selectedEmployee.date}</p>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

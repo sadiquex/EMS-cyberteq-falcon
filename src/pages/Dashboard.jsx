@@ -40,7 +40,7 @@ export default function Dashboard() {
           <img
             className="h-[260px] object-cover w-[100%] rounded-lg "
             src="https://images.pexels.com/photos/5579045/pexels-photo-5579045.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            alt="image description"
+            alt="company"
           />
         </figure>
         <div className="flex-1 bg-gray-300 rounded-lg">
