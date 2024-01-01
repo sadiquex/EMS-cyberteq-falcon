@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import Employees from "./pages/Employees";
+import Leaves from "./pages/Leaves";
+import Lunch from "./pages/Lunch";
+import Sidebar from "./components/Sidebar";
+import Conference from "./pages/Conference";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar />
+      <div className="flex">
+        <Sidebar className="flex-1" />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/leaves" element={<Leaves />} />
+          <Route path="/lunch" element={<Lunch />} />
+          <Route path="/conference" element={<Conference />} />
+        </Routes>
+      </div>
     </div>
   );
 }
-
-export default App;
