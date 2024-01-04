@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import EmployeesTable from "../components/manage-employees/EmployeesTable";
-import { employeesData as data } from "../data";
-import Add from "../components/manage-employees/Add";
-import Edit from "../components/manage-employees/Edit";
+import EmployeesTable from "../../components/admin/manage-employees/EmployeesTable";
+import { employeesData as data } from "../../data";
+import Add from "../../components/admin/manage-employees/Add";
+import Edit from "../../components/admin/manage-employees/Edit";
 
 export default function Employees() {
   const [employees, setEmployees] = useState(data);

@@ -1,6 +1,5 @@
-import React from "react";
-import Card from "../components/_ui/Card";
-import Chart from "../components/dashboard/Chart";
+import Card from "../../components/_ui/Card";
+import Chart from "../../components/admin/dashboard/Chart";
 
 export default function Dashboard() {
   const cardDetails = [
@@ -19,11 +18,11 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex-1 p-10 flex flex-col gap-4">
+    <div>
       <h2>Dashboard</h2>
 
-      {/* card container */}
-      <div className="max-w-[1000px] grid grid-cols-3 ">
+      {/* top cards container */}
+      <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
         {cardDetails.map((card, i) => (
           <Card key={i}>
             <p className="font-normal text-gray-700">{card.heading}</p>

@@ -1,6 +1,6 @@
-import { leavesData } from "../../data";
+import { leavesData } from "../../../data";
 import { useState } from "react";
-import Modal from "../_ui/Modal";
+import Modal from "../../_ui/Modal";
 import { IoCloseSharp } from "react-icons/io5";
 
 export default function LeavesTable() {
@@ -71,6 +71,10 @@ export default function LeavesTable() {
                 <td>{item.startDate}</td>
                 <td>{item.endDate}</td>
                 <td>{item.status}</td>
+                <td>
+                  <span>edit</span>
+                  <span className="text-red-500">delete</span>
+                </td>
               </tr>
             ))
           ) : (

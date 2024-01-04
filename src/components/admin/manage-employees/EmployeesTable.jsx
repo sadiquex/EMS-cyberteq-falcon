@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "../_ui/Modal";
+import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
