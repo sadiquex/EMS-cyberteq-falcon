@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <nav className="z-50 h-10 w-full fixed bg-primaryColor ">
+    <nav className="z-50 w-full fixed bg-primaryColor ">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">

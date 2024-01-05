@@ -4,6 +4,7 @@ import { GrUserWorker } from "react-icons/gr";
 import { MdTimeToLeave } from "react-icons/md";
 import { MdFastfood } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
+import { GiVideoConference } from "react-icons/gi";
 
 export default function Sidebar({ children }) {
   const location = useLocation();
@@ -19,34 +20,45 @@ export default function Sidebar({ children }) {
       name: "Complete Profile",
       route: "/employee/complete-profile",
       icon: <GrUserWorker size={24} />,
-      child: "+",
-    },
-    {
-      name: "Leave",
-      route: "/employee/leave",
-      icon: <MdTimeToLeave size={24} />,
-      child: "3",
     },
     {
       name: "Leave Status",
       route: "/employee/leave-status",
       icon: <MdFastfood size={24} />,
-      child: "",
+      child: "2",
     },
+    // {
+    //   name: "Leave",
+    //   route: "/employee/leave",
+    //   icon: <MdTimeToLeave size={24} />,
+    // child: "+",
+    // },
+    // {
+    //   name: "Lunch",
+    //   route: "/employee/lunch",
+    //   icon: <MdTimeToLeave size={24} />,
+    // child: "+",
+    // },
+    // {
+    //   name: "Conference Room",
+    //   route: "/employee/conference-room",
+    //   icon: <GiVideoConference size={24} />,
+    //   child: "",
+    // },
   ];
 
   return (
-    <div className="flex">
-      <aside className="z-40 w-20 md:w-64 pt-20 fixed bg-white h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-        <div className="px-3 bg-white flex flex-col justify-between h-full">
-          <ul className="space-y-6 font-medium">
+    <div className="fixed">
+      <aside className="z-40 bg-white h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+        <div className="px-3 pt-6 bg-white flex flex-col justify-between h-[calc(100%-10%)] ">
+          <ul className="space-y-6 font-medium w-[230px]">
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
                 <Link
                   to={link.route}
                   className={`flex items-center p-2 text-gray-900  hover:bg-gray-100 ${
                     location.pathname === link.route
-                      ? "bg-primaryColor text-white font-bold border-none"
+                      ? "bg-primaryColor text-white font-bold border-none hover:bg-primaryColor"
                       : ""
                   }`}
                 >
@@ -74,9 +86,6 @@ export default function Sidebar({ children }) {
           </Link>
         </div>
       </aside>
-      <div className=" bg-pink-300 w-full h-screen ml-20 md:ml-64 mt-12">
-        {children}
-      </div>
     </div>
   );
 }

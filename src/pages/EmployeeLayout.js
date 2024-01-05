@@ -1,25 +1,39 @@
 // contains employees' routes
 
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./employee/Dashboard";
+// pages
 import CompleteProfile from "./employee/CompleteProfile";
 import Leave from "./employee/Leave";
+import Dashboard from "./employee/Dashboard";
 import LeaveStatus from "./employee/LeaveStatus";
+import ConferenceRoom from "./employee/ConferenceRoom";
+import Lunch from "./employee/Lunch";
+// components
 import Header from "../components/employee/Header";
 import Sidebar from "../components/employee/Sidebar";
 
 function EmployeeLayout() {
   return (
-    <>
-      <Header />
-      <Sidebar />
-      <Routes>
-        <Route path="/dashbard" element={<Dashboard />} />
-        <Route path="/complete-profile" element={<CompleteProfile />} />
-        <Route path="/leave" element={<Leave />} />
-        <Route path="/leave-status" element={<LeaveStatus />} />
-      </Routes>
-    </>
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr]">
+      <header className="col-span-2">
+        <Header />
+      </header>
+      <aside className="col-span-1">
+        <Sidebar />
+      </aside>
+      {/* main content */}
+      <main className="col-span-1 p-4">
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
+          <Route path="/leave" element={<Leave />} />
+          <Route path="/lunch" element={<Lunch />} />
+          <Route path="/leave-status" element={<LeaveStatus />} />
+          <Route path="/conference-room" element={<ConferenceRoom />} />
+          <Route path="/*" element={<div>No route found</div>} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 

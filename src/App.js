@@ -9,11 +9,12 @@ export default function App() {
   const isLoginPage = location.pathname === "/";
 
   return (
-    <div className="bg-blue-100">
+    <div className="">
       <Routes>
         {isLoginPage && <Route path="/" element={<LoginPage />} />}
         <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/employee/*" element={<EmployeeLayout />} />
+        <Route path="/*" element={<div>No route found</div>} />
       </Routes>
     </div>
   );

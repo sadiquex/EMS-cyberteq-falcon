@@ -18,7 +18,7 @@ export default function Employees() {
   };
 
   return (
-    <div className="flex-1 p-10 flex flex-col gap-2">
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <h2>Manage Employees</h2>
         <button

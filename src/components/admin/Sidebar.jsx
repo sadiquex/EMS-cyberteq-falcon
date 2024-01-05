@@ -17,35 +17,23 @@ export default function Sidebar({ children }) {
       child: "",
     },
     {
-      name: "Employees",
+      name: "Manage Employees",
       route: "/admin/employees",
       icon: <GrUserWorker size={24} />,
       child: "+",
     },
     {
-      name: "Leaves",
+      name: "Leave Requests",
       route: "/admin/leaves",
       icon: <MdTimeToLeave size={24} />,
       child: "3",
     },
-    {
-      name: "Lunch",
-      route: "/admin/lunch",
-      icon: <MdFastfood size={24} />,
-      child: "",
-    },
-    {
-      name: "Conference",
-      route: "/admin/conference-room",
-      icon: <GiVideoConference size={24} />,
-      child: "",
-    },
   ];
 
   return (
-    <div className="flex">
-      <aside className="z-40 w-20 md:w-64 pt-20 fixed bg-white h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-        <div className="px-3 bg-white flex flex-col justify-between h-full">
+    <div className="fixed">
+      <aside className="z-40 h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+        <div className="px-3 pt-6 bg-white flex flex-col justify-between h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium">
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
@@ -53,7 +41,7 @@ export default function Sidebar({ children }) {
                   to={link.route}
                   className={`flex items-center p-2 text-gray-900  hover:bg-gray-100 ${
                     location.pathname === link.route
-                      ? "bg-primaryColor text-white font-bold border-none"
+                      ? "bg-primaryColor text-white font-bold border-none hover:bg-primaryColor"
                       : ""
                   }`}
                 >
@@ -81,7 +69,6 @@ export default function Sidebar({ children }) {
           </Link>
         </div>
       </aside>
-      <div className=" bg-pink-300 w-full ml-20 md:ml-64 mt-12">{children}</div>
     </div>
   );
 }
