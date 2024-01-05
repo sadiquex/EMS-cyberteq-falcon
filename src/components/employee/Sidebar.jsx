@@ -51,7 +51,7 @@ export default function Sidebar({ children }) {
     <div className="fixed">
       <aside className="z-40 bg-white h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <div className="px-3 pt-6 bg-white flex flex-col justify-between h-[calc(100%-10%)] ">
-          <ul className="space-y-6 font-medium w-[230px]">
+          <ul className="space-y-6 font-medium w-[50px] md:w-[230px]">
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
                 <Link
@@ -82,7 +82,7 @@ export default function Sidebar({ children }) {
             <span>
               <CiLogout />
             </span>
-            <span>Log out</span>
+            <span className="hidden md:block">Log out</span>
           </Link>
         </div>
       </aside>

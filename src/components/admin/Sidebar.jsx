@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
-import { GrUserWorker } from "react-icons/gr";
 import { MdTimeToLeave } from "react-icons/md";
 import { MdFastfood } from "react-icons/md";
 import { GiVideoConference } from "react-icons/gi";
 import { CiLogout } from "react-icons/ci";
+import { FaUsers } from "react-icons/fa";
 
 export default function Sidebar({ children }) {
   const location = useLocation();
@@ -19,7 +19,7 @@ export default function Sidebar({ children }) {
     {
       name: "Manage Employees",
       route: "/admin/employees",
-      icon: <GrUserWorker size={24} />,
+      icon: <FaUsers size={24} />,
       child: "+",
     },
     {
@@ -65,7 +65,7 @@ export default function Sidebar({ children }) {
             <span>
               <CiLogout />
             </span>
-            <span>Log out</span>
+            <span className="hidden md:block">Log out</span>
           </Link>
         </div>
       </aside>

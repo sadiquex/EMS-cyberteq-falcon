@@ -18,7 +18,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div>
+    <div className="space-y-4">
       <h2>Dashboard</h2>
 
       {/* top cards container */}
@@ -33,7 +33,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* display image */}
         <figure className="flex-1">
           <img
