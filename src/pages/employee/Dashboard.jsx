@@ -28,9 +28,13 @@ export default function Dashboard() {
       <h2 className="font-large">Home Dashboard</h2>
 
       {/* user profile card */}
-      <div className="flex gap-4">
-        <div className="rounded-lg w-20 h-20 bg-red-400">
-          <img src="" alt="Joseph Boyce" />
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
+          <img
+            src="https://images.pexels.com/photos/296115/pexels-photo-296115.jpeg"
+            alt="Joseph Boyce"
+            className="object-cover w-full h-full"
+          />
         </div>
         <div className="flex-1 flex flex-col bg-gray-200 p-3">
           <p className="text-lg font-bold">Welcome, Joseph Boyce</p>
@@ -38,7 +42,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* portals' display */}
+      {/* portals' cards display */}
       <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4 text-white">
         {portals.map((portal, i) => (
           <Link to={portal.route} key={i}>
@@ -53,8 +57,12 @@ export default function Dashboard() {
       </div>
 
       {/* image */}
-      <div className="w-full bg-red-300 h-[300px] rounded-lg">
-        <img src="" alt="portal homepage" />
+      <div className="w-full bg-red-300 md:h-[400px] p-1 rounded-lg">
+        <img
+          src="https://images.pexels.com/photos/296115/pexels-photo-296115.jpeg"
+          alt="portal homepage"
+          className="object-cover w-full h-full"
+        />
       </div>
     </div>
   );

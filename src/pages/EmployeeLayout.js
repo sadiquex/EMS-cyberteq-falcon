@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import CompleteProfile from "./employee/CompleteProfile";
 import Leave from "./employee/Leave";
 import Dashboard from "./employee/Dashboard";
-import LeaveStatus from "./employee/LeaveStatus";
+import LeaveStatusTable from "./employee/LeaveStatusTable";
 import ConferenceRoom from "./employee/ConferenceRoom";
 import Lunch from "./employee/Lunch";
 // components
@@ -27,8 +27,8 @@ function EmployeeLayout() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/complete-profile" element={<CompleteProfile />} />
           <Route path="/leave" element={<Leave />} />
+          <Route path="/leave-status" element={<LeaveStatusTable />} />
           <Route path="/lunch" element={<Lunch />} />
-          <Route path="/leave-status" element={<LeaveStatus />} />
           <Route path="/conference-room" element={<ConferenceRoom />} />
           <Route path="/*" element={<div>No route found</div>} />
         </Routes>

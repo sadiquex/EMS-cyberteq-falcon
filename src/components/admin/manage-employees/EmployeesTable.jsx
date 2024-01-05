@@ -2,8 +2,8 @@ import { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { IoCloseSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
 
 export default function EmployeesTable({
   employees,
@@ -46,56 +46,58 @@ export default function EmployeesTable({
         placeholder="Search by First Name"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="block w-1/3 p-3 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 mb-4"
+        className="block w-full md:w-1/3 p-3 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 mb-4"
       />
 
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        {/* head */}
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-          <tr className="text-[16px]">
-            <th className="py-3">ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Role</th>
-            <th>Date Added</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        {/* body */}
-        <tbody>
-          {filteredEmployees?.length > 0 ? (
-            filteredEmployees?.map((employee, i) => (
-              // row
-              <tr key={i} className="bg-white hover:bg-gray-50 ">
-                <td className="py-3">{i + 1}</td>
-                <td>{employee.firstName}</td>
-                <td>{employee.lastName}</td>
-                <td>{employee.email}</td>
-                <td>{employee.department}</td>
-                <td>{employee.role}</td>
-                <td>{employee.date}</td>
-                <td className="space-x-2 text-[20px]">
-                  <button onClick={() => viewDetailsHandler(employee.id)}>
-                    <FaEye />
-                  </button>
-                  <button onClick={() => editHandler(employee.id)}>
-                    <FaEdit />
-                  </button>
-                  <button onClick={() => deleteEmployee(employee.id)}>
-                    <MdDelete />
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr className="bg-white border-b  hover:bg-gray-50 ">
-              <td colSpan={7}>No employees found</td>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
+          {/* head */}
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <tr className="text-[16px]">
+              <th className="py-3 hidden md:table-cell">ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th className="hidden md:table-cell">Email</th>
+              <th>Department</th>
+              <th className="hidden md:table-cell">Role</th>
+              <th className="hidden md:table-cell">Date Added</th>
+              <th>Actions</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          {/* body */}
+          <tbody>
+            {filteredEmployees?.length > 0 ? (
+              filteredEmployees?.map((employee, i) => (
+                // row
+                <tr key={i} className="bg-white hover:bg-gray-50 ">
+                  <td className="py-3 hidden md:table-cell">{i + 1}</td>
+                  <td>{employee.firstName}</td>
+                  <td>{employee.lastName}</td>
+                  <td className="hidden md:table-cell">{employee.email}</td>
+                  <td>{employee.department}</td>
+                  <td className="hidden md:table-cell">{employee.role}</td>
+                  <td className="hidden md:table-cell">{employee.date}</td>
+                  <td className="space-x-2 text-[20px] ">
+                    <button onClick={() => viewDetailsHandler(employee.id)}>
+                      <FaEye />
+                    </button>
+                    <button onClick={() => editHandler(employee.id)}>
+                      <FaEdit />
+                    </button>
+                    <button onClick={() => deleteEmployee(employee.id)}>
+                      <MdDelete />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr className="bg-white border-b  hover:bg-gray-50 ">
+                <td colSpan={7}>No employees found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Modal for View Details */}
       {selectedEmployee && (

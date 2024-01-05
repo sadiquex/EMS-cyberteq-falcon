@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   return (
-    <div className="w-full h-screen bg-blue-100 flex items-center justify-center flex-col gap-4">
+    <div className="w-full h-screen bg-blue-100 flex items-center justify-center flex-col ">
       <h2 className="text-lg">Login to your account</h2>
 
       {/* login form */}
-      <form className="max-w-sm mx-auto p-6 w-[500px] bg-gray-50 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <form className="w-auto max-w-sm mx-auto p-6 bg-gray-50 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <div className="mb-5">
           <label className="block mb-2 text-sm font-medium text-gray-900 ">
             Your email

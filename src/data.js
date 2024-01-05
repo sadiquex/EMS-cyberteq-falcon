@@ -91,6 +91,7 @@ export const employeesData = [
   },
 ];
 
+// admin
 export const leavesData = [
   {
     id: 1,
@@ -131,5 +132,45 @@ export const leavesData = [
     startDate: "2020-01-23",
     endDate: "2020-01-30",
     status: "Approved",
+  },
+];
+
+// employee
+export const employeeLeavesData = [
+  {
+    id: 1,
+    leaveType: "Maternity Leave",
+    startDate: "23 march 24",
+    endDate: "23 march 24",
+    duration: "7 days",
+    reason: "--",
+    status: "Approved",
+  },
+  {
+    id: 2,
+    leaveType: "Sick Leave",
+    startDate: "23 march 24",
+    endDate: "23 march 24",
+    duration: "7 days",
+    reason: "--",
+    status: "Pending",
+  },
+  {
+    id: 3,
+    leaveType: "Annual Leave",
+    startDate: "23 march 24",
+    endDate: "23 march 24",
+    duration: "7 days",
+    reason: "--",
+    status: "Declined",
+  },
+  {
+    id: 4,
+    leaveType: "Emergency Leave",
+    startDate: "23 march 24",
+    endDate: "23 march 24",
+    duration: "7 days",
+    reason: "--",
+    status: "Pending",
   },
 ];

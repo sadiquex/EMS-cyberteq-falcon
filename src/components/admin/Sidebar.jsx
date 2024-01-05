@@ -1,8 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { MdTimeToLeave } from "react-icons/md";
-import { MdFastfood } from "react-icons/md";
-import { GiVideoConference } from "react-icons/gi";
 import { CiLogout } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 
@@ -33,7 +31,7 @@ export default function Sidebar({ children }) {
   return (
     <div className="fixed">
       <aside className="z-40 h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-        <div className="px-3 pt-6 bg-white flex flex-col justify-between h-[calc(100%-10%)] ">
+        <div className="px-3 pt-6 bg-white flex flex-col justify-between h-full md:h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium">
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">

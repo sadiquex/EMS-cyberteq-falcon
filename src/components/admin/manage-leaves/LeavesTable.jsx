@@ -2,6 +2,7 @@ import { leavesData } from "../../../data";
 import { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { IoCloseSharp } from "react-icons/io5";
+import { FaEye } from "react-icons/fa";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
@@ -61,19 +62,19 @@ export default function LeavesTable() {
           {filterLeavesHandler()?.length > 0 ? (
             filterLeavesHandler()?.map((item) => (
               // row
-              <tr
-                key={item.id}
-                className="bg-white hover:bg-gray-50 "
-                onClick={() => viewDetailsHandler(item.id)}
-              >
+              <tr key={item.id} className="bg-white hover:bg-gray-50 ">
                 <td className="py-3">{item.employeeName}</td>
                 <td>{item.leaveType}</td>
                 <td>{item.startDate}</td>
                 <td>{item.endDate}</td>
                 <td>{item.status}</td>
-                <td>
-                  <span>edit</span>
-                  <span className="text-red-500">delete</span>
+                <td className="flex gap-2">
+                  <span>Approve</span>
+                  <span className="text-red-500">Decline</span>
+                  <FaEye
+                    size={18}
+                    onClick={() => viewDetailsHandler(item.id)}
+                  />
                 </td>
               </tr>
             ))
