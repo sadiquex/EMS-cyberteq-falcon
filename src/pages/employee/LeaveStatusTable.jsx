@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { employeeLeavesData as leavesArray } from "../../data";
 import Add from "../../components/employee/leaves/Add";
+import { useLeaveContext } from "../../contexts/LeaveContext";
+import Modal from "../../components/_ui/Modal";
+import { IoCloseSharp } from "react-icons/io5";
 
 export default function LeaveStatusTable() {
-  const [appliedeaves, setAppliedLeaves] = useState(leavesArray);
   const [selectedLeave, setSelectedLeave] = useState(null);
-  const [isAddingLeave, setIsAddingLeave] = useState(true);
+  const { isAddingLeave, addLeaveHandler, appliedeaves, setAppliedLeaves } =
+    useLeaveContext();
 
   // view details
   const viewDetailsHandler = (id) => {
@@ -17,7 +19,10 @@ export default function LeaveStatusTable() {
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
         <h2>Leave Dashboard</h2>
-        <button className="bg-primaryColor text-white rounded-lg md:rounded-full p-2 md:p-4 hover:brightness-110">
+        <button
+          className="bg-primaryColor text-white rounded-lg md:rounded-full p-2 md:p-4 hover:brightness-110"
+          onClick={addLeaveHandler}
+        >
           + Request For Leave
         </button>
       </div>
@@ -81,24 +86,36 @@ export default function LeaveStatusTable() {
       </div>
 
       {selectedLeave && (
-        <div>
-          <h2 className="text-lg">{selectedLeave.leaveType}</h2>
-          <p>{selectedLeave.startDate}</p>
-          <p>{selectedLeave.duration}</p>
-          <p>{selectedLeave.endDate}</p>
-          <p>{selectedLeave.duration}</p>
-          <p>{selectedLeave.reason}</p>
-          <p>{selectedLeave.status}</p>
-        </div>
+        <Modal>
+          <div className="flex h-full flex-col space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-[30px] font-bold text-center text-slate-900">
+                Leave details
+              </h2>
+              {/* cancel btn */}
+              <button
+                type="button"
+                className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                onClick={() => setSelectedLeave(null)}
+              >
+                <IoCloseSharp />
+              </button>
+            </div>
+            <div className="flex-1 space-y-4">
+              <p>Leave type: {selectedLeave.leaveType}</p>
+              <p>Start date: {selectedLeave.startDate}</p>
+              <p>Duration: {selectedLeave.duration}</p>
+              <p>End date: {selectedLeave.endDate}</p>
+              <p>Reason: {selectedLeave.reason}</p>
+              <p>Status: {selectedLeave.status}</p>
+            </div>
+          </div>
+        </Modal>
       )}
 
       {/* adding leave */}
       {isAddingLeave && (
-        <Add
-          setIsAddingLeave={setIsAddingLeave}
-          appliedeaves={appliedeaves}
-          setAppliedLeaves={setAppliedLeaves}
-        />
+        <Add appliedeaves={appliedeaves} setAppliedLeaves={setAppliedLeaves} />
       )}
     </div>
   );

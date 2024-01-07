@@ -33,18 +33,28 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* display image */}
-        <figure className="flex-1">
-          <img
-            className="h-[260px] object-cover w-[100%] rounded-lg "
-            src="https://images.pexels.com/photos/5579045/pexels-photo-5579045.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            alt="company"
-          />
-        </figure>
-        <div className="flex-1 bg-gray-300 rounded-lg">
-          Chart of employees on leave
-          <Chart />
+      <div className="space-y-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* display image */}
+          <figure className="flex-1">
+            <img
+              className="h-64 object-cover w-[100%] rounded-lg "
+              src="https://images.pexels.com/photos/5579045/pexels-photo-5579045.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              alt="company"
+            />
+          </figure>
+          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-300 rounded-lg">
+            display recent leaves
+          </div>
+        </div>
+        {/* second column */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-blue-100 rounded-lg">
+            some other content here
+          </div>
+          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-300 rounded-lg">
+            <Chart />
+          </div>
         </div>
       </div>
     </div>

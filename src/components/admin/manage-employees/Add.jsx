@@ -6,10 +6,16 @@ import Modal from "../../_ui/Modal";
 export default function Add({ setIsAdding, employees, setEmployees }) {
   const { register, handleSubmit, reset } = useForm();
 
+  const date = new Date();
+  const currentDate = date.toISOString().split("T")[0];
+
   const [newEmployee, setNewEmployee] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    department: "",
+    role: "",
+    dateAdded: "",
     id: employees.length + 1,
   });
 
@@ -21,7 +27,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
   };
 
   const addNew = (data) => {
-    const { firstName, lastName } = data;
+    const { firstName, lastName, email, role, department } = data;
 
     if (firstName.trim() === "" || lastName.trim() === "") {
       alert("Please fill out all required fields");
@@ -36,13 +42,16 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
     const updatedEmployee = {
       firstName,
       lastName,
-      email: "",
+      email,
+      role,
+      department,
+      dateAdded: currentDate,
       id: newEmployee.id + 1, // Increment the ID for the next employee
     };
 
-    // pass data to the api function
+    // pass data to the api function here
     setEmployees([...employees, updatedEmployee]);
-    setNewEmployee(updatedEmployee); // Update newEmployee state
+    setNewEmployee(updatedEmployee);
     reset(); // Clear the form fields
     setIsAdding(false);
   };
@@ -64,6 +73,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           </button>
         </div>
         {/* input fields */}
+        {/* firstname */}
         <label htmlFor="firstName" className="block text-sm font-medium ">
           First Name
         </label>
@@ -71,11 +81,36 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           {...register("firstName")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />
+        {/* lastname */}
         <label htmlFor="lastName" className="block text-sm font-medium ">
           Last Name
         </label>
         <input
           {...register("lastName")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        />
+        {/* email */}
+        <label htmlFor="email" className="block text-sm font-medium ">
+          Email
+        </label>
+        <input
+          {...register("email")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        />
+        {/* department */}
+        <label htmlFor="department" className="block text-sm font-medium ">
+          Department
+        </label>
+        <input
+          {...register("department")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        />
+        {/* role */}
+        <label htmlFor="role" className="block text-sm font-medium ">
+          Role
+        </label>
+        <input
+          {...register("role")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />
 

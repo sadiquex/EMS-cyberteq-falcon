@@ -39,13 +39,15 @@ export default function LeavesTable() {
   return (
     <div className="w-[350px] md:w-full overflow-x-auto ">
       {/* Tabs for filtering leaves */}
-      <div className="mb-4 w-1/2 flex justify-between border-b border-gray-700">
+      <div className="mb-4 w-auto space-x-4 border-b border-gray-700">
         {filterButtons.map((button, i) => (
           <button
             key={i}
             onClick={() => setSelectedTab(button)}
-            className={`inline-block p-4 border-b-2 rounded-t-lg ${
-              selectedTab === button ? "border-b-4 border-blue-600" : ""
+            className={`p-4 border-b-2 hover:bg-primaryColor hover:text-white ${
+              selectedTab === button
+                ? "bg-primaryColor text-white border-none"
+                : ""
             }`}
           >
             {button}
@@ -109,25 +111,29 @@ export default function LeavesTable() {
       {/* display leave details */}
       {selectedLeave && (
         <Modal>
-          <div className="flex justify-between items-center">
-            <h2 className="text-[30px] font-bold text-center text-slate-900">
-              Leave Details
-            </h2>
-            {/* cancel btn */}
-            <button
-              type="button"
-              className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-              onClick={closeDetailsHandler}
-            >
-              <IoCloseSharp />
-            </button>
-          </div>
+          <div className="flex flex-col space-y-4 h-full">
+            <div className="flex justify-between items-center">
+              <h2 className="text-[30px] font-bold text-center text-slate-900">
+                Leave Details
+              </h2>
+              {/* cancel btn */}
+              <button
+                type="button"
+                className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                onClick={closeDetailsHandler}
+              >
+                <IoCloseSharp />
+              </button>
+            </div>
 
-          <p>Employee Name: {selectedLeave.employeeName}</p>
-          <p>Leave Type: {selectedLeave.leaveType}</p>
-          <p>Start Date: {selectedLeave.startDate}</p>
-          <p>End Date: {selectedLeave.endDate}</p>
-          <p>Status: {selectedLeave.status}</p>
+            <div className="flex-1 space-y-4">
+              <p>Employee Name: {selectedLeave.employeeName}</p>
+              <p>Leave Type: {selectedLeave.leaveType}</p>
+              <p>Start Date: {selectedLeave.startDate}</p>
+              <p>End Date: {selectedLeave.endDate}</p>
+              <p>Status: {selectedLeave.status}</p>
+            </div>
+          </div>
         </Modal>
       )}
     </div>

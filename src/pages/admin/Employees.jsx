@@ -22,7 +22,7 @@ export default function Employees() {
       <div className="flex justify-between items-center">
         <h2>Manage Employees</h2>
         <button
-          className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110"
+          className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
           onClick={() => setIsAdding(!isAdding)}
         >
           + Add Employee

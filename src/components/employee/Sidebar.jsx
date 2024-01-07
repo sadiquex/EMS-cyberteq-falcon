@@ -1,10 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
-import { MdTimeToLeave } from "react-icons/md";
-import { MdFastfood } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-import { GiVideoConference } from "react-icons/gi";
+import { TbStatusChange } from "react-icons/tb";
 
 export default function Sidebar({ children }) {
   const location = useLocation();
@@ -24,7 +22,7 @@ export default function Sidebar({ children }) {
     {
       name: "Leave Status",
       route: "/employee/leave-status",
-      icon: <MdFastfood size={24} />,
+      icon: <TbStatusChange size={24} />,
       child: "2",
     },
     // {

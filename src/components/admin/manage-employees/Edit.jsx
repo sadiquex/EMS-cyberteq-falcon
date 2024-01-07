@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
+import Button from "../../_ui/Button";
 
 export default function Edit({
   selectedEmployee,
@@ -8,7 +9,8 @@ export default function Edit({
   employees,
   setEmployees,
 }) {
-  const { firstName, lastName, email, id, date, salary } = selectedEmployee;
+  const { firstName, lastName, email, id, date, role, department } =
+    selectedEmployee;
 
   const [newEmployee, setNewEmployee] = useState({
     firstName: firstName,
@@ -16,7 +18,8 @@ export default function Edit({
     email: email,
     id: id,
     date: date,
-    salary: salary,
+    role: role,
+    department: department,
   });
 
   const handleUpdate = (e) => {
@@ -27,6 +30,8 @@ export default function Edit({
       firstName: newEmployee.firstName,
       lastName: newEmployee.lastName,
       email: newEmployee.email,
+      role: newEmployee.role,
+      department: newEmployee.department,
     };
 
     for (let i = 0; i < employees.length; i++) {
@@ -45,7 +50,7 @@ export default function Edit({
       <form onSubmit={handleUpdate} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
-            Update Employee
+            Update Employee Details
           </h2>
           <button
             type="button"
@@ -80,12 +85,32 @@ export default function Edit({
             setNewEmployee({ ...newEmployee, lastName: e.target.value })
           }
         />
-        <button
-          type="submit"
-          className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
-        >
-          Update
-        </button>
+        <label htmlFor="email" className="block text-sm font-medium ">
+          Email
+        </label>
+        <input
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          // id="email"
+          name="email"
+          value={newEmployee.email}
+          onChange={(e) =>
+            setNewEmployee({ ...newEmployee, email: e.target.value })
+          }
+        />
+
+        <label htmlFor="role" className="block text-sm font-medium ">
+          Role
+        </label>
+        <input
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          // id="role"
+          name="role"
+          value={newEmployee.role}
+          onChange={(e) =>
+            setNewEmployee({ ...newEmployee, role: e.target.value })
+          }
+        />
+        <Button type="submit">Update</Button>
       </form>
     </Modal>
   );

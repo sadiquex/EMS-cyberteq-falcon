@@ -22,7 +22,7 @@ export default function AdminLayout() {
       </aside>
       {/* main content */}
       {/* taking column - vertical (1fr) */}
-      <main className="col-span-1 p-4 bg-red-200 ">
+      <main className="col-span-1 p-4">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />

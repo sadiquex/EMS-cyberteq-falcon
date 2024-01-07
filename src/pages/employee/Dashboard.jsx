@@ -2,7 +2,7 @@ import Card from "../../components/_ui/Card";
 import { FaBowlFood } from "react-icons/fa6";
 import { GiVideoConference } from "react-icons/gi";
 import { MdTimeToLeave } from "react-icons/md";
-import { Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const portals = [
@@ -31,7 +31,7 @@ export default function Dashboard() {
       <div className="flex flex-col md:flex-row gap-4">
         <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
           <img
-            src="https://images.pexels.com/photos/296115/pexels-photo-296115.jpeg"
+            src="https://images.pexels.com/photos/6999225/pexels-photo-6999225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Joseph Boyce"
             className="object-cover w-full h-full"
           />

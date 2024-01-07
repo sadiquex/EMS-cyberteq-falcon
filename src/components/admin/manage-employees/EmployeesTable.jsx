@@ -34,10 +34,6 @@ export default function EmployeesTable({
     setSelectedEmployee(employee);
   };
 
-  const closeModal = () => {
-    setSelectedEmployee(null);
-  };
-
   return (
     <div className="w-[350px] md:w-full overflow-x-auto p-[1px]">
       {/* Search input */}
@@ -108,7 +104,8 @@ export default function EmployeesTable({
       {/* Modal for View Details */}
       {selectedEmployee && (
         <Modal>
-          <div>
+          <div className="flex flex-col h-full">
+            {/* heading */}
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
                 Employee Details
@@ -117,17 +114,54 @@ export default function EmployeesTable({
               <button
                 type="button"
                 className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={closeModal}
+                onClick={() => setSelectedEmployee(null)}
               >
                 <IoCloseSharp />
               </button>
             </div>
-            <p>ID: {selectedEmployee.id}</p>
-            <p>First Name: {selectedEmployee.firstName}</p>
-            <p>Last Name: {selectedEmployee.lastName}</p>
-            <p>Email: {selectedEmployee.email}</p>
-            <p>Department: {selectedEmployee.department}</p>
-            <p>Date Added: {selectedEmployee.date}</p>
+            {/* details */}
+            <div className="flex flex-col justify-between flex-1">
+              <table className="border-collapse border border-gray-300">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2">ID:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.id}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">First Name:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.firstName}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">Last Name:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.lastName}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">Email:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.email}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">Department:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.department}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">Date Added:</td>
+                    <td className="border border-gray-300 p-2">
+                      {selectedEmployee.date}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </Modal>
       )}
