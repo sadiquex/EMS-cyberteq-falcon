@@ -3,10 +3,19 @@ import { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import LeaveApprovalModal from "./LeaveApprovalModal";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [selectedTab, setSelectedTab] = useState("All");
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isApproving, setIsApproving] = useState(false);
+
+  const approveModalHandler = (id) => {
+    setIsApproving(!isApproving);
+    setSelectedItemId(id); // Set the selectedItemId when the button is clicked
+  };
 
   const viewDetailsHandler = (id) => {
     const leave = leavesData.find((l) => l.id === id);
@@ -28,7 +37,7 @@ export default function LeavesTable() {
   const filterButtons = ["All", "Approved", "Pending", "Declined"];
 
   return (
-    <>
+    <div className="w-[350px] md:w-full overflow-x-auto ">
       {/* Tabs for filtering leaves */}
       <div className="mb-4 w-1/2 flex justify-between border-b border-gray-700">
         {filterButtons.map((button, i) => (
@@ -69,11 +78,21 @@ export default function LeavesTable() {
                 <td>{item.endDate}</td>
                 <td>{item.status}</td>
                 <td className="flex gap-2">
-                  <span>Approve</span>
-                  <span className="text-red-500">Decline</span>
+                  <BsThreeDotsVertical
+                    className="cursor-pointer"
+                    size={18}
+                    onClick={() => approveModalHandler(item.id)}
+                  />
+                  {/* approval modal */}
+                  {isApproving && selectedItemId === item.id && (
+                    <LeaveApprovalModal
+                      approveModalHandler={approveModalHandler}
+                    />
+                  )}
                   <FaEye
                     size={18}
                     onClick={() => viewDetailsHandler(item.id)}
+                    className="cursor-pointer"
                   />
                 </td>
               </tr>
@@ -111,6 +130,6 @@ export default function LeavesTable() {
           <p>Status: {selectedLeave.status}</p>
         </Modal>
       )}
-    </>
+    </div>
   );
 }

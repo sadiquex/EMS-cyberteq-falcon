@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { MdOutlineEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 
@@ -39,7 +39,7 @@ export default function EmployeesTable({
   };
 
   return (
-    <div>
+    <div className="w-[350px] md:w-full overflow-x-auto p-[1px]">
       {/* Search input */}
       <input
         type="text"
@@ -53,14 +53,14 @@ export default function EmployeesTable({
         <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
           {/* head */}
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-            <tr className="text-[16px]">
-              <th className="py-3 hidden md:table-cell">ID</th>
+            <tr className="text-[16px] space-x-4">
+              <th className="py-3">ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th className="hidden md:table-cell">Email</th>
+              <th className="">Email</th>
               <th>Department</th>
-              <th className="hidden md:table-cell">Role</th>
-              <th className="hidden md:table-cell">Date Added</th>
+              <th className="">Role</th>
+              <th className="">Date Added</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -70,21 +70,27 @@ export default function EmployeesTable({
               filteredEmployees?.map((employee, i) => (
                 // row
                 <tr key={i} className="bg-white hover:bg-gray-50 ">
-                  <td className="py-3 hidden md:table-cell">{i + 1}</td>
+                  <td className="py-3 ">{i + 1}</td>
                   <td>{employee.firstName}</td>
                   <td>{employee.lastName}</td>
-                  <td className="hidden md:table-cell">{employee.email}</td>
+                  <td>{employee.email}</td>
                   <td>{employee.department}</td>
-                  <td className="hidden md:table-cell">{employee.role}</td>
-                  <td className="hidden md:table-cell">{employee.date}</td>
+                  <td>{employee.role}</td>
+                  <td>{employee.date}</td>
                   <td className="space-x-2 text-[20px] ">
                     <button onClick={() => viewDetailsHandler(employee.id)}>
                       <FaEye />
                     </button>
-                    <button onClick={() => editHandler(employee.id)}>
-                      <FaEdit />
+                    <button
+                      onClick={() => editHandler(employee.id)}
+                      className="text-red-500"
+                    >
+                      <MdOutlineEdit />
                     </button>
-                    <button onClick={() => deleteEmployee(employee.id)}>
+                    <button
+                      onClick={() => deleteEmployee(employee.id)}
+                      className="text-red-600"
+                    >
                       <MdDelete />
                     </button>
                   </td>
@@ -102,7 +108,7 @@ export default function EmployeesTable({
       {/* Modal for View Details */}
       {selectedEmployee && (
         <Modal>
-          <div className="modal-content">
+          <div>
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
                 Employee Details

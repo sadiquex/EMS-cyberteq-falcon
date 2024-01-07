@@ -5,10 +5,7 @@ export default function Leaves() {
   return (
     <div className=" flex flex-col gap-2">
       <h2>Leaves Applied</h2>
-
-      <div className="w-full">
-        <LeavesTable />
-      </div>
+      <LeavesTable />
     </div>
   );
 }
