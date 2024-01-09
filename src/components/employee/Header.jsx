@@ -3,7 +3,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <nav className="z-50 w-full fixed bg-primaryColor ">
+    <nav className="z-50 w-full fixed bg-primaryColor shadow">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           {/* left side */}

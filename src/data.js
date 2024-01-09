@@ -6,7 +6,8 @@ export const employeesData = [
     email: "susan@example.com",
     department: "Cyberteq",
     role: "UI/UX",
-    date: "2019-04-11",
+    employmentType: "Internship",
+    dateAdded: "2019-04-11",
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ export const employeesData = [
     email: "adrienne@example.com",
     department: "SOC",
     role: "Project Manager",
-    date: "2019-04-17",
+    employmentType: "Full-Time",
+    dateAdded: "2019-04-17",
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ export const employeesData = [
     email: "rolf@example.com",
     department: "Falcon",
     role: "UI/UX",
-    date: "2019-05-01",
+    employmentType: "Contract",
+    dateAdded: "2019-05-01",
   },
   {
     id: 4,
@@ -33,7 +36,8 @@ export const employeesData = [
     email: "kent@example.com",
     department: "InfoSec",
     role: "Software Engineer",
-    date: "2019-05-03",
+    employmentType: "Internship",
+    dateAdded: "2019-05-03",
   },
   {
     id: 5,
@@ -42,7 +46,8 @@ export const employeesData = [
     email: "arsenio@example.com",
     department: "Cyberteq",
     role: "Administrator",
-    date: "2019-06-13",
+    employmentType: "Full-Time",
+    dateAdded: "2019-06-13",
   },
   {
     id: 6,
@@ -51,7 +56,8 @@ export const employeesData = [
     email: "laurena@example.com",
     department: "Cyberteq",
     role: "UX Engineer",
-    date: "2019-07-30",
+    employmentType: "Contract",
+    dateAdded: "2019-07-30",
   },
   {
     id: 7,
@@ -60,7 +66,8 @@ export const employeesData = [
     email: "george@example.com",
     department: "Falcon",
     role: "Backend developer",
-    date: "2019-08-15",
+    employmentType: "Full-Time",
+    dateAdded: "2019-08-15",
   },
   {
     id: 8,
@@ -69,7 +76,8 @@ export const employeesData = [
     email: "jesica@example.com",
     department: "InfoSec",
     role: "UI/UX",
-    date: "2019-10-10",
+    employmentType: "Internship",
+    dateAdded: "2019-10-10",
   },
   {
     id: 9,
@@ -78,7 +86,8 @@ export const employeesData = [
     email: "matthew@example.com",
     department: "Falcon",
     role: "Graphic Designer",
-    date: "2019-10-15",
+    employmentType: "Contract",
+    dateAdded: "2019-10-15",
   },
   {
     id: 10,
@@ -87,7 +96,8 @@ export const employeesData = [
     email: "lyndsey@example.com",
     department: "Cyberteq",
     role: "UI/UX Developer",
-    date: "2020-01-15",
+    employmentType: "Full-Time",
+    dateAdded: "2020-01-15",
   },
 ];
 

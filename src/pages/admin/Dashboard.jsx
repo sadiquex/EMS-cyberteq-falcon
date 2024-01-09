@@ -1,5 +1,6 @@
 import Card from "../../components/_ui/Card";
 import Chart from "../../components/admin/dashboard/Chart";
+import RecentInformation from "../../components/admin/dashboard/RecentInformation";
 
 export default function Dashboard() {
   const cardDetails = [
@@ -43,8 +44,8 @@ export default function Dashboard() {
               alt="company"
             />
           </figure>
-          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-300 rounded-lg">
-            display recent leaves
+          <div className="flex-1 max-h-64 overflow-y-scroll bg-gray-200 rounded-lg">
+            <RecentInformation />
           </div>
         </div>
         {/* second column */}

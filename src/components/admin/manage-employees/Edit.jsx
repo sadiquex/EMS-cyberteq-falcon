@@ -9,17 +9,30 @@ export default function Edit({
   employees,
   setEmployees,
 }) {
-  const { firstName, lastName, email, id, date, role, department } =
-    selectedEmployee;
+  // destructure selected employee object
+  const {
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    id,
+    date,
+    employmentType,
+    dateAdded,
+    department,
+  } = selectedEmployee;
 
+  // reference the old data from selected employee object to create the updated object
   const [newEmployee, setNewEmployee] = useState({
     firstName: firstName,
     lastName: lastName,
     email: email,
+    phoneNumber: phoneNumber,
     id: id,
     date: date,
-    role: role,
+    employmentType: employmentType,
     department: department,
+    dateAdded: dateAdded || new Date(),
   });
 
   const handleUpdate = (e) => {
@@ -30,8 +43,10 @@ export default function Edit({
       firstName: newEmployee.firstName,
       lastName: newEmployee.lastName,
       email: newEmployee.email,
-      role: newEmployee.role,
+      phoneNumber: newEmployee.phoneNumber,
+      employmentType: newEmployee.employmentType,
       department: newEmployee.department,
+      dateAdded: newEmployee.dateAdded,
     };
 
     for (let i = 0; i < employees.length; i++) {
@@ -43,6 +58,7 @@ export default function Edit({
 
     setEmployees([...employees]);
     setIsEditing(false);
+    alert("Employee details updated");
   };
 
   return (
@@ -66,7 +82,6 @@ export default function Edit({
         </label>
         <input
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          // id="firstName"
           name="firstName"
           value={newEmployee.firstName}
           onChange={(e) =>
@@ -78,38 +93,81 @@ export default function Edit({
         </label>
         <input
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          // id="lastName"
           name="lastName"
           value={newEmployee.lastName}
           onChange={(e) =>
             setNewEmployee({ ...newEmployee, lastName: e.target.value })
           }
         />
+        {/* email */}
         <label htmlFor="email" className="block text-sm font-medium ">
           Email
         </label>
         <input
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          // id="email"
           name="email"
+          placeholder="employeemail@cyberteq.com"
           value={newEmployee.email}
           onChange={(e) =>
             setNewEmployee({ ...newEmployee, email: e.target.value })
           }
         />
 
-        <label htmlFor="role" className="block text-sm font-medium ">
-          Role
+        {/* phoneNumber */}
+        <label htmlFor="phoneNumber" className="block text-sm font-medium ">
+          Phone Number
         </label>
         <input
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          // id="role"
-          name="role"
-          value={newEmployee.role}
+          name="phoneNumber"
+          type="number"
+          placeholder="+233 50 369 9012"
+          value={newEmployee.phoneNumber}
           onChange={(e) =>
-            setNewEmployee({ ...newEmployee, role: e.target.value })
+            setNewEmployee({ ...newEmployee, phoneNumber: e.target.value })
           }
         />
+
+        {/* department */}
+        <label htmlFor="department" className="block text-sm font-medium ">
+          Department
+        </label>
+        <select
+          value={newEmployee.department}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          onChange={(e) =>
+            setNewEmployee({ ...newEmployee, department: e.target.value })
+          }
+        >
+          <option value="--Select Department--">--Select Department--</option>
+          <option value="SOC">SOC</option>
+          <option value="InfoSec">InfoSec</option>
+          <option value="Offensive">Offensive</option>
+          <option value="BT Falcon">BT Falcon</option>
+          <option value="Sales">Sales</option>
+        </select>
+
+        {/* employmentType */}
+        <label htmlFor="employmentType" className="block text-sm font-medium ">
+          Type of Employment
+        </label>
+        <select
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          name="employmentType"
+          value={newEmployee.employmentType}
+          onChange={(e) =>
+            setNewEmployee({
+              ...newEmployee,
+              employmentType: e.target.value,
+            })
+          }
+        >
+          <option value="--Select Employment--">--Select Employment--</option>
+          <option value="Internship">Internship</option>
+          <option value="Full-Time">Full-Time</option>
+          <option value="Contract">Contract</option>
+        </select>
+
         <Button type="submit">Update</Button>
       </form>
     </Modal>

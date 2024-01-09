@@ -55,7 +55,7 @@ export default function EmployeesTable({
               <th>Last Name</th>
               <th className="">Email</th>
               <th>Department</th>
-              <th className="">Role</th>
+              <th className="">Employment Type</th>
               <th className="">Date Added</th>
               <th>Actions</th>
             </tr>
@@ -71,8 +71,8 @@ export default function EmployeesTable({
                   <td>{employee.lastName}</td>
                   <td>{employee.email}</td>
                   <td>{employee.department}</td>
-                  <td>{employee.role}</td>
-                  <td>{employee.date}</td>
+                  <td>{employee.employmentType}</td>
+                  <td>{employee.dateAdded}</td>
                   <td className="space-x-2 text-[20px] ">
                     <button onClick={() => viewDetailsHandler(employee.id)}>
                       <FaEye />
