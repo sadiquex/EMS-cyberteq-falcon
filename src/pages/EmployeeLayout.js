@@ -11,7 +11,9 @@ import Lunch from "./employee/Lunch";
 // components
 import Header from "../components/employee/Header";
 import Sidebar from "../components/employee/Sidebar";
+// contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
+import { UserProvider } from "../contexts/UserContext";
 
 function EmployeeLayout() {
   return (
@@ -24,18 +26,20 @@ function EmployeeLayout() {
       </aside>
       {/* for providing context */}
       <LeaveProvider>
-        {/* main content */}
-        <main className="col-span-1 p-4">
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/complete-profile" element={<CompleteProfile />} />
-            <Route path="/leave" element={<Leave />} />
-            <Route path="/leave-status" element={<LeaveStatusTable />} />
-            <Route path="/lunch" element={<Lunch />} />
-            <Route path="/conference-room" element={<ConferenceRoom />} />
-            <Route path="/*" element={<div>No route found</div>} />
-          </Routes>
-        </main>
+        <UserProvider>
+          {/* main content */}
+          <main className="col-span-1 p-4">
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/complete-profile" element={<CompleteProfile />} />
+              <Route path="/leave" element={<Leave />} />
+              <Route path="/leave-status" element={<LeaveStatusTable />} />
+              <Route path="/lunch" element={<Lunch />} />
+              <Route path="/conference-room" element={<ConferenceRoom />} />
+              <Route path="/*" element={<div>No route found</div>} />
+            </Routes>
+          </main>
+        </UserProvider>
       </LeaveProvider>
     </div>
   );

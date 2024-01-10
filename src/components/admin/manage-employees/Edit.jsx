@@ -18,6 +18,7 @@ export default function Edit({
     id,
     date,
     employmentType,
+    role,
     dateAdded,
     department,
   } = selectedEmployee;
@@ -30,6 +31,7 @@ export default function Edit({
     phoneNumber: phoneNumber,
     id: id,
     date: date,
+    role: role,
     employmentType: employmentType,
     department: department,
     dateAdded: dateAdded || new Date(),
@@ -45,6 +47,7 @@ export default function Edit({
       email: newEmployee.email,
       phoneNumber: newEmployee.phoneNumber,
       employmentType: newEmployee.employmentType,
+      role: newEmployee.role,
       department: newEmployee.department,
       dateAdded: newEmployee.dateAdded,
     };
@@ -127,6 +130,25 @@ export default function Edit({
             setNewEmployee({ ...newEmployee, phoneNumber: e.target.value })
           }
         />
+
+        {/* role */}
+        <label htmlFor="role" className="block text-sm font-medium ">
+          Role <span className="text-red-600">*</span>
+        </label>
+        <select
+          // {...register("role")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          value={newEmployee.role}
+          onChange={(e) =>
+            setNewEmployee({ ...newEmployee, role: e.target.value })
+          }
+        >
+          <option value="" disabled hidden>
+            --Select role--
+          </option>
+          <option value="Manager">Manager</option>
+          <option value="Employee">Employee</option>
+        </select>
 
         {/* department */}
         <label htmlFor="department" className="block text-sm font-medium ">

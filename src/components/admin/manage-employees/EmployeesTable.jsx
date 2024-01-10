@@ -104,7 +104,7 @@ export default function EmployeesTable({
       {/* Modal for View Details */}
       {selectedEmployee && (
         <Modal>
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full space-y-2">
             {/* heading */}
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -120,47 +120,14 @@ export default function EmployeesTable({
               </button>
             </div>
             {/* details */}
-            <div className="flex flex-col justify-between flex-1">
-              <table className="border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2">ID:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.id}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">First Name:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.firstName}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">Last Name:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.lastName}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">Email:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.email}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">Department:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.department}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">Date Added:</td>
-                    <td className="border border-gray-300 p-2">
-                      {selectedEmployee.date}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="flex flex-col flex-1 gap-4">
+              <p>ID: {selectedEmployee.id}</p>
+              <p>FirstName: {selectedEmployee.firstName}</p>
+              <p>LastName: {selectedEmployee.lastName}</p>
+              <p>Email: {selectedEmployee.email}</p>
+              <p>Department: {selectedEmployee.department}</p>
+              <p>Date: {selectedEmployee.date}</p>
+              <p>Role: {selectedEmployee.role}</p>
             </div>
           </div>
         </Modal>

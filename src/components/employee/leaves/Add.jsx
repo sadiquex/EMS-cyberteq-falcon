@@ -29,6 +29,8 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
       id: appliedeaves.length + 1,
     };
 
+    // console.log(updatedLeave);
+
     setAppliedLeaves([updatedLeave, ...appliedeaves]);
     reset();
     setIsAddingLeave(false);
@@ -60,8 +62,9 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           // {...register("leaveType")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           onChange={(e) => setSelectedLeaveType(e.target.value)}
+          defaultValue="--Leave Type--"
         >
-          <option value="--Leave Type--" disabled selected hidden>
+          <option value="--Leave Type--" disabled hidden>
             --Leave Type--
           </option>
           <option value="Maternity Leave">Maternity Leave</option>

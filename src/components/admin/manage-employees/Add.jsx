@@ -5,6 +5,8 @@ import Modal from "../../_ui/Modal";
 
 export default function Add({ setIsAdding, employees, setEmployees }) {
   const { register, handleSubmit, reset } = useForm();
+  // state to set department depending on the role
+  const [selectedRole, setSelectedRole] = useState("");
 
   const date = new Date();
   const currentDate = date.toISOString().split("T")[0];
@@ -15,6 +17,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
     email: "",
     phoneNumber: "",
     department: "",
+    role: "",
     employmentType: "",
     dateAdded: currentDate,
     id: employees.length + 1,
@@ -33,6 +36,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
       lastName,
       email,
       phoneNumber,
+      role,
       employmentType,
       department,
     } = data;
@@ -52,6 +56,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
       lastName,
       email,
       phoneNumber,
+      role,
       employmentType,
       department,
       dateAdded: currentDate,
@@ -109,7 +114,6 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           placeholder="employeemail@cyberteq.com"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />
-
         {/* phoneNumber */}
         <label htmlFor="phoneNumber" className="block text-sm font-medium ">
           Phone Number
@@ -119,8 +123,21 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           placeholder="+233 50 369 9012"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />
-
-        {/* department */}
+        {/* role */}
+        <label htmlFor="role" className="block text-sm font-medium ">
+          Role <span className="text-red-600">*</span>
+        </label>
+        <select
+          {...register("role")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          defaultValue="--Leave Type--"
+        >
+          <option value="--Select role--" disabled selected hidden>
+            --Select role--
+          </option>
+          <option value="Manager">Manager</option>
+          <option value="Employee">Employee</option>
+        </select>
         <label htmlFor="department" className="block text-sm font-medium ">
           Department <span className="text-red-600">*</span>
         </label>
@@ -137,7 +154,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           <option value="BT Falcon">BT Falcon</option>
           <option value="Sales">Sales</option>
         </select>
-        {/* role */}
+        {/* employee type*/}
         <label htmlFor="role" className="block text-sm font-medium ">
           Employment Type <span className="text-red-600">*</span>
         </label>
@@ -152,7 +169,6 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           <option value="Full-Time">Full-Time</option>
           <option value="Contract">Contract</option>
         </select>
-
         <button
           className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"

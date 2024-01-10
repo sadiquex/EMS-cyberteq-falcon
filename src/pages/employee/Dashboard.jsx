@@ -3,8 +3,12 @@ import { FaBowlFood } from "react-icons/fa6";
 import { GiVideoConference } from "react-icons/gi";
 import { MdTimeToLeave } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../../contexts/UserContext";
 
 export default function Dashboard() {
+  const { userDetails } = useUserContext();
+  const { firstName, lastName } = userDetails;
+
   const portals = [
     {
       portalName: "Lunch Portal",
@@ -32,12 +36,12 @@ export default function Dashboard() {
         <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
           <img
             src="https://images.pexels.com/photos/6999225/pexels-photo-6999225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Joseph Boyce"
+            alt={firstName + lastName}
             className="object-cover w-full h-full"
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-200 p-3">
-          <p className="text-lg font-bold">Welcome, Joseph Boyce</p>
+          <p className="text-lg font-bold">Welcome, {firstName}</p>
           <p className="text-sm">Monday, 20th Feb 2024</p>
         </div>
       </div>
