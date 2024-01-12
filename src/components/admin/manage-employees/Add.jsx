@@ -5,8 +5,6 @@ import Modal from "../../_ui/Modal";
 
 export default function Add({ setIsAdding, employees, setEmployees }) {
   const { register, handleSubmit, reset } = useForm();
-  // state to set department depending on the role
-  const [selectedRole, setSelectedRole] = useState("");
 
   const date = new Date();
   const currentDate = date.toISOString().split("T")[0];
@@ -70,8 +68,10 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
     setIsAdding(false);
   };
 
+  const closeModal = () => setIsAdding(false);
+
   return (
-    <Modal>
+    <Modal closeModal={closeModal}>
       <form onSubmit={handleSubmit(addNew)} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -81,94 +81,90 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
           <button
             type="button"
             className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-            onClick={() => setIsAdding(false)}
+            onClick={closeModal}
           >
             <IoCloseSharp />
           </button>
         </div>
         {/* input fields */}
         {/* firstname */}
-        <label htmlFor="firstName" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           First Name <span className="text-red-600">*</span>
+          <input
+            placeholder="Ibrahim"
+            {...register("firstName")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          placeholder="Ibrahim"
-          {...register("firstName")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
         {/* lastname */}
-        <label htmlFor="lastName" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Last Name <span className="text-red-600">*</span>
+          <input
+            placeholder="Saddik"
+            {...register("lastName")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          placeholder="Saddik"
-          {...register("lastName")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
         {/* email */}
-        <label htmlFor="email" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Email <span className="text-red-600">*</span>
+          <input
+            {...register("email")}
+            type="email"
+            placeholder="employeemail@cyberteq.com"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          {...register("email")}
-          placeholder="employeemail@cyberteq.com"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
         {/* phoneNumber */}
-        <label htmlFor="phoneNumber" className="block text-sm font-medium ">
-          Phone Number
+        <label className="block text-sm font-medium ">
+          Phone Number <span className="text-red-600">*</span>
+          <input
+            type="tel"
+            {...register("phoneNumber")}
+            placeholder="+233 50 369 9012"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          {...register("phoneNumber")}
-          placeholder="+233 50 369 9012"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
         {/* role */}
-        <label htmlFor="role" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Role <span className="text-red-600">*</span>
+          <select
+            {...register("role")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            defaultValue="--Select role--"
+          >
+            <option value="Manager">Manager</option>
+            <option value="Employee">Employee</option>
+          </select>
         </label>
-        <select
-          {...register("role")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          defaultValue="--Leave Type--"
-        >
-          <option value="--Select role--" disabled selected hidden>
-            --Select role--
-          </option>
-          <option value="Manager">Manager</option>
-          <option value="Employee">Employee</option>
-        </select>
-        <label htmlFor="department" className="block text-sm font-medium ">
+        {/* department */}
+        <label className="block text-sm font-medium ">
           Department <span className="text-red-600">*</span>
+          <select
+            {...register("department")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            defaultValue="--Select Department--"
+          >
+            <option value="SOC">SOC</option>
+            <option value="InfoSec">InfoSec</option>
+            <option value="Offensive">Offensive</option>
+            <option value="BT Falcon">BT Falcon</option>
+            <option value="Sales">Sales</option>
+          </select>
         </label>
-        <select
-          {...register("department")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        >
-          <option value="--Select Department--" disabled selected hidden>
-            --Select Department--
-          </option>
-          <option value="SOC">SOC</option>
-          <option value="InfoSec">InfoSec</option>
-          <option value="Offensive">Offensive</option>
-          <option value="BT Falcon">BT Falcon</option>
-          <option value="Sales">Sales</option>
-        </select>
         {/* employee type*/}
-        <label htmlFor="role" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Employment Type <span className="text-red-600">*</span>
+          <select
+            {...register("employmentType")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            defaultValue="--Select Employment--"
+          >
+            <option value="Internship">Internship</option>
+            <option value="Full-Time">Full-Time</option>
+            <option value="Contract">Contract</option>
+          </select>
         </label>
-        <select
-          {...register("employmentType")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        >
-          <option value="--Select Employment--" disabled selected hidden>
-            --Select Employment--
-          </option>
-          <option value="Internship">Internship</option>
-          <option value="Full-Time">Full-Time</option>
-          <option value="Contract">Contract</option>
-        </select>
         <button
           className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"

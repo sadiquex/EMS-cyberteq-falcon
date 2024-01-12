@@ -3,6 +3,7 @@ import { MdDashboard } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
 import { TbStatusChange } from "react-icons/tb";
+import { FaUser } from "react-icons/fa";
 
 export default function Sidebar({ children }) {
   const location = useLocation();
@@ -25,6 +26,13 @@ export default function Sidebar({ children }) {
       icon: <TbStatusChange size={24} />,
       child: "2",
     },
+    {
+      name: "Profile",
+      route: "/employee/profile",
+      icon: <FaUser size={24} />,
+      child: "",
+    },
+
     // {
     //   name: "Leave",
     //   route: "/employee/leave",

@@ -41,7 +41,12 @@ export default function Dashboard() {
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-200 p-3">
-          <p className="text-lg font-bold">Welcome, {firstName}</p>
+          <p className="text-lg font-bold">
+            Welcome,
+            {firstName + lastName
+              ? firstName + " " + lastName
+              : "`Complete your profile`"}
+          </p>
           <p className="text-sm">Monday, 20th Feb 2024</p>
         </div>
       </div>

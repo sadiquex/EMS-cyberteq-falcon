@@ -6,6 +6,13 @@ export const UserProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
+    dateOfBirth: "",
+    gender: "",
+    ghanaCardNumber: "",
+    ssnitNumber: "",
+    bankAccountNumber: "",
+    alternatePhoneNumber: "",
+    profilePicture: "",
   });
 
   const updateUserDetails = (data) => {

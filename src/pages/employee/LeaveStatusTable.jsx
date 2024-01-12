@@ -15,6 +15,8 @@ export default function LeaveStatusTable() {
     setSelectedLeave(leave);
   };
 
+  const closeModal = () => setSelectedLeave(null);
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -86,7 +88,7 @@ export default function LeaveStatusTable() {
       </div>
 
       {selectedLeave && (
-        <Modal>
+        <Modal closeModal={closeModal}>
           <div className="flex h-full flex-col space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -96,7 +98,7 @@ export default function LeaveStatusTable() {
               <button
                 type="button"
                 className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={() => setSelectedLeave(null)}
+                onClick={closeModal}
               >
                 <IoCloseSharp />
               </button>

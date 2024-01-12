@@ -22,9 +22,7 @@ export default function LeavesTable() {
     setSelectedLeave(leave);
   };
 
-  const closeDetailsHandler = () => {
-    setSelectedLeave(null);
-  };
+  const closeModal = () => setSelectedLeave(null);
 
   const filterLeavesHandler = () => {
     if (selectedTab === "All") {
@@ -110,7 +108,7 @@ export default function LeavesTable() {
 
       {/* display leave details */}
       {selectedLeave && (
-        <Modal>
+        <Modal closeModal={closeModal}>
           <div className="flex flex-col space-y-4 h-full">
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -120,7 +118,7 @@ export default function LeavesTable() {
               <button
                 type="button"
                 className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={closeDetailsHandler}
+                onClick={closeModal}
               >
                 <IoCloseSharp />
               </button>

@@ -27,7 +27,7 @@ export default function AdminLayout() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/leaves" element={<Leaves />} />
-          <Route path="/*" element={<div>No route found</div>} />
+          <Route path="/*" element={<div>Page not found</div>} />
         </Routes>
       </main>
     </div>

@@ -64,8 +64,10 @@ export default function Edit({
     alert("Employee details updated");
   };
 
+  const closeModal = () => setIsEditing(false);
+
   return (
-    <Modal>
+    <Modal closeModal={closeModal}>
       <form onSubmit={handleUpdate} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -74,7 +76,7 @@ export default function Edit({
           <button
             type="button"
             className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-            onClick={() => setIsEditing(false)}
+            onClick={closeModal}
           >
             <IoCloseSharp />
           </button>
@@ -133,7 +135,7 @@ export default function Edit({
 
         {/* role */}
         <label htmlFor="role" className="block text-sm font-medium ">
-          Role <span className="text-red-600">*</span>
+          Role
         </label>
         <select
           // {...register("role")}

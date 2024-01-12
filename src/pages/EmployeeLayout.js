@@ -8,6 +8,8 @@ import Dashboard from "./employee/Dashboard";
 import LeaveStatusTable from "./employee/LeaveStatusTable";
 import ConferenceRoom from "./employee/ConferenceRoom";
 import Lunch from "./employee/Lunch";
+import Profile from "./employee/Profile";
+
 // components
 import Header from "../components/employee/Header";
 import Sidebar from "../components/employee/Sidebar";
@@ -33,10 +35,11 @@ function EmployeeLayout() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/leave" element={<Leave />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/leave-status" element={<LeaveStatusTable />} />
               <Route path="/lunch" element={<Lunch />} />
               <Route path="/conference-room" element={<ConferenceRoom />} />
-              <Route path="/*" element={<div>No route found</div>} />
+              <Route path="/*" element={<div>Page not found</div>} />
             </Routes>
           </main>
         </UserProvider>

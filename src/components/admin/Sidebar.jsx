@@ -4,7 +4,7 @@ import { MdTimeToLeave } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 
-export default function Sidebar({ children }) {
+export default function Sidebar() {
   const location = useLocation();
 
   const links = [

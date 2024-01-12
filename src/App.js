@@ -13,7 +13,7 @@ export default function App() {
       {isLoginPage && <Route path="/" element={<LoginPage />} />}
       <Route path="/admin/*" element={<AdminLayout />} />
       <Route path="/employee/*" element={<EmployeeLayout />} />
-      <Route path="/*" element={<div>No route found</div>} />
+      <Route path="/*" element={<div>Page not found</div>} />
     </Routes>
   );
 }

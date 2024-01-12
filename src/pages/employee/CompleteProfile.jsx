@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import Button from "../../components/_ui/Button";
 
 export default function CompleteProfile() {
   const { register, handleSubmit } = useForm();
@@ -8,45 +9,91 @@ export default function CompleteProfile() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // Update the userDetails state with the form data
+    // update the userDetails state with the form data
     updateUserDetails(data);
 
-    // put data into api here
+    // send data to api here
     // console.log(data);
 
-    // navigate to dashboard
     navigate("/employee/dashboard");
   };
 
   return (
-    <div>
+    <div className="space-y-2">
       <h2>Complete your profile</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex gap-2 w-full bg-red-400">
-          {/* first name */}
-          <div className="flex-1">
-            <label htmlFor="firstName" className="block text-sm font-medium ">
-              First Name<span className="text-red-700">*</span>
-            </label>
+        <div className="grid grid-cols-2 gap-4 ">
+          {/* Date of Birth */}
+          <label className="block text-sm font-medium ">
+            Date of Birth<span className="text-red-700">*</span>
             <input
-              {...register("firstName")}
+              type="date"
+              {...register("dateOfBirth")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             />
-          </div>
-          {/* lastname */}
-          <div className="flex-1">
-            <label htmlFor="lastName" className="block text-sm font-medium ">
-              Last Name<span className="text-red-700">*</span>
-            </label>
+          </label>
+          {/* gender */}
+          <label className="block text-sm font-medium ">
+            Gender<span className="text-red-700">*</span>
+            <select
+              {...register("gender")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue="--Select Gender--"
+            >
+              <option value="--Select Gender--" disabled>
+                --Select Gender--
+              </option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </label>
+          {/* ghana card */}
+          <label className="block text-sm font-medium ">
+            Ghana Card Number
             <input
-              {...register("lastName")}
+              type="number"
+              {...register("ghanaCard")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             />
-          </div>
+          </label>
+          {/* ssnit number */}
+          <label className="block text-sm font-medium ">
+            SSNIT Number
+            <input
+              type="number"
+              {...register("ssnitNumber")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            />
+          </label>
+          {/* bank account number */}
+          <label className="block text-sm font-medium ">
+            Bank Acc. Number
+            <input
+              type="number"
+              {...register("bankAccountNumber")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            />
+          </label>
+          {/* alternative phone number */}
+          <label className="block text-sm font-medium ">
+            Alternative Phone Number
+            <input
+              type="number"
+              {...register("alternatePhoneNumber")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </label>
+          {/* profile picture */}
+          <label className="block text-sm font-medium ">
+            Profile Picture<span className="text-red-700">*</span>
+            <input
+              type="file"
+              {...register("profilePicture")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </label>
         </div>
-        <button type="submit" className="bg-red-400">
-          submit
-        </button>
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );

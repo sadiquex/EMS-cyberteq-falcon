@@ -37,7 +37,7 @@ export default function LoginPage() {
             </button>
           </Link>
           {/* user login */}
-          <Link to="/employee/dashboard">
+          <Link to="/employee/complete-profile">
             <button className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center ">
               Login as Employee
             </button>

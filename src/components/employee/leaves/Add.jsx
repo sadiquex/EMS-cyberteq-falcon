@@ -29,8 +29,7 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
       id: appliedeaves.length + 1,
     };
 
-    // console.log(updatedLeave);
-
+    // api call here
     setAppliedLeaves([updatedLeave, ...appliedeaves]);
     reset();
     setIsAddingLeave(false);
@@ -38,7 +37,7 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
   };
 
   return (
-    <Modal>
+    <Modal closeModal={addLeaveHandler}>
       <form onSubmit={handleSubmit(addNewLeave)} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -59,24 +58,25 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           Leave type <span className="text-red-700">*</span>
         </label>
         <select
-          // {...register("leaveType")}
+          {...register("leaveType")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           onChange={(e) => setSelectedLeaveType(e.target.value)}
-          defaultValue="--Leave Type--"
+          // value={selectedLeaveType}
         >
           <option value="--Leave Type--" disabled hidden>
             --Leave Type--
           </option>
           <option value="Maternity Leave">Maternity Leave</option>
           <option value="Annual Leave">Annual Leave</option>
-          <option value="Emergency Leave">Emergency Leave</option>
           <option value="Sick Leave">Sick Leave</option>
+          <option value="Emergency Leave">Emergency Leave</option>
         </select>
 
         <label htmlFor="startDate" className="block text-sm font-medium ">
           Start date <span className="text-red-700">*</span>
         </label>
         <input
+          type="date"
           {...register("startDate")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />
@@ -84,6 +84,7 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           End date <span className="text-red-700">*</span>
         </label>
         <input
+          type="date"
           {...register("endDate")}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         />

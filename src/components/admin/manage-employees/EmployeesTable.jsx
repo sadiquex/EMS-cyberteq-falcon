@@ -34,6 +34,8 @@ export default function EmployeesTable({
     setSelectedEmployee(employee);
   };
 
+  const closeModal = () => setSelectedEmployee(null);
+
   return (
     <div className="w-[350px] md:w-full overflow-x-auto p-[1px]">
       {/* Search input */}
@@ -47,16 +49,16 @@ export default function EmployeesTable({
 
       <div className="w-full overflow-x-auto">
         <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
-          {/* head */}
+          {/* table heading */}
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr className="text-[16px] space-x-4">
               <th className="py-3">ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th className="">Email</th>
+              <th>Email</th>
               <th>Department</th>
-              <th className="">Employment Type</th>
-              <th className="">Date Added</th>
+              <th>Employment Type</th>
+              <th>Date Added</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -74,9 +76,11 @@ export default function EmployeesTable({
                   <td>{employee.employmentType}</td>
                   <td>{employee.dateAdded}</td>
                   <td className="space-x-2 text-[20px] ">
+                    {/* view btn */}
                     <button onClick={() => viewDetailsHandler(employee.id)}>
                       <FaEye />
                     </button>
+                    {/* edit btn */}
                     <button
                       onClick={() => editHandler(employee.id)}
                       className="text-red-500"
@@ -103,7 +107,7 @@ export default function EmployeesTable({
 
       {/* Modal for View Details */}
       {selectedEmployee && (
-        <Modal>
+        <Modal closeModal={closeModal}>
           <div className="flex flex-col h-full space-y-2">
             {/* heading */}
             <div className="flex justify-between items-center">
@@ -114,7 +118,7 @@ export default function EmployeesTable({
               <button
                 type="button"
                 className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={() => setSelectedEmployee(null)}
+                onClick={closeModal}
               >
                 <IoCloseSharp />
               </button>
@@ -128,6 +132,7 @@ export default function EmployeesTable({
               <p>Department: {selectedEmployee.department}</p>
               <p>Date: {selectedEmployee.date}</p>
               <p>Role: {selectedEmployee.role}</p>
+              <p>Phone Number: {selectedEmployee.phoneNumber}</p>
             </div>
           </div>
         </Modal>
