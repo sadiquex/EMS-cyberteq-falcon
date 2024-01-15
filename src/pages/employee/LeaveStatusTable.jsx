@@ -89,7 +89,7 @@ export default function LeaveStatusTable() {
 
       {selectedLeave && (
         <Modal closeModal={closeModal}>
-          <div className="flex h-full flex-col space-y-4">
+          <div className="flex h-screen flex-col space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-[30px] font-bold text-center text-slate-900">
                 Leave details

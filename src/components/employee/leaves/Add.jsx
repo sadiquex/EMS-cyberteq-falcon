@@ -106,7 +106,7 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"
         >
-          Add
+          Send Request
         </button>
       </form>
     </Modal>
