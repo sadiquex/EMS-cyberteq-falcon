@@ -4,24 +4,14 @@ import { MdDelete } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEmployee } from "../../../redux/admin-slices/employeesSlice";
 
-export default function EmployeesTable({
-  employees,
-  setEmployees,
-  editHandler,
-}) {
+export default function EmployeesTable({ editHandler }) {
+  const dispatch = useDispatch();
+  const employees = useSelector((state) => state.employees);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-
-  // delete handler
-  const deleteEmployee = (id) => {
-    if (window.confirm("Are you sure you want to delete")) {
-      const filteredEmployees = employees.filter(
-        (employee) => employee.id !== id
-      );
-      setEmployees(filteredEmployees);
-    }
-  };
 
   // search handler
   const filteredEmployees = employees.filter((employee) =>
@@ -88,7 +78,11 @@ export default function EmployeesTable({
                       <MdOutlineEdit />
                     </button>
                     <button
-                      onClick={() => deleteEmployee(employee.id)}
+                      onClick={() => {
+                        if (window.confirm("Are you sure you want to delete")) {
+                          dispatch(deleteEmployee(employee.id));
+                        }
+                      }}
                       className="text-red-600"
                     >
                       <MdDelete />
@@ -130,6 +124,7 @@ export default function EmployeesTable({
               <p>LastName: {selectedEmployee.lastName}</p>
               <p>Email: {selectedEmployee.email}</p>
               <p>Department: {selectedEmployee.department}</p>
+              <p>Employment Type: {selectedEmployee.employmentType}</p>
               <p>Date: {selectedEmployee.date}</p>
               <p>Role: {selectedEmployee.role}</p>
               <p>Phone Number: {selectedEmployee.phoneNumber}</p>

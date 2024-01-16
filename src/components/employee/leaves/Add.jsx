@@ -54,46 +54,44 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
         </div>
         {/* input fields */}
         {/* leave type */}
-        <label htmlFor="leaveType" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Leave type <span className="text-red-700">*</span>
+          <select
+            {...register("leaveType")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            onChange={(e) => setSelectedLeaveType(e.target.value)}
+          >
+            <option value="--Leave Type--" disabled hidden>
+              --Leave Type--
+            </option>
+            <option value="Maternity Leave">Maternity Leave</option>
+            <option value="Annual Leave">Annual Leave</option>
+            <option value="Sick Leave">Sick Leave</option>
+            <option value="Emergency Leave">Emergency Leave</option>
+          </select>
         </label>
-        <select
-          {...register("leaveType")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          onChange={(e) => setSelectedLeaveType(e.target.value)}
-          // value={selectedLeaveType}
-        >
-          <option value="--Leave Type--" disabled hidden>
-            --Leave Type--
-          </option>
-          <option value="Maternity Leave">Maternity Leave</option>
-          <option value="Annual Leave">Annual Leave</option>
-          <option value="Sick Leave">Sick Leave</option>
-          <option value="Emergency Leave">Emergency Leave</option>
-        </select>
 
-        <label htmlFor="startDate" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Start date <span className="text-red-700">*</span>
+          <input
+            type="date"
+            {...register("startDate")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          type="date"
-          {...register("startDate")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
-        <label htmlFor="endDate" className="block text-sm font-medium ">
+
+        <label className="block text-sm font-medium ">
           End date <span className="text-red-700">*</span>
+          <input
+            type="date"
+            {...register("endDate")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
         </label>
-        <input
-          type="date"
-          {...register("endDate")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        />
 
         {selectedLeaveType === "Emergency Leave" && (
           <>
-            <label htmlFor="reason" className="block text-sm font-medium ">
-              Reason
-            </label>
+            <label className="block text-sm font-medium ">Reason</label>
             <textarea
               {...register("reason")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "

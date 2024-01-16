@@ -1,19 +1,20 @@
 import { useForm } from "react-hook-form";
-import { useUserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/_ui/Button";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserDetails } from "../../redux/employee-slices/userDetailsSlice";
 
 export default function CompleteProfile() {
+  const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.user.userDetails);
   const { register, handleSubmit } = useForm();
-  const { updateUserDetails } = useUserContext();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    // update the userDetails state with the form data
-    updateUserDetails(data);
+  console.log(userDetails);
 
+  const onSubmit = (data) => {
     // send data to api here
-    // console.log(data);
+    dispatch(updateUserDetails(data));
 
     navigate("/employee/dashboard");
   };
@@ -52,7 +53,7 @@ export default function CompleteProfile() {
             Ghana Card Number
             <input
               type="number"
-              {...register("ghanaCard")}
+              {...register("ghanaCardNumber")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             />
           </label>
@@ -84,14 +85,14 @@ export default function CompleteProfile() {
             />
           </label>
           {/* profile picture */}
-          <label className="block text-sm font-medium ">
+          {/* <label className="block text-sm font-medium ">
             Profile Picture<span className="text-red-700">*</span>
             <input
               type="file"
               {...register("profilePicture")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
-          </label>
+          </label> */}
         </div>
         <Button type="submit">Submit</Button>
       </form>

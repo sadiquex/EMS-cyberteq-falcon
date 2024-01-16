@@ -1,25 +1,33 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { addEmployee } from "../../../redux/admin-slices/employeesSlice";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default function Add({ setIsAdding, employees, setEmployees }) {
+export default function Add({ setIsAdding }) {
   const { register, handleSubmit, reset } = useForm();
+  const dispatch = useDispatch();
+  const employees = useSelector((state) => state.employees);
+  const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://cyberteq-falcon-api.onrender.com/api/EmploymentType")
+      .then((response) => {
+        setEmploymentTypes(response.data.result);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching employment types:", error);
+        setLoading(false);
+      });
+  }, []);
 
   const date = new Date();
   const currentDate = date.toISOString().split("T")[0];
-
-  const [newEmployee, setNewEmployee] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    department: "",
-    role: "",
-    employmentType: "",
-    dateAdded: currentDate,
-    id: employees.length + 1,
-  });
 
   const isEmployeeAlreadyAdded = (firstName, lastName) => {
     return employees.some(
@@ -28,7 +36,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
     );
   };
 
-  const addNew = (data) => {
+  const addEmployeeHandler = (data) => {
     const {
       firstName,
       lastName,
@@ -58,12 +66,11 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
       employmentType,
       department,
       dateAdded: currentDate,
-      id: newEmployee.id + 1, // Increment the ID for the next employee
+      id: employees.length + 1, // Increment the ID for the next employee
     };
 
     // pass data to the api function here - hit the endpoint
-    setEmployees([updatedEmployee, ...employees]);
-    setNewEmployee(updatedEmployee);
+    dispatch(addEmployee(updatedEmployee));
     reset(); // Clear the form fields
     setIsAdding(false);
   };
@@ -72,7 +79,7 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
 
   return (
     <Modal closeModal={closeModal}>
-      <form onSubmit={handleSubmit(addNew)} className="space-y-4">
+      <form onSubmit={handleSubmit(addEmployeeHandler)} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
             Add an employee
@@ -155,15 +162,21 @@ export default function Add({ setIsAdding, employees, setEmployees }) {
         {/* employee type*/}
         <label className="block text-sm font-medium ">
           Employment Type <span className="text-red-600">*</span>
-          <select
-            {...register("employmentType")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            defaultValue="--Select Employment--"
-          >
-            <option value="Internship">Internship</option>
-            <option value="Full-Time">Full-Time</option>
-            <option value="Contract">Contract</option>
-          </select>
+          {loading ? (
+            <div>loading...</div>
+          ) : (
+            <select
+              {...register("employmentType")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue="--Select Employment--"
+            >
+              {employmentTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+          )}
         </label>
         <button
           className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"

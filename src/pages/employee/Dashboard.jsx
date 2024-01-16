@@ -3,29 +3,49 @@ import { FaBowlFood } from "react-icons/fa6";
 import { GiVideoConference } from "react-icons/gi";
 import { MdTimeToLeave } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../contexts/UserContext";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const { userDetails } = useUserContext();
+  const userDetails = useSelector((state) => state.user.userDetails);
   const { firstName, lastName } = userDetails;
+  const [portals, setPortals] = useState([]);
 
-  const portals = [
-    {
-      portalName: "Lunch Portal",
-      portalIcon: <FaBowlFood />,
-      route: "/employee/lunch",
-    },
-    {
-      portalName: "Leave Portal",
-      portalIcon: <MdTimeToLeave />,
-      route: "/employee/leave",
-    },
-    {
-      portalName: "Conference Room",
-      portalIcon: <GiVideoConference size={24} />,
-      route: "/employee/conference-room",
-    },
-  ];
+  useEffect(() => {
+    axios
+      .get("https://cyberteq-falcon-api.onrender.com/api/Portal")
+      .then((response) => {
+        // manually add route and portal icons
+        const mappedPortals = response.data.result.map((portal) => {
+          return {
+            ...portal,
+            route: mapRouteAndIcon(portal.id).route,
+            icon: mapRouteAndIcon(portal.id).icon,
+          };
+        });
+
+        setPortals(mappedPortals);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // manually map portal IDs to routes and icons
+  const mapRouteAndIcon = (portalId) => {
+    switch (portalId) {
+      case "FOOD":
+        return { route: "/employee/lunch", icon: <FaBowlFood /> };
+      case "CONV":
+        return {
+          route: "/employee/conference-room",
+          icon: <GiVideoConference size={24} />,
+        };
+      case "LEAVE":
+        return { route: "/employee/leave", icon: <MdTimeToLeave size={24} /> };
+      default:
+        return { route: "/employee/dashboard", icon: null };
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -56,10 +76,10 @@ export default function Dashboard() {
         {portals.map((portal, i) => (
           <Link to={portal.route} key={i}>
             <Card cardType="portal">
-              <p className="font-normal ">{portal.portalName}</p>
               <h5 className="mb-2 text-3xl font-bold tracking-tight  ">
-                {portal.portalIcon}
+                {portal.icon}
               </h5>
+              <p className="font-normal ">{portal.name} Portal</p>
             </Card>
           </Link>
         ))}

@@ -1,12 +1,25 @@
-import React from "react";
-import { useUserContext } from "../../contexts/UserContext";
+import { useSelector } from "react-redux";
 
 export default function Profile() {
-  const { userDetails } = useUserContext();
-  const { firstName, lastName } = userDetails;
+  const userDetails = useSelector((state) => state.user.userDetails);
+  const {
+    firstName,
+    // lastName,
+    dateOfBirth,
+    gender,
+    ghanaCardNumber,
+    ssnitNumber,
+    bankAccountNumber,
+    alternatePhoneNumber,
+    profilePicture,
+  } = userDetails;
 
   // user details table
   const userDetailsTable = [
+    {
+      title: "Date of Birth",
+      value: dateOfBirth,
+    },
     {
       title: "Phone",
       value: "+233 50 369 9012",
@@ -21,7 +34,26 @@ export default function Profile() {
     },
     {
       title: "Gender",
-      value: "Male",
+      value: gender,
+    },
+  ];
+
+  const otherDetailsTable = [
+    {
+      title: "SSNIT No.",
+      value: ssnitNumber,
+    },
+    {
+      title: "Bank Acc",
+      value: bankAccountNumber,
+    },
+    {
+      title: "Ghana Card",
+      value: ghanaCardNumber,
+    },
+    {
+      title: "Alt. Phone No.",
+      value: alternatePhoneNumber,
     },
   ];
 
@@ -36,7 +68,10 @@ export default function Profile() {
         <div className="flex items-center gap-4">
           <img
             className="w-32 h-32 rounded-full"
-            src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
+            src={
+              profilePicture ||
+              "https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
+            }
             alt="Joseph Boyce"
           />
           {/* personal info */}
@@ -44,10 +79,7 @@ export default function Profile() {
             {/* name */}
             <div>
               <h3 className="text-lg font-medium">
-                {/* {firstName + " " + lastName || "Complete your profile"} */}
-                {firstName + lastName
-                  ? firstName + " " + lastName
-                  : "Complete your profile"}
+                {firstName || "Complete your profile"}
               </h3>
               <p className="text-gray-400 text-xs font-semibold">
                 Web Developer
@@ -80,6 +112,21 @@ export default function Profile() {
             </table>
           </div>
         </div>
+      </div>
+      {/* other info */}
+      <div className="w-1/2 rounded-lg p-3 grid grid-cols-2 divide-x shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
+        <table className="text-xs my-3">
+          <tbody>
+            {otherDetailsTable.map((row, i) => (
+              <tr key={i}>
+                <td className="px-2 py-2 text-gray-500 font-semibold">
+                  {row.title}
+                </td>
+                <td className="px-2 py-2">{row.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

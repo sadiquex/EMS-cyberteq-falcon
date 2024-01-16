@@ -1,67 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import Button from "../../_ui/Button";
+import { useDispatch } from "react-redux";
+import { editEmployee } from "../../../redux/admin-slices/employeesSlice";
 
-export default function Edit({
-  selectedEmployee,
-  setIsEditing,
-  employees,
-  setEmployees,
-}) {
+export default function Edit({ selectedEmployee, setIsEditing }) {
+  const dispatch = useDispatch();
   // destructure selected employee object
-  const {
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    id,
-    date,
-    employmentType,
-    role,
-    dateAdded,
-    department,
-  } = selectedEmployee;
+  const [newEmployee, setNewEmployee] = useState({ ...selectedEmployee });
 
-  // reference the old data from selected employee object to create the updated object
-  const [newEmployee, setNewEmployee] = useState({
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    phoneNumber: phoneNumber,
-    id: id,
-    date: date,
-    role: role,
-    employmentType: employmentType,
-    department: department,
-    dateAdded: dateAdded || new Date(),
-  });
+  const onEditEmployee = (updatedEmployee) => {
+    dispatch(
+      editEmployee({
+        id: selectedEmployee.id,
+        updatedEmployeeData: updatedEmployee,
+      })
+    );
+    setIsEditing(false);
+  };
 
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    const updatedEmployee = {
-      id: newEmployee.id,
-      firstName: newEmployee.firstName,
-      lastName: newEmployee.lastName,
-      email: newEmployee.email,
-      phoneNumber: newEmployee.phoneNumber,
-      employmentType: newEmployee.employmentType,
-      role: newEmployee.role,
-      department: newEmployee.department,
-      dateAdded: newEmployee.dateAdded,
-    };
-
-    for (let i = 0; i < employees.length; i++) {
-      if (employees[i].id === newEmployee.id) {
-        employees.splice(i, 1, updatedEmployee);
-        break;
-      }
-    }
-
-    setEmployees([...employees]);
+    onEditEmployee(newEmployee);
     setIsEditing(false);
-    alert("Employee details updated");
   };
 
   const closeModal = () => setIsEditing(false);

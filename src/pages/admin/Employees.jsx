@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import EmployeesTable from "../../components/admin/manage-employees/EmployeesTable";
-import { employeesData as data } from "../../data";
 import Add from "../../components/admin/manage-employees/Add";
 import Edit from "../../components/admin/manage-employees/Edit";
+import { useSelector } from "react-redux";
 
 export default function Employees() {
-  const [employees, setEmployees] = useState(data);
+  const employees = useSelector((state) => state.employees);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
+  // find the employee we want to edit
   const editHandler = (id) => {
     // employee which has been clicked
     const [employee] = employees.filter((employee) => employee.id === id);
@@ -29,21 +30,13 @@ export default function Employees() {
         </button>
       </div>
       <div className="w-full">
-        <EmployeesTable
-          employees={employees}
-          setEmployees={setEmployees}
-          editHandler={editHandler}
-        />
+        <EmployeesTable editHandler={editHandler} />
       </div>
 
       {/* adding */}
       {isAdding && (
         <div className="flex items-center justify-center">
-          <Add
-            setIsAdding={setIsAdding}
-            employees={employees}
-            setEmployees={setEmployees}
-          />
+          <Add setIsAdding={setIsAdding} />
         </div>
       )}
       {/* editing */}
@@ -51,8 +44,6 @@ export default function Employees() {
         <div className="flex items-center justify-center">
           <Edit
             setIsEditing={setIsEditing}
-            employees={employees}
-            setEmployees={setEmployees}
             selectedEmployee={selectedEmployee}
           />
         </div>
