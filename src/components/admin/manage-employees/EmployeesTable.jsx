@@ -1,27 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployee } from "../../../redux/admin-slices/employeesSlice";
+import {
+  deleteEmployee,
+  fetchUsers,
+} from "../../../redux/admin-slices/adminEmployeesSlice";
+import axios from "axios";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees);
+  const employees = useSelector((state) => state.employees.employees);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
-  // search handler
-  const filteredEmployees = employees.filter((employee) =>
-    employee.firstName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
-  // view details
+  if (!Array.isArray(employees)) {
+    return <div>Loading...</div>;
+  }
+
+  // Separate first and last names
+  const employeesWithSeparatedNames = employees.map((employee) => {
+    const nameParts = employee.name.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" "); // Join the remaining parts as the last name
+    return {
+      ...employee,
+      firstName,
+      lastName,
+    };
+  });
+
+  // VIEW details
   const viewDetailsHandler = (id) => {
-    const employee = employees.find((emp) => emp.id === id);
+    const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
     setSelectedEmployee(employee);
+  };
+
+  // DELETE employee
+  const deleteEmployeeHandler = async (employeeId) => {
+    try {
+      const response = await axios.delete(
+        `https://cyberteq-falcon-api.onrender.com/api/Users/${employeeId}`
+      );
+
+      if (response.status === 200) {
+        console.log("Successfully deleted employee:", employeeId);
+
+        // Update Redux store to remove the deleted employee
+        dispatch(deleteEmployee(employeeId));
+      } else {
+        console.error(
+          "Failed to delete employee:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error during employee deletion:", error);
+    }
   };
 
   const closeModal = () => setSelectedEmployee(null);
@@ -54,8 +97,8 @@ export default function EmployeesTable({ editHandler }) {
           </thead>
           {/* body */}
           <tbody>
-            {filteredEmployees?.length > 0 ? (
-              filteredEmployees?.map((employee, i) => (
+            {employeesWithSeparatedNames?.length > 0 ? (
+              employeesWithSeparatedNames?.map((employee, i) => (
                 // row
                 <tr key={i} className="bg-white hover:bg-gray-50 ">
                   <td className="py-3 ">{i + 1}</td>
@@ -80,7 +123,8 @@ export default function EmployeesTable({ editHandler }) {
                     <button
                       onClick={() => {
                         if (window.confirm("Are you sure you want to delete")) {
-                          dispatch(deleteEmployee(employee.id));
+                          // dispatch(deleteEmployee(employee.id));
+                          deleteEmployeeHandler(employee.id);
                         }
                       }}
                       className="text-red-600"

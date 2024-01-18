@@ -3,7 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import Button from "../../_ui/Button";
 import { useDispatch } from "react-redux";
-import { editEmployee } from "../../../redux/admin-slices/employeesSlice";
+import { editEmployee } from "../../../redux/admin-slices/adminEmployeesSlice";
 
 export default function Edit({ selectedEmployee, setIsEditing }) {
   const dispatch = useDispatch();

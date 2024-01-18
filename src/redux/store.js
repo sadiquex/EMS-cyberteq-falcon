@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import employeesReducer from "./admin-slices/employeesSlice";
-import userReducer from "./employee-slices/userDetailsSlice";
+import adminEmployeesReducer from "./admin-slices/adminEmployeesSlice";
+// import employeeDetailsReducer from "./employee-slices/employeeDetailsSlice";
+import currentUserReducer from "./UserSlice";
 
 const store = configureStore({
   reducer: {
-    employees: employeesReducer,
-    user: userReducer,
+    employees: adminEmployeesReducer,
+    currentUser: currentUserReducer,
   },
 });
 

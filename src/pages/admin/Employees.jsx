@@ -5,7 +5,7 @@ import Edit from "../../components/admin/manage-employees/Edit";
 import { useSelector } from "react-redux";
 
 export default function Employees() {
-  const employees = useSelector((state) => state.employees);
+  const employees = useSelector((state) => state.employees.employees);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -13,7 +13,7 @@ export default function Employees() {
   // find the employee we want to edit
   const editHandler = (id) => {
     // employee which has been clicked
-    const [employee] = employees.filter((employee) => employee.id === id);
+    const [employee] = employees?.filter((employee) => employee.id === id);
     setSelectedEmployee(employee);
     setIsEditing(true);
   };

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../../redux/admin-slices/employeesSlice";
+import { addEmployee } from "../../../redux/admin-slices/adminEmployeesSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -11,8 +11,11 @@ export default function Add({ setIsAdding }) {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
   const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // get employee types
   useEffect(() => {
     axios
       .get("https://cyberteq-falcon-api.onrender.com/api/EmploymentType")
@@ -26,25 +29,46 @@ export default function Add({ setIsAdding }) {
       });
   }, []);
 
+  // GET - departments, roles and employment types
+  useEffect(() => {
+    Promise.all([
+      axios.get("https://cyberteq-falcon-api.onrender.com/api/EmploymentType"),
+      axios.get("https://cyberteq-falcon-api.onrender.com/api/Department"),
+      axios.get("https://cyberteq-falcon-api.onrender.com/api/Role"),
+    ])
+      .then(([employmentTypesResponse, departmentsResponse, rolesResponse]) => {
+        setEmploymentTypes(employmentTypesResponse.data.result);
+        setDepartments(departmentsResponse.data.result);
+        setRoles(rolesResponse.data.result);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  console.log(departments);
+
   const date = new Date();
   const currentDate = date.toISOString().split("T")[0];
 
-  const isEmployeeAlreadyAdded = (firstName, lastName) => {
-    return employees.some(
-      (employee) =>
-        employee.firstName === firstName && employee.lastName === lastName
-    );
-  };
+  // const isEmployeeAlreadyAdded = (firstName, lastName) => {
+  //   return employees?.some(
+  //     (employee) =>
+  //       employee.firstName === firstName && employee.lastName === lastName
+  //   );
+  // };
 
-  const addEmployeeHandler = (data) => {
+  const addEmployeeHandler = async (data) => {
     const {
       firstName,
       lastName,
       email,
       phoneNumber,
       role,
-      employmentType,
-      department,
+      employmentTypeId,
+      departmentId,
     } = data;
 
     if (firstName.trim() === "" || lastName.trim() === "") {
@@ -52,27 +76,48 @@ export default function Add({ setIsAdding }) {
       return;
     }
 
-    if (isEmployeeAlreadyAdded(firstName, lastName)) {
-      alert("Employee with the same name is already added");
-      return;
-    }
+    // if (isEmployeeAlreadyAdded(firstName, lastName)) {
+    //   alert("Employee with the same name is already added");
+    //   return;
+    // }
 
-    const updatedEmployee = {
+    const newEmployee = {
       firstName,
       lastName,
       email,
       phoneNumber,
       role,
-      employmentType,
-      department,
-      dateAdded: currentDate,
-      id: employees.length + 1, // Increment the ID for the next employee
+      employmentTypeId,
+      departmentId,
+      // dateAdded: currentDate,
     };
 
-    // pass data to the api function here - hit the endpoint
-    dispatch(addEmployee(updatedEmployee));
-    reset(); // Clear the form fields
-    setIsAdding(false);
+    try {
+      const response = await axios.post(
+        "https://cyberteq-falcon-api.onrender.com/api/Users/register-user",
+        newEmployee,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("successfully added", response.data);
+
+        dispatch(addEmployee(newEmployee));
+        reset(); // clear the form fields
+        setIsAdding(false);
+      } else {
+        console.error(
+          "Failed to add employee:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error during employee addition:", error);
+    }
   };
 
   const closeModal = () => setIsAdding(false);
@@ -140,25 +185,32 @@ export default function Add({ setIsAdding }) {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue="--Select role--"
           >
-            <option value="Manager">Manager</option>
-            <option value="Employee">Employee</option>
+            {roles.map((role) => (
+              <option key={role.id} value={role.id}>
+                {role.name.toUpperCase()}
+              </option>
+            ))}
+
+            {/* <option value="manager">Manager</option>
+            <option value="employee">Employee</option> */}
           </select>
         </label>
-        {/* department */}
+        {/* departments */}
         <label className="block text-sm font-medium ">
           Department <span className="text-red-600">*</span>
           <select
-            {...register("department")}
+            {...register("departmentId")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue="--Select Department--"
           >
-            <option value="SOC">SOC</option>
-            <option value="InfoSec">InfoSec</option>
-            <option value="Offensive">Offensive</option>
-            <option value="BT Falcon">BT Falcon</option>
-            <option value="Sales">Sales</option>
+            {departments.map((department) => (
+              <option key={department.id} value={department.id}>
+                {department.name}
+              </option>
+            ))}
           </select>
         </label>
+
         {/* employee type*/}
         <label className="block text-sm font-medium ">
           Employment Type <span className="text-red-600">*</span>
@@ -166,7 +218,7 @@ export default function Add({ setIsAdding }) {
             <div>loading...</div>
           ) : (
             <select
-              {...register("employmentType")}
+              {...register("employmentTypeId")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               defaultValue="--Select Employment--"
             >
@@ -178,6 +230,7 @@ export default function Add({ setIsAdding }) {
             </select>
           )}
         </label>
+
         <button
           className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"

@@ -2,15 +2,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/_ui/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUserDetails } from "../../redux/employee-slices/userDetailsSlice";
+import { updateUserDetails } from "../../redux/employee-slices/employeeDetailsSlice";
 
 export default function CompleteProfile() {
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.user.userDetails);
+  const userDetails = useSelector((state) => state.currentUser.userDetails);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  console.log(userDetails);
+  // console.log(userDetails);
 
   const onSubmit = (data) => {
     // send data to api here

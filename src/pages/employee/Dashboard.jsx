@@ -8,7 +8,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const userDetails = useSelector((state) => state.user.userDetails);
+  const userDetails = useSelector((state) => state.currentUser.userDetails);
   const { firstName, lastName } = userDetails;
   const [portals, setPortals] = useState([]);
 

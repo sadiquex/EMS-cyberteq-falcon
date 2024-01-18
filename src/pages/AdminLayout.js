@@ -1,5 +1,3 @@
-// !!!!
-
 // contains routes for the admin dashboard
 
 import { Routes, Route } from "react-router-dom";

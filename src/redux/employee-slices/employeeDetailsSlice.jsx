@@ -15,8 +15,8 @@ const initialState = {
   },
 };
 
-const userSlice = createSlice({
-  name: "user",
+const employeeDetailsSlice = createSlice({
+  name: "employee",
   initialState,
   reducers: {
     updateUserDetails: (state, action) => {
@@ -28,5 +28,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateUserDetails } = userSlice.actions;
-export default userSlice.reducer;
+export const { updateUserDetails } = employeeDetailsSlice.actions;
+export default employeeDetailsSlice.reducer;
