@@ -4,17 +4,17 @@ import { GiVideoConference } from "react-icons/gi";
 import { MdTimeToLeave } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "../../api/axios";
 
 export default function Dashboard() {
-  const userDetails = useSelector((state) => state.currentUser.userDetails);
-  const { firstName, lastName } = userDetails;
+  const userDetails = useSelector((state) => state.user.userDetails);
+  const { name } = userDetails;
   const [portals, setPortals] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://cyberteq-falcon-api.onrender.com/api/Portal")
+      .get("/Portal")
       .then((response) => {
         // manually add route and portal icons
         const mappedPortals = response.data.result.map((portal) => {
@@ -28,6 +28,11 @@ export default function Dashboard() {
         setPortals(mappedPortals);
       })
       .catch((err) => console.error(err));
+
+    return () => {
+      const controller = new AbortController();
+      controller.abort();
+    };
   }, []);
 
   // manually map portal IDs to routes and icons
@@ -56,16 +61,14 @@ export default function Dashboard() {
         <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
           <img
             src="https://images.pexels.com/photos/6999225/pexels-photo-6999225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt={firstName + lastName}
+            alt={name}
             className="object-cover w-full h-full"
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-200 p-3">
           <p className="text-lg font-bold">
             Welcome,
-            {firstName + lastName
-              ? firstName + " " + lastName
-              : "`Complete your profile`"}
+            {name}
           </p>
           <p className="text-sm">Monday, 20th Feb 2024</p>
         </div>

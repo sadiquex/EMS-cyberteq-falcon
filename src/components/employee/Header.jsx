@@ -1,7 +1,10 @@
 import { IoMdNotifications } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const userName = useSelector((state) => state.user?.userDetails?.name);
+
   return (
     <nav className="z-50 w-full fixed bg-primaryColor shadow">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -16,7 +19,7 @@ export default function Header() {
               />
             </span>
             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-              hey, user
+              hey, {userName}
             </span>
           </div>
           {/* right side */}

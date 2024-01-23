@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../../redux/admin-slices/adminEmployeesSlice";
-import axios from "axios";
+import { addEmployee } from "../../../features/admin-slices/adminEmployeesSlice";
 import { useEffect, useState } from "react";
+import axios from "../../../api/axios";
 
 export default function Add({ setIsAdding }) {
   const { register, handleSubmit, reset } = useForm();
@@ -15,43 +15,43 @@ export default function Add({ setIsAdding }) {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // get employee types
-  useEffect(() => {
-    axios
-      .get("https://cyberteq-falcon-api.onrender.com/api/EmploymentType")
-      .then((response) => {
-        setEmploymentTypes(response.data.result);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching employment types:", error);
-        setLoading(false);
-      });
-  }, []);
-
   // GET - departments, roles and employment types
   useEffect(() => {
-    Promise.all([
-      axios.get("https://cyberteq-falcon-api.onrender.com/api/EmploymentType"),
-      axios.get("https://cyberteq-falcon-api.onrender.com/api/Department"),
-      axios.get("https://cyberteq-falcon-api.onrender.com/api/Role"),
-    ])
-      .then(([employmentTypesResponse, departmentsResponse, rolesResponse]) => {
-        setEmploymentTypes(employmentTypesResponse.data.result);
-        setDepartments(departmentsResponse.data.result);
-        setRoles(rolesResponse.data.result);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
+    const fetchData = async () => {
+      const controller = new AbortController();
+
+      try {
+        const [employmentTypesResponse, departmentsResponse, rolesResponse] =
+          await Promise.all([
+            axios.get("/EmploymentType", { signal: controller.signal }),
+            axios.get("/Department", { signal: controller.signal }),
+            axios.get("/Role", { signal: controller.signal }),
+          ]);
+
+        if (!controller.signal.aborted) {
+          setEmploymentTypes(employmentTypesResponse.data.result);
+          setDepartments(departmentsResponse.data.result);
+          setRoles(rolesResponse.data.result);
+          setLoading(false);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+        }
+      }
+    };
+
+    // Call the fetchData function
+    fetchData();
+
+    // Cleanup function
+    // Cancel requests when the component unmounts
+    return () => {
+      const controller = new AbortController();
+      controller.abort();
+    };
   }, []);
-
-  console.log(departments);
-
-  const date = new Date();
-  const currentDate = date.toISOString().split("T")[0];
 
   // const isEmployeeAlreadyAdded = (firstName, lastName) => {
   //   return employees?.some(
@@ -93,15 +93,11 @@ export default function Add({ setIsAdding }) {
     };
 
     try {
-      const response = await axios.post(
-        "https://cyberteq-falcon-api.onrender.com/api/Users/register-user",
-        newEmployee,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/Users/register-user", newEmployee, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.status === 200) {
         console.log("successfully added", response.data);
 

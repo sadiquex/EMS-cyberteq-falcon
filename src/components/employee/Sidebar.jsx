@@ -4,9 +4,12 @@ import { GrUserWorker } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
 import { TbStatusChange } from "react-icons/tb";
 import { FaUser } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/UserSlice";
 
-export default function Sidebar({ children }) {
+export default function Sidebar() {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const links = [
     {
@@ -84,6 +87,7 @@ export default function Sidebar({ children }) {
           <Link
             to="/"
             className="mb-10 py-4 text-white flex justify-center gap-1 bg-secondaryColor"
+            onClick={() => dispatch(logOut())}
           >
             <span>
               <CiLogout />

@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEmployee,
   fetchUsers,
-} from "../../../redux/admin-slices/adminEmployeesSlice";
-import axios from "axios";
+} from "../../../features/admin-slices/adminEmployeesSlice";
+import axios from "../../../api/axios";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
@@ -46,9 +46,7 @@ export default function EmployeesTable({ editHandler }) {
   // DELETE employee
   const deleteEmployeeHandler = async (employeeId) => {
     try {
-      const response = await axios.delete(
-        `https://cyberteq-falcon-api.onrender.com/api/Users/${employeeId}`
-      );
+      const response = await axios.delete(`/Users/${employeeId}`);
 
       if (response.status === 200) {
         console.log("Successfully deleted employee:", employeeId);
@@ -91,7 +89,7 @@ export default function EmployeesTable({ editHandler }) {
               <th>Email</th>
               <th>Department</th>
               <th>Employment Type</th>
-              <th>Date Added</th>
+              {/* <th>Date Added</th> */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -107,7 +105,7 @@ export default function EmployeesTable({ editHandler }) {
                   <td>{employee.email}</td>
                   <td>{employee.department}</td>
                   <td>{employee.employmentType}</td>
-                  <td>{employee.dateAdded}</td>
+                  {/* <td>{employee.dateAdded}</td> */}
                   <td className="space-x-2 text-[20px] ">
                     {/* view btn */}
                     <button onClick={() => viewDetailsHandler(employee.id)}>
@@ -136,7 +134,7 @@ export default function EmployeesTable({ editHandler }) {
               ))
             ) : (
               <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>No employees found</td>
+                <td colSpan={7}>Loading employees...</td>
               </tr>
             )}
           </tbody>

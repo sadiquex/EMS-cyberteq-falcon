@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 
 export default function Profile() {
-  const userDetails = useSelector((state) => state.currentUser.userDetails);
+  const userDetails = useSelector((state) => state.user.userDetails);
   const {
-    firstName,
+    name,
     // lastName,
     dateOfBirth,
     gender,
@@ -78,9 +78,7 @@ export default function Profile() {
           <div className="">
             {/* name */}
             <div>
-              <h3 className="text-lg font-medium">
-                {firstName || "Complete your profile"}
-              </h3>
+              <h3 className="text-lg font-medium">{name}</h3>
               <p className="text-gray-400 text-xs font-semibold">
                 Web Developer
               </p>

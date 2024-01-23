@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../api/axios";
 
-// Define the asynchronous thunk
+// asynchronous way to get users in redux
 export const fetchUsers = createAsyncThunk("employees/fetchUsers", async () => {
   try {
-    const response = await axios.get(
-      "https://cyberteq-falcon-api.onrender.com/api/Users"
-    );
+    const response = await axios.get("/Users");
     console.log(response.data.result);
     return response.data.result;
   } catch (error) {

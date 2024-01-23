@@ -1,22 +1,25 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminLayout from "./pages/AdminLayout";
 import EmployeeLayout from "./pages/EmployeeLayout";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 export default function App() {
-  const location = useLocation();
-
-  const isLoginPage = location.pathname === "/";
-
   return (
     <Routes>
-      {isLoginPage && <Route path="/" element={<LoginPage />} />}
-      <Route path="/admin/*" element={<AdminLayout />} />
-      <Route path="/employee/*" element={<EmployeeLayout />} />
+      <Route path="/" element={<LoginPage />} />
+
+      {/* protected routes */}
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<AdminLayout />} path="/admin/*" />
+        <Route element={<EmployeeLayout />} path="/employee/*" />
+      </Route>
+
+      {/* unknwn pages */}
       <Route path="/*" element={<div>Page not found</div>} />
     </Routes>
   );
 }
 
 // abigailaidoo613@gmail.com
-// jzPP%eL29D0mVU
+// 123456Aa!
