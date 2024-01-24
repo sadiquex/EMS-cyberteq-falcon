@@ -4,7 +4,7 @@ import Modal from "../../_ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployee } from "../../../features/admin-slices/adminEmployeesSlice";
 import { useEffect, useState } from "react";
-import axios from "../../../api/axios";
+import API from "../../../api/axios";
 
 export default function Add({ setIsAdding }) {
   const { register, handleSubmit, reset } = useForm();
@@ -23,9 +23,9 @@ export default function Add({ setIsAdding }) {
       try {
         const [employmentTypesResponse, departmentsResponse, rolesResponse] =
           await Promise.all([
-            axios.get("/EmploymentType", { signal: controller.signal }),
-            axios.get("/Department", { signal: controller.signal }),
-            axios.get("/Role", { signal: controller.signal }),
+            API.get("/EmploymentType", { signal: controller.signal }),
+            API.get("/Department", { signal: controller.signal }),
+            API.get("/Role", { signal: controller.signal }),
           ]);
 
         if (!controller.signal.aborted) {
@@ -39,6 +39,8 @@ export default function Add({ setIsAdding }) {
           console.error("Error fetching data:", error);
           setLoading(false);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -93,7 +95,7 @@ export default function Add({ setIsAdding }) {
     };
 
     try {
-      const response = await axios.post("/Users/register-user", newEmployee, {
+      const response = await API.post("/Users/register-user", newEmployee, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -113,6 +115,8 @@ export default function Add({ setIsAdding }) {
       }
     } catch (error) {
       console.error("Error during employee addition:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

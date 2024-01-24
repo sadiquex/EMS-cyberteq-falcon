@@ -2,18 +2,41 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/_ui/Button";
 import { useSelector, useDispatch } from "react-redux";
+import { updateUserDetails } from "../../features/UserSlice";
+import API from "axios";
+import { useState } from "react";
+// import axios from "../../api/axios";
 
 export default function CompleteProfile() {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const userDetails = useSelector((state) => state?.userDetails);
+  const [loading, setLoading] = useState(false);
 
   // console.log(userDetails);
 
-  const onSubmit = (data) => {
-    // send data to api here
+  const onSubmit = async (data) => {
+    try {
+      dispatch(updateUserDetails(data));
 
-    navigate("/employee/dashboard");
+      const response = await API.put("/Users/profile-details", data);
+
+      if (response.status === 200) {
+        console.log("details updated: ", response.data);
+
+        // You can navigate to the dashboard or another page upon successful update
+        navigate("/employee/dashboard");
+
+        console.log(userDetails);
+      } else {
+        console.error("failed to update user details:", response.data);
+      }
+    } catch (error) {
+      console.error("Error updating user details:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

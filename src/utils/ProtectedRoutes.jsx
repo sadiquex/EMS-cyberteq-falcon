@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 const ProtectedRoutes = () => {
   const user = useSelector((state) => state.user?.userDetails);
 
+  // mock user - delete afterwards
+  // const user = "saddik";
+
   const location = useLocation();
 
-  // go to / if there's no user information
   return !user ? (
     <Navigate to="/" state={{ from: location }} replace />
   ) : (

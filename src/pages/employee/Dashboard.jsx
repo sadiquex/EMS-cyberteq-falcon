@@ -8,13 +8,15 @@ import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 
 export default function Dashboard() {
-  const userDetails = useSelector((state) => state.user.userDetails);
-  const { name } = userDetails;
+  const userDetails = useSelector((state) => state.user?.userDetails);
   const [portals, setPortals] = useState([]);
+  const userToken = localStorage.getItem("userToken");
 
   useEffect(() => {
     axios
-      .get("/Portal")
+      .get("/Portal", {
+        headers: { Authorization: `Bearer ${userToken}` },
+      })
       .then((response) => {
         // manually add route and portal icons
         const mappedPortals = response.data.result.map((portal) => {
@@ -61,14 +63,14 @@ export default function Dashboard() {
         <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
           <img
             src="https://images.pexels.com/photos/6999225/pexels-photo-6999225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt={name}
+            alt={userDetails?.name}
             className="object-cover w-full h-full"
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-200 p-3">
           <p className="text-lg font-bold">
             Welcome,
-            {name}
+            {userDetails?.name}
           </p>
           <p className="text-sm">Monday, 20th Feb 2024</p>
         </div>

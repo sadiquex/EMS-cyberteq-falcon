@@ -12,11 +12,11 @@ const userDetailsSlice = createSlice({
   reducers: {
     updateUserDetails: (state, action) => {
       state.userDetails = {
-        // ...state.userDetails,
+        ...state.userDetails,
         ...action.payload,
       };
     },
-    logOut: (state, action) => {
+    logOut: (state) => {
       state.userDetails = null;
     },
   },

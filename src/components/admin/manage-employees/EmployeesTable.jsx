@@ -9,13 +9,14 @@ import {
   deleteEmployee,
   fetchUsers,
 } from "../../../features/admin-slices/adminEmployeesSlice";
-import axios from "../../../api/axios";
+import API from "../../../api/axios";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.employees);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -46,7 +47,7 @@ export default function EmployeesTable({ editHandler }) {
   // DELETE employee
   const deleteEmployeeHandler = async (employeeId) => {
     try {
-      const response = await axios.delete(`/Users/${employeeId}`);
+      const response = await API.delete(`/Users/${employeeId}`);
 
       if (response.status === 200) {
         console.log("Successfully deleted employee:", employeeId);
@@ -62,6 +63,8 @@ export default function EmployeesTable({ editHandler }) {
       }
     } catch (error) {
       console.error("Error during employee deletion:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

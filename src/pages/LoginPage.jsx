@@ -45,20 +45,24 @@ const LoginPage = () => {
         // send data to user state
         dispatch(updateUserDetails(response.data.result.user));
 
-        // store user information local storage
         localStorage.setItem("userToken", response.data.result.token);
+        localStorage.setItem("userDetails", response.data.result.user);
 
         // check role here and display page accordingly
         const decodedToken = jwtDecode(response.data.result.token);
+        console.log(decodedToken);
         const role = decodedToken.role;
         console.log(role);
 
+        // role based routing
         if (role === "admin") {
           navigate("/admin/dashboard");
-        } else if (role === "employee") {
+        } else if (role === "user") {
           navigate("/employee/complete-profile");
         } else if (role === "manager") {
           alert("this is a manager role");
+        } else {
+          alert("invalid role: " + role);
         }
       } else if (response.status === 400) {
         console.log("bad request " + response);
@@ -132,7 +136,6 @@ const LoginPage = () => {
                   placeholder={field.placeholder}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                   name={field.name}
-                  // {...register(field.name, { required: 'true' })}
                   {...register(field.name, {
                     required: "This field is required",
                   })}
@@ -157,14 +160,14 @@ const LoginPage = () => {
         </form>
       </div>
 
-      {/* <div className="flex gap-4 text-white">
+      <div className="flex gap-4 text-white">
         <button className="bg-blue-700 p-4">
           <Link to="/admin/dashboard">Admin</Link>
         </button>
         <button className="bg-blue-700 p-4">
           <Link to="/employee/complete-profile">Employee</Link>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };

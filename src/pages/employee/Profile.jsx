@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 
 export default function Profile() {
-  const userDetails = useSelector((state) => state.user.userDetails);
+  // const userDetails = useSelector((state) => state.user?.userDetails);
+  const userDetails = {};
+
   const {
     name,
-    // lastName,
     dateOfBirth,
     gender,
     ghanaCardNumber,
