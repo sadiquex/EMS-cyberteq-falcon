@@ -3,6 +3,8 @@ import Add from "../../components/employee/leaves/Add";
 import { useLeaveContext } from "../../contexts/LeaveContext";
 import Modal from "../../components/_ui/Modal";
 import { IoCloseSharp } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export default function LeaveStatusTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
@@ -74,6 +76,18 @@ export default function LeaveStatusTable() {
                       {/* if leave status is null, set it to Pending by default */}
                       {leave.status === null ? "Pending" : leave.status}
                     </span>
+                    {leave.status === "Pending" && (
+                      <button
+                        className="ml-2 text-md p-2 rounded-lg bg-red-400"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          alert("Please confirm to deleve leave");
+                        }}
+                      >
+                        <MdDelete />
+                        {/* Delete */}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

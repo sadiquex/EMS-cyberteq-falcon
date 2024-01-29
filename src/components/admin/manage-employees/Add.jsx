@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addEmployee } from "../../../features/admin-slices/adminEmployeesSlice";
 import { useEffect, useState } from "react";
 import API from "../../../api/axios";
+import { toast } from "react-toastify";
 
 export default function Add({ setIsAdding }) {
   const { register, handleSubmit, reset } = useForm();
@@ -13,7 +14,8 @@ export default function Add({ setIsAdding }) {
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // GET - departments, roles and employment types
   useEffect(() => {
@@ -95,6 +97,8 @@ export default function Add({ setIsAdding }) {
     };
 
     try {
+      setLoading(true);
+
       const response = await API.post("/Users/register-user", newEmployee, {
         headers: {
           "Content-Type": "application/json",
@@ -102,19 +106,26 @@ export default function Add({ setIsAdding }) {
       });
       if (response.status === 200) {
         console.log("successfully added", response.data);
+        toast.success("successfully added");
 
         dispatch(addEmployee(newEmployee));
         reset(); // clear the form fields
+        setLoading(false);
         setIsAdding(false);
+      } else if (response.status === 500) {
+        toast.error("Internal server error " + response.status);
       } else {
         console.error(
           "Failed to add employee:",
           response.status,
           response.statusText
         );
+        toast.error("Failed to add employee");
+        setLoading(false);
       }
     } catch (error) {
-      console.error("Error during employee addition:", error);
+      // console.error("error adding employee: ", error);
+      toast.error("error adding employee ", error);
     } finally {
       setLoading(false);
     }
@@ -124,6 +135,12 @@ export default function Add({ setIsAdding }) {
 
   return (
     <Modal closeModal={closeModal}>
+      {loading && (
+        <div className="text-center text-primaryColor font-bold mb-4">
+          Loading...
+        </div>
+      )}
+
       <form onSubmit={handleSubmit(addEmployeeHandler)} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
@@ -145,7 +162,7 @@ export default function Add({ setIsAdding }) {
           <input
             placeholder="Ibrahim"
             {...register("firstName")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
         </label>
         {/* lastname */}
@@ -154,7 +171,7 @@ export default function Add({ setIsAdding }) {
           <input
             placeholder="Saddik"
             {...register("lastName")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
         </label>
         {/* email */}
@@ -164,7 +181,7 @@ export default function Add({ setIsAdding }) {
             {...register("email")}
             type="email"
             placeholder="employeemail@cyberteq.com"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
         </label>
         {/* phoneNumber */}
@@ -174,7 +191,7 @@ export default function Add({ setIsAdding }) {
             type="tel"
             {...register("phoneNumber")}
             placeholder="+233 50 369 9012"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
         </label>
         {/* role */}
@@ -182,7 +199,7 @@ export default function Add({ setIsAdding }) {
           Role <span className="text-red-600">*</span>
           <select
             {...register("role")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
             defaultValue="--Select role--"
           >
             {roles.map((role) => (
@@ -190,9 +207,6 @@ export default function Add({ setIsAdding }) {
                 {role.name.toUpperCase()}
               </option>
             ))}
-
-            {/* <option value="manager">Manager</option>
-            <option value="employee">Employee</option> */}
           </select>
         </label>
         {/* departments */}
@@ -200,7 +214,7 @@ export default function Add({ setIsAdding }) {
           Department <span className="text-red-600">*</span>
           <select
             {...register("departmentId")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
             defaultValue="--Select Department--"
           >
             {departments.map((department) => (
@@ -219,7 +233,7 @@ export default function Add({ setIsAdding }) {
           ) : (
             <select
               {...register("employmentTypeId")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
               defaultValue="--Select Employment--"
             >
               {employmentTypes.map((type) => (

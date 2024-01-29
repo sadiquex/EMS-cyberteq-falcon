@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function Add({ appliedeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
   // function to show the reason textbox
   const [selectedLeaveType, setSelectedLeaveType] = useState("");
@@ -36,6 +36,18 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
     navigate("/employee/leave-status");
   };
 
+  const handleLeaveTypeChange = (e) => {
+    const selectedType = e.target.value;
+    setSelectedLeaveType(selectedType);
+
+    // Automatically set the reason for leave except for Emergency Leave
+    if (selectedType !== "Emergency Leave") {
+      setValue("reason", selectedType);
+    } else {
+      setValue("reason", ""); // Clear the reason for Emergency Leave
+    }
+  };
+
   return (
     <Modal closeModal={addLeaveHandler}>
       <form onSubmit={handleSubmit(addNewLeave)} className="space-y-4">
@@ -59,7 +71,8 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           <select
             {...register("leaveType")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            onChange={(e) => setSelectedLeaveType(e.target.value)}
+            // onChange={(e) => setSelectedLeaveType(e.target.value)}
+            onChange={handleLeaveTypeChange}
           >
             <option value="--Leave Type--" disabled hidden>
               --Leave Type--
@@ -89,15 +102,16 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
           />
         </label>
 
-        {selectedLeaveType === "Emergency Leave" && (
-          <>
-            <label className="block text-sm font-medium ">Reason</label>
-            <textarea
-              {...register("reason")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            />
-          </>
-        )}
+        {/* {selectedLeaveType === "Emergency Leave" && (
+          <> */}
+        <label className="block text-sm font-medium ">Reason</label>
+        <textarea
+          {...register("reason")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          disabled={selectedLeaveType !== "Emergency Leave"}
+        />
+        {/* </>
+        )} */}
 
         {/* add btn */}
         <button

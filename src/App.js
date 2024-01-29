@@ -4,25 +4,30 @@ import AdminLayout from "./pages/AdminLayout";
 import EmployeeLayout from "./pages/EmployeeLayout";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import ChangeDefaultPassword from "./pages/ChangeDefaultPassword";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route
-        path="/change-default-password"
-        element={<ChangeDefaultPassword />}
-      />
+    <>
+      <ToastContainer />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/change-default-password"
+          element={<ChangeDefaultPassword />}
+        />
 
-      {/* protected routes */}
-      <Route element={<ProtectedRoutes />}>
-        <Route element={<AdminLayout />} path="/admin/*" />
-        <Route element={<EmployeeLayout />} path="/employee/*" />
-      </Route>
+        {/* protected routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<AdminLayout />} path="/admin/*" />
+          <Route element={<EmployeeLayout />} path="/employee/*" />
+        </Route>
 
-      {/* all other routes */}
-      <Route path="/*" element={<div>Page not found</div>} />
-    </Routes>
+        {/* all other routes */}
+        <Route path="/*" element={<div>Page not found</div>} />
+      </Routes>
+    </>
   );
 }
 

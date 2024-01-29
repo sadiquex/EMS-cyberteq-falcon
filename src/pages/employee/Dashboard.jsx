@@ -6,18 +6,22 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
+import { CardSkeleton } from "../../components/_ui/Skeletons";
 
 export default function Dashboard() {
   const userDetails = useSelector((state) => state.user?.userDetails);
   const [portals, setPortals] = useState([]);
   const userToken = localStorage.getItem("userToken");
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
-    axios
-      .get("/Portal", {
-        headers: { Authorization: `Bearer ${userToken}` },
-      })
-      .then((response) => {
+    const getPortals = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("/Portal", {
+          // headers: { Authorization: `Bearer ${userToken}` },
+        });
+
         // manually add route and portal icons
         const mappedPortals = response.data.result.map((portal) => {
           return {
@@ -28,14 +32,23 @@ export default function Dashboard() {
         });
 
         setPortals(mappedPortals);
-      })
-      .catch((err) => console.error(err));
+        setLoading(false);
+      } catch (error) {
+        console.error("error getting portals:", error);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    getPortals();
+
+    // Cleanup fucntion
     return () => {
       const controller = new AbortController();
       controller.abort();
     };
-  }, []);
+  }, [userToken]);
 
   // manually map portal IDs to routes and icons
   const mapRouteAndIcon = (portalId) => {
@@ -78,22 +91,26 @@ export default function Dashboard() {
 
       {/* portals' cards display */}
       <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4 text-white">
-        {portals.map((portal, i) => (
-          <Link to={portal.route} key={i}>
-            <Card cardType="portal">
-              <h5 className="mb-2 text-3xl font-bold tracking-tight  ">
-                {portal.icon}
-              </h5>
-              <p className="font-normal ">{portal.name} Portal</p>
-            </Card>
-          </Link>
-        ))}
+        {loading ? (
+          <CardSkeleton />
+        ) : (
+          portals.map((portal, i) => (
+            <Link to={portal.route} key={i}>
+              <Card>
+                <h5 className="mb-2 text-3xl font-bold tracking-tight  ">
+                  {portal.icon}
+                </h5>
+                <p className="font-normal ">{portal.name} Portal</p>
+              </Card>
+            </Link>
+          ))
+        )}
       </div>
 
       {/* image */}
-      <div className="w-full bg-red-300 md:h-[400px] p-1 rounded-lg">
+      <div className="w-full bg-red-300 md:h-[400px] p-1 rounded-lg overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/296115/pexels-photo-296115.jpeg"
+          src="https://citinewsroom.com/wp-content/uploads/2021/11/CYBERTEQ1.jpeg"
           alt="portal homepage"
           className="object-cover w-full h-full"
         />

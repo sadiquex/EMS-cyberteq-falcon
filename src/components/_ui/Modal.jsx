@@ -27,7 +27,7 @@ export default function Modal({ children, closeModal }) {
     <Backdrop closeModal={closeModal}>
       {/* main modal */}
       <div
-        className="overflow-y-auto overflow-x-hidden justify-center items-center bg-white md:inset-0 w-auto md:w-[30vw] h-[40%] md:min-h-[calc(90%-1rem)] p-4 rounded-lg"
+        className="overflow-y-auto overflow-x-hidden justify-center items-center bg-white md:inset-0 w-auto md:w-[40vw] h-[90%] md:min-h-[calc(90%-1rem)] p-4 rounded-lg"
         onClick={handleModalClick}
       >
         {children}

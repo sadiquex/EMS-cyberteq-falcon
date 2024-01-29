@@ -40,7 +40,7 @@ export default function Dashboard() {
           <figure className="flex-1">
             <img
               className="h-64 object-cover w-[100%] rounded-lg "
-              src="https://images.pexels.com/photos/5579045/pexels-photo-5579045.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              src="https://citinewsroom.com/wp-content/uploads/2022/10/WhatsApp-Image-2022-10-25-at-4.35.00-PM.jpeg"
               alt="company"
             />
           </figure>

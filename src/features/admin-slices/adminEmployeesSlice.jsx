@@ -13,7 +13,7 @@ export const fetchUsers = createAsyncThunk("employees/fetchUsers", async () => {
 });
 
 const initialState = {
-  // Assuming employeesData is an array of users
+  // assuming employeesData is an array of users
   employees: [],
   loading: "",
   error: null, // Additional field to store any errors
@@ -32,6 +32,7 @@ const adminEmployeesSlice = createSlice({
       );
     },
     editEmployee: (state, action) => {
+      // id and employee data received from edit employee component
       const { id, updatedEmployeeData } = action.payload;
       const index = state.employees.findIndex((employee) => employee.id === id);
 

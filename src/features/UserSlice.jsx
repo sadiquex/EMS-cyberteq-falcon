@@ -12,11 +12,12 @@ const userDetailsSlice = createSlice({
   reducers: {
     updateUserDetails: (state, action) => {
       state.userDetails = {
-        ...state.userDetails,
+        ...state,
         ...action.payload,
       };
     },
     logOut: (state) => {
+      localStorage.removeItem("token");
       state.userDetails = null;
     },
   },

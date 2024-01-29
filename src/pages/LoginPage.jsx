@@ -5,6 +5,8 @@ import axios from "../api/axios";
 import { useDispatch } from "react-redux";
 import { updateUserDetails } from "../features/UserSlice";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
+import { Spinner } from "../components/_ui/Spinner";
 
 const formFields = [
   {
@@ -31,7 +33,6 @@ const LoginPage = () => {
   } = useForm();
 
   // state to handle invalid credeitials
-  const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
@@ -41,9 +42,7 @@ const LoginPage = () => {
       const response = await axios.post("/Users/login", data);
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-
-        // send data to user state
-        dispatch(updateUserDetails(response.data.result.user));
+        toast.success("Login successful");
 
         localStorage.setItem("userToken", response.data.result.token);
         localStorage.setItem("userDetails", response.data.result.user);
@@ -52,7 +51,11 @@ const LoginPage = () => {
         const decodedToken = jwtDecode(response.data.result.token);
         console.log(decodedToken);
         const role = decodedToken.role;
-        console.log(role);
+        // console.log(role);
+
+        // send data to user state
+        dispatch(updateUserDetails(response.data.result.user));
+        dispatch(updateUserDetails(role));
 
         // role based routing
         if (role === "admin") {
@@ -65,34 +68,21 @@ const LoginPage = () => {
           alert("invalid role: " + role);
         }
       } else if (response.status === 400) {
-        console.log("bad request " + response);
+        toast.error("bad request " + response);
         // setInvalidCredentials(true);
       }
     } catch (error) {
       console.log("Error during login:", error);
-      setInvalidCredentials(true);
-      setTimeout(() => {
-        setInvalidCredentials(false);
-      }, 2000);
+      toast.error("Invalid credentials");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      className="w-full h-screen flex items-center rounded-lg "
-      style={{
-        // backgroundImage:
-        //   'url("https://cyberteq.com/sites/all/themes/bartik1/images/Maze-with-img-full.png")',
-        // backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        // opacity: "0.5",
-        backgroundPosition: "top-left",
-      }}
-    >
+    <div className="w-full h-screen flex items-center rounded-lg px-3 md:px-0 bg-primaryColor">
       {/* login form and image */}
-      <div className="flex flex-1 gap-4 flex-col md:flex-row max-w-[60%] h-auto md:h-[60vh] mx-auto bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <div className="flex flex-1 gap-4 flex-col md:flex-row md:max-w-[60%] h-auto  mx-auto bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         {/* image */}
         <div
           className="flex-1 relative md:flex flex-col justify-center items-center"
@@ -105,9 +95,20 @@ const LoginPage = () => {
           }}
         >
           <div className="w-full p-3 flex items-center justify-center flex-col gap-2 md:w-[80%] text-center">
-            <h1 className="text-2xl font-bold">
-              Welcome to the Cyberteq-Falcon Dashboard!
-            </h1>
+            <div className="flex gap-4">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfENhWL2HQ94B7blfq80PYtLRs2Kf1XJLkNd9Y32n-GA4NndBDBbBpJ6SPiPKWI_8vbAc&usqp=CAU"
+                alt="logo"
+                className="w-[80px] h-[80px] object-cover rounded-full"
+              />
+              <img
+                src="https://media.licdn.com/dms/image/C4E0BAQEesPIaxnBiAg/company-logo_200_200/0/1677239200791?e=2147483647&v=beta&t=oX4AuTtqmATxNQuPJJvZNdnJZqJxROJFQV4Tyd7n3Lg"
+                alt="logo"
+                className="w-[80px] h-[80px] object-cover rounded-full animate-bounce"
+              />
+            </div>
+
+            <h1 className="text-2xl font-bold">Welcome back!</h1>
             <p className="text-lg">
               Manage your leave, lunch and conference room bookings!
             </p>
@@ -115,20 +116,15 @@ const LoginPage = () => {
         </div>
         {/* login form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-          {loading && (
-            <div className="text-center text-primaryColor font-bold mb-4">
-              Loading...
-            </div>
-          )}
+          {loading && <Spinner />}
 
-          {invalidCredentials && (
-            <div className="bg-red-500 p-4 text-center text-white">
-              Invalid credentials
-            </div>
-          )}
+          <h1 className="text-xl mb-4 font-bold whitespace-normal">
+            Login to your account
+          </h1>
+
           {formFields.map((field, i) => (
-            <div className="mb-5" key={i}>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+            <div className="mb-6" key={i}>
+              <label className="text-sm font-medium text-gray-900 flex flex-col gap-3">
                 {field.label}
                 <input
                   id={field.name}

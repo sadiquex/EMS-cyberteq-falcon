@@ -7,6 +7,7 @@ const store = configureStore({
   reducer: {
     employees: adminEmployeesReducer,
     user: userReducer,
+    auth: authReducer,
   },
 });
 

@@ -10,6 +10,8 @@ import {
   fetchUsers,
 } from "../../../features/admin-slices/adminEmployeesSlice";
 import API from "../../../api/axios";
+import { toast } from "react-toastify";
+import { TableSkeleton } from "../../_ui/Skeletons";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
@@ -39,9 +41,21 @@ export default function EmployeesTable({ editHandler }) {
   });
 
   // VIEW details
-  const viewDetailsHandler = (id) => {
+  const viewDetailsHandler = async (id) => {
+    //  --- this approach also works ---
     const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
     setSelectedEmployee(employee);
+
+    // hit the employee details endpoint
+    // try {
+    //   const response = await API.get(`/Users/user-profile/${id}`);
+    //   if (response.statusCode === 200) {
+    //     // setSelectedEmployee(employee);
+    //     console.log(response.data);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   // DELETE employee
@@ -51,6 +65,7 @@ export default function EmployeesTable({ editHandler }) {
 
       if (response.status === 200) {
         console.log("Successfully deleted employee:", employeeId);
+        toast.success("Employee deleted successfully");
 
         // Update Redux store to remove the deleted employee
         dispatch(deleteEmployee(employeeId));
@@ -63,6 +78,7 @@ export default function EmployeesTable({ editHandler }) {
       }
     } catch (error) {
       console.error("Error during employee deletion:", error);
+      toast.error("Failed to delete employee");
     } finally {
       setLoading(false);
     }
@@ -82,66 +98,70 @@ export default function EmployeesTable({ editHandler }) {
       />
 
       <div className="w-full overflow-x-auto">
-        <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
-          {/* table heading */}
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-            <tr className="text-[16px] space-x-4">
-              <th className="py-3">ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Department</th>
-              <th>Employment Type</th>
-              {/* <th>Date Added</th> */}
-              <th>Actions</th>
-            </tr>
-          </thead>
-          {/* body */}
-          <tbody>
-            {employeesWithSeparatedNames?.length > 0 ? (
-              employeesWithSeparatedNames?.map((employee, i) => (
-                // row
-                <tr key={i} className="bg-white hover:bg-gray-50 ">
-                  <td className="py-3 ">{i + 1}</td>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.lastName}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.department}</td>
-                  <td>{employee.employmentType}</td>
-                  {/* <td>{employee.dateAdded}</td> */}
-                  <td className="space-x-2 text-[20px] ">
-                    {/* view btn */}
-                    <button onClick={() => viewDetailsHandler(employee.id)}>
-                      <FaEye />
-                    </button>
-                    {/* edit btn */}
-                    <button
-                      onClick={() => editHandler(employee.id)}
-                      className="text-red-500"
-                    >
-                      <MdOutlineEdit />
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (window.confirm("Are you sure you want to delete")) {
-                          // dispatch(deleteEmployee(employee.id));
-                          deleteEmployeeHandler(employee.id);
-                        }
-                      }}
-                      className="text-red-600"
-                    >
-                      <MdDelete />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>Loading employees...</td>
+        {employeesWithSeparatedNames?.length > 0 ? (
+          <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
+            {/* table heading */}
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+              <tr className="text-[16px] space-x-4">
+                <th className="py-3">ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Employment Type</th>
+                {/* <th>Date Added</th> */}
+                <th>Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            {/* body */}
+            <tbody>
+              {employeesWithSeparatedNames?.length > 0 ? (
+                employeesWithSeparatedNames?.map((employee, i) => (
+                  // row
+                  <tr key={i} className="bg-white hover:bg-gray-50 ">
+                    <td className="py-3 ">{i + 1}</td>
+                    <td>{employee.firstName}</td>
+                    <td>{employee.lastName}</td>
+                    <td>{employee.email}</td>
+                    <td>{employee.department}</td>
+                    <td>{employee.employmentType}</td>
+                    {/* <td>{employee.dateAdded}</td> */}
+                    <td className="space-x-2 text-[20px] ">
+                      {/* view btn */}
+                      <button onClick={() => viewDetailsHandler(employee.id)}>
+                        <FaEye />
+                      </button>
+                      {/* edit btn */}
+                      <button
+                        onClick={() => editHandler(employee.id)}
+                        className="text-red-500"
+                      >
+                        <MdOutlineEdit />
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (
+                            window.confirm("Are you sure you want to delete")
+                          ) {
+                            // dispatch(deleteEmployee(employee.id));
+                            deleteEmployeeHandler(employee.id);
+                          }
+                        }}
+                        className="text-red-600"
+                      >
+                        <MdDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <TableSkeleton />
+              )}
+            </tbody>
+          </table>
+        ) : (
+          <TableSkeleton />
+        )}
       </div>
 
       {/* Modal for View Details */}

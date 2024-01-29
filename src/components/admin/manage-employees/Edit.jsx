@@ -1,37 +1,40 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import Button from "../../_ui/Button";
 import { useDispatch } from "react-redux";
 import { editEmployee } from "../../../features/admin-slices/adminEmployeesSlice";
+import { useForm } from "react-hook-form";
 
 export default function Edit({ selectedEmployee, setIsEditing }) {
   const dispatch = useDispatch();
-  // destructure selected employee object
-  const [newEmployee, setNewEmployee] = useState({ ...selectedEmployee });
+  const { register, handleSubmit, setValue } = useForm();
 
-  const onEditEmployee = (updatedEmployee) => {
-    dispatch(
-      editEmployee({
-        id: selectedEmployee.id,
-        updatedEmployeeData: updatedEmployee,
-      })
-    );
-    setIsEditing(false);
-  };
+  const onSubmit = (data) => {
+    const updatedEmployee = {
+      id: selectedEmployee.id,
+      updatedEmployeeData: data,
+    };
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-
-    onEditEmployee(newEmployee);
+    dispatch(editEmployee(updatedEmployee));
     setIsEditing(false);
   };
 
   const closeModal = () => setIsEditing(false);
 
+  useEffect(() => {
+    // Set initial values using setValue from react-hook-form
+    setValue("name", selectedEmployee.name);
+    setValue("email", selectedEmployee.email);
+    setValue("phoneNumber", selectedEmployee.phoneNumber);
+    setValue("role", selectedEmployee.role);
+    setValue("department", selectedEmployee.department);
+    setValue("employmentType", selectedEmployee.employmentType);
+  }, [selectedEmployee, setValue]);
+
   return (
     <Modal closeModal={closeModal}>
-      <form onSubmit={handleUpdate} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-[30px] font-bold text-center text-slate-900">
             Update Employee Details
@@ -45,86 +48,53 @@ export default function Edit({ selectedEmployee, setIsEditing }) {
           </button>
         </div>
         {/* input fields */}
-        <label htmlFor="firstName" className="block text-sm font-medium ">
-          First Name
+        <label className="block text-sm font-medium ">
+          Name
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("name")}
+          />
         </label>
-        <input
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          name="firstName"
-          value={newEmployee.firstName}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, firstName: e.target.value })
-          }
-        />
-        <label htmlFor="lastName" className="block text-sm font-medium ">
-          Last Name
-        </label>
-        <input
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          name="lastName"
-          value={newEmployee.lastName}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, lastName: e.target.value })
-          }
-        />
         {/* email */}
-        <label htmlFor="email" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Email
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("email")}
+          />
         </label>
-        <input
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          name="email"
-          placeholder="employeemail@cyberteq.com"
-          value={newEmployee.email}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, email: e.target.value })
-          }
-        />
 
         {/* phoneNumber */}
-        <label htmlFor="phoneNumber" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Phone Number
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("phoneNumber")}
+          />
         </label>
-        <input
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          name="phoneNumber"
-          type="number"
-          placeholder="+233 50 369 9012"
-          value={newEmployee.phoneNumber}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, phoneNumber: e.target.value })
-          }
-        />
 
         {/* role */}
-        <label htmlFor="role" className="block text-sm font-medium ">
+        <label className="block text-sm font-medium ">
           Role
+          <select
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("role")}
+          >
+            <option value="" disabled hidden>
+              --Select role--
+            </option>
+            <option value="Manager">Manager</option>
+            <option value="Employee">Employee</option>
+          </select>
         </label>
-        <select
-          // {...register("role")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          value={newEmployee.role}
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, role: e.target.value })
-          }
-        >
-          <option value="" disabled hidden>
-            --Select role--
-          </option>
-          <option value="Manager">Manager</option>
-          <option value="Employee">Employee</option>
-        </select>
 
         {/* department */}
         <label htmlFor="department" className="block text-sm font-medium ">
           Department
         </label>
         <select
-          value={newEmployee.department}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          onChange={(e) =>
-            setNewEmployee({ ...newEmployee, department: e.target.value })
-          }
+          {...register("department")}
         >
           <option value="--Select Department--">--Select Department--</option>
           <option value="SOC">SOC</option>
@@ -141,13 +111,7 @@ export default function Edit({ selectedEmployee, setIsEditing }) {
         <select
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           name="employmentType"
-          value={newEmployee.employmentType}
-          onChange={(e) =>
-            setNewEmployee({
-              ...newEmployee,
-              employmentType: e.target.value,
-            })
-          }
+          {...register("employmentType")}
         >
           <option value="--Select Employment--">--Select Employment--</option>
           <option value="Internship">Internship</option>
