@@ -42,9 +42,10 @@ export default function LeavesTable() {
           <button
             key={i}
             onClick={() => setSelectedTab(button)}
-            className={`p-4 border-b-2 hover:bg-primaryColor hover:text-white ${
+            className={`p-4 border-b-2 hover:bg-gray-100 ${
               selectedTab === button
-                ? "bg-primaryColor text-white border-none"
+                ? // active style
+                  "bg-secondaryColor text-white hover:bg-secondaryColor hover:text-white"
                 : ""
             }`}
           >

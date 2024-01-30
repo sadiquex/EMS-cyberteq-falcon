@@ -43,7 +43,7 @@ export default function CompleteProfile() {
     <div className="space-y-2">
       <h2>Complete your profile</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-4 ">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           {/* Date of Birth */}
           <label className="block text-sm font-medium ">
             Date of Birth<span className="text-red-700">*</span>
@@ -105,16 +105,18 @@ export default function CompleteProfile() {
             />
           </label>
           {/* profile picture */}
-          {/* <label className="block text-sm font-medium ">
+          <label className="block text-sm font-medium ">
             Profile Picture<span className="text-red-700">*</span>
             <input
               type="file"
               {...register("profilePicture")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
-          </label> */}
+          </label>
         </div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="mt-4">
+          Submit
+        </Button>
       </form>
     </div>
   );

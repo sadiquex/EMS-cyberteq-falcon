@@ -18,7 +18,7 @@ import { LeaveProvider } from "../contexts/LeaveContext";
 
 function EmployeeLayout() {
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr]">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] ">
       <header className="col-span-2">
         <Header />
       </header>

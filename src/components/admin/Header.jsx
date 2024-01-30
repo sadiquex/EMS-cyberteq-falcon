@@ -15,12 +15,12 @@ export default function Header() {
                 alt="Cyberteq Falcon Logo"
               />
             </span>
-            <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+            <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-secondaryColor">
               hey, admin
             </span>
           </div>
           {/* right side */}
-          <span className="text-white flex gap-2">
+          <span className="text-secondaryColor flex gap-2">
             <IoMdNotifications size={24} />
             <FaUserCircle size={24} />
           </span>
