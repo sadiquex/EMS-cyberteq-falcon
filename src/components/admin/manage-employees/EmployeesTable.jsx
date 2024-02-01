@@ -54,6 +54,7 @@ export default function EmployeesTable({ editHandler }) {
     //     console.log(response.data);
     //   }
     // } catch (error) {
+    //   toast.error(error)
     //   console.log(error);
     // }
   };
@@ -64,7 +65,7 @@ export default function EmployeesTable({ editHandler }) {
       const response = await API.delete(`/Users/${employeeId}`);
 
       if (response.status === 200) {
-        console.log("Successfully deleted employee:", employeeId);
+        // console.log("Successfully deleted employee:", employeeId);
         toast.success("Employee deleted successfully");
 
         // Update Redux store to remove the deleted employee

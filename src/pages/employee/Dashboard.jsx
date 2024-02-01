@@ -7,20 +7,42 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
+import API from "../../api/axios";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
-  const userDetails = useSelector((state) => state.user?.userDetails);
+  // const userDetails = useSelector((state) => state.user?.userDetails);
   const [portals, setPortals] = useState([]);
   const userToken = localStorage.getItem("userToken");
   const [loading, setLoading] = useState();
+  const [userData, setUserData] = useState(null);
+  const { id } = useSelector((state) => state.user?.userDetails);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await API.get(`/Users/user-profile/${id}`);
+        setUserData(response.data.result);
+        // toast.success(response.status);
+      } catch (err) {
+        toast.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getUserData();
+  }, [id]);
+
+  // the details from the user profile api
+  const { name, profileImageUrl } = userData ?? {};
 
   useEffect(() => {
     const getPortals = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/Portal", {
-          // headers: { Authorization: `Bearer ${userToken}` },
-        });
+        const response = await axios.get("/Portal");
 
         // manually add route and portal icons
         const mappedPortals = response.data.result.map((portal) => {
@@ -75,15 +97,15 @@ export default function Dashboard() {
       <div className="flex flex-col md:flex-row gap-4">
         <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
           <img
-            src="https://images.pexels.com/photos/6999225/pexels-photo-6999225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt={userDetails?.name}
+            src={profileImageUrl}
+            alt={name}
             className="object-cover w-full h-full"
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-100 p-3">
           <p className="text-lg font-bold">
             Welcome,
-            {userDetails?.name}
+            {name}
           </p>
           <p className="text-sm">Monday, 20th Feb 2024</p>
         </div>

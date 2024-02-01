@@ -4,48 +4,22 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useLeaveContext } from "../../../contexts/LeaveContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import API from "../../../api/axios";
 
-export default function Add({ appliedeaves, setAppliedLeaves }) {
+export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
-  // function to show the reason textbox
-  const [selectedLeaveType, setSelectedLeaveType] = useState("");
 
-  const addNewLeave = (data) => {
-    const { leaveType, startDate, endDate, reason } = data;
-
-    if (!leaveType || !startDate || !endDate) {
-      alert("Please fill out all the required fields.");
-      return;
-    }
-
-    const updatedLeave = {
-      leaveType,
-      startDate,
-      endDate,
-      reason,
-      status: "Pending",
-      id: appliedeaves.length + 1,
-    };
-
+  const addNewLeave = async (data) => {
+    console.log(data);
     // api call here
-    setAppliedLeaves([updatedLeave, ...appliedeaves]);
+    const response = await API.post(`/LeaveRequest`, data);
+    setAppliedLeaves([response.data.result, ...appliedLeaves]);
+
     reset();
     setIsAddingLeave(false);
     navigate("/employee/leave-status");
-  };
-
-  const handleLeaveTypeChange = (e) => {
-    const selectedType = e.target.value;
-    setSelectedLeaveType(selectedType);
-
-    // Automatically set the reason for leave except for Emergency Leave
-    if (selectedType !== "Emergency Leave") {
-      setValue("reason", selectedType);
-    } else {
-      setValue("reason", ""); // Clear the reason for Emergency Leave
-    }
   };
 
   return (
@@ -69,21 +43,18 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
         <label className="block text-sm font-medium ">
           Leave type <span className="text-red-700">*</span>
           <select
-            {...register("leaveType")}
+            {...register("leaveTypeId")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            // onChange={(e) => setSelectedLeaveType(e.target.value)}
-            onChange={handleLeaveTypeChange}
           >
             <option value="--Leave Type--" disabled hidden>
               --Leave Type--
             </option>
-            <option value="Maternity Leave">Maternity Leave</option>
-            <option value="Annual Leave">Annual Leave</option>
-            <option value="Sick Leave">Sick Leave</option>
-            <option value="Emergency Leave">Emergency Leave</option>
+            <option value="MAT">Maternity Leave</option>
+            <option value="ANNU">Annual Leave</option>
+            <option value="SICK">Sick Leave</option>
+            <option value="EMRG">Emergency Leave</option>
           </select>
         </label>
-
         <label className="block text-sm font-medium ">
           Start date <span className="text-red-700">*</span>
           <input
@@ -92,7 +63,6 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           />
         </label>
-
         <label className="block text-sm font-medium ">
           End date <span className="text-red-700">*</span>
           <input
@@ -101,18 +71,23 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           />
         </label>
-
-        {/* {selectedLeaveType === "Emergency Leave" && (
-          <> */}
-        <label className="block text-sm font-medium ">Reason</label>
-        <textarea
-          {...register("reason")}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          disabled={selectedLeaveType !== "Emergency Leave"}
-        />
-        {/* </>
-        )} */}
-
+        {/* cover */}
+        <label className="block text-sm font-medium ">
+          Cover
+          <input
+            {...register("cover")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          />
+        </label>
+        {/* purpose */}
+        <label className="block text-sm font-medium ">
+          Purpose
+          <textarea
+            {...register("purpose")}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            // disabled
+          />
+        </label>
         {/* add btn */}
         <button
           className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"

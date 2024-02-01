@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const ProtectedRoutes = () => {
   const user = useSelector((state) => state.user?.userDetails);
+  // const user = "adfa";
 
   const location = useLocation();
 

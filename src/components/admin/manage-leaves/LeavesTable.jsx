@@ -74,7 +74,7 @@ export default function LeavesTable() {
               // row
               <tr key={item.id} className="bg-white hover:bg-gray-50 ">
                 <td className="py-3">{item.employeeName}</td>
-                <td>{item.leaveType}</td>
+                {/* <td>{item.leaveTypeId}</td> */}
                 <td>{item.startDate}</td>
                 <td>{item.endDate}</td>
                 <td>{item.status}</td>
@@ -92,7 +92,7 @@ export default function LeavesTable() {
                   )}
                   <FaEye
                     size={18}
-                    onClick={() => viewDetailsHandler(item.id)}
+                    // onClick={() => viewDetailsHandler(item.id)}
                     className="cursor-pointer"
                   />
                 </td>
@@ -127,7 +127,7 @@ export default function LeavesTable() {
 
             <div className="flex-1 space-y-4">
               <p>Employee Name: {selectedLeave.employeeName}</p>
-              <p>Leave Type: {selectedLeave.leaveType}</p>
+              {/* <p>Leave Type: {selectedLeave.leaveType}</p> */}
               <p>Start Date: {selectedLeave.startDate}</p>
               <p>End Date: {selectedLeave.endDate}</p>
               <p>Status: {selectedLeave.status}</p>

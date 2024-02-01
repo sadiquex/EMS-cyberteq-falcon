@@ -5,7 +5,7 @@ const LeaveContext = createContext();
 
 export const LeaveProvider = ({ children }) => {
   const [isAddingLeave, setIsAddingLeave] = useState(false);
-  const [appliedeaves, setAppliedLeaves] = useState(leavesArray);
+  const [appliedLeaves, setAppliedLeaves] = useState(leavesArray);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addLeaveHandler = () => {
@@ -22,7 +22,7 @@ export const LeaveProvider = ({ children }) => {
         isAddingLeave,
         setIsAddingLeave,
         addLeaveHandler,
-        appliedeaves,
+        appliedLeaves,
         setAppliedLeaves,
         modalHandler,
         isModalOpen,

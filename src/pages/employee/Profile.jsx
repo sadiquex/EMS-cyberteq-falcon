@@ -1,21 +1,51 @@
 import { useSelector } from "react-redux";
+import API from "../../api/axios";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const userDetails = useSelector((state) => state.user?.userDetails);
+  const { id } = useSelector((state) => state.user?.userDetails);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await API.get(`/Users/user-profile/${id}`);
+        setUserData(response.data.result);
+        // toast.success(response.status);
+      } catch (err) {
+        toast.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getUserData();
+  }, [id]);
 
   const {
     name,
+    age,
+    created,
     userName,
     email,
-    phoneNumber,
     dateOfBirth,
+    department,
     gender,
+    // id,
     ghanaCardNumber,
     ssnitNumber,
     bankAccountNumber,
+    profileImageUrl,
+    phoneNumber,
     alternatePhoneNumber,
-    profilePicture,
-  } = userDetails;
+    employmentType,
+  } = userData ?? {};
+
+  // console.log("userafd" + JSON.stringify(userData));
 
   // user details table
   const userDetailsTable = [
@@ -29,7 +59,7 @@ export default function Profile() {
     },
     {
       title: "Address",
-      value: "Tesano, Accra",
+      value: "--",
     },
     {
       title: "Email",
@@ -39,9 +69,21 @@ export default function Profile() {
       title: "Gender",
       value: gender,
     },
+    {
+      title: "Employment Type",
+      value: employmentType,
+    },
   ];
 
   const otherDetailsTable = [
+    {
+      title: "Username",
+      value: userName,
+    },
+    {
+      title: "Alternative Phone No.",
+      value: alternatePhoneNumber,
+    },
     {
       title: "SSNIT No.",
       value: ssnitNumber,
@@ -53,10 +95,6 @@ export default function Profile() {
     {
       title: "Ghana Card",
       value: ghanaCardNumber,
-    },
-    {
-      title: "Alt. Phone No.",
-      value: alternatePhoneNumber,
     },
   ];
 
@@ -70,25 +108,24 @@ export default function Profile() {
         {/* image and personal info */}
         <div className="flex items-center gap-4">
           <img
-            className="w-32 h-32 rounded-full"
-            src={
-              profilePicture ||
-              "https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
-            }
-            alt="Joseph Boyce"
+            className="w-32 h-32 rounded-full p-1 bg-red-400 object-cover"
+            src={profileImageUrl}
+            alt={name}
           />
           {/* personal info */}
           <div className="">
             <div>
               <h3 className="text-lg font-medium">{name}</h3>
               <p className="text-gray-400 text-xs font-semibold">
-                Web Developer
+                {employmentType} Employee
               </p>
             </div>
             {/* id */}
             <div>
               <h3 className="text-lg font-medium">ID: INT 123-456</h3>
-              <p className="text-gray-400 text-xs font-semibold">BT FALCON</p>
+              <p className="text-gray-400 text-xs font-semibold">
+                {department}
+              </p>
             </div>
           </div>
         </div>

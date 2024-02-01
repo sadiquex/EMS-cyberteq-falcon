@@ -41,14 +41,12 @@ const LoginPage = () => {
 
       const response = await API.post("/Users/login", data);
       if (response.status === 200) {
-        // console.log("Login successful:", response.data);
         toast.success("Login successful");
 
         // check role here and display page accordingly
         const decodedToken = jwtDecode(response.data.result.token);
         const role = decodedToken.role;
-        console.log(response.data.result.token);
-        // localStorage.setItem("userToken", response.data.result.token);
+        localStorage.setItem("userToken", response.data.result.token);
         // send data to user state
         dispatch(updateUserDetails(response.data.result.user));
         dispatch(updateUserDetails(decodedToken));
@@ -57,7 +55,7 @@ const LoginPage = () => {
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "user") {
-          navigate("/employee/complete-profile");
+          navigate("/employee/dashboard");
         } else if (role === "manager") {
           alert("this is a manager role");
         } else {

@@ -1,20 +1,23 @@
+import { useSelector } from "react-redux";
 import Card from "../../components/_ui/Card";
 import Chart from "../../components/admin/dashboard/Chart";
 import RecentInformation from "../../components/admin/dashboard/RecentInformation";
 
 export default function Dashboard() {
+  const employees = useSelector((state) => state.employees.employees);
+
   const cardDetails = [
     {
       heading: "Total Employees",
-      number: 44,
+      number: employees.length,
     },
     {
       heading: "On Leave",
-      number: 18,
+      number: employees.length - 5,
     },
     {
       heading: "On Duty",
-      number: 26,
+      number: employees.length - (employees.length - 5),
     },
   ];
 
