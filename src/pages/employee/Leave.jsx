@@ -40,7 +40,7 @@ export default function Leave() {
         <div className="flex justify-between items-center">
           <h2>Leave Dashboard</h2>
           <button
-            className="bg-primaryColor text-white rounded-lg md:rounded-full p-2 md:p-4 hover:brightness-110"
+            className="bg-secondaryColor text-primaryColor rounded-lg md:rounded-full p-2 md:p-4 hover:brightness-110"
             onClick={addLeaveHandler}
           >
             + Request For Leave

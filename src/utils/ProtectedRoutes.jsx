@@ -2,10 +2,7 @@ import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const ProtectedRoutes = () => {
-  // const user = useSelector((state) => state.user?.userDetails);
-
-  // mock user - delete afterwards
-  const user = "saddik";
+  const user = useSelector((state) => state.user?.userDetails);
 
   const location = useLocation();
 

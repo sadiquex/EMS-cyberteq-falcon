@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEmployee,
   fetchUsers,
-} from "../../../features/admin-slices/adminEmployeesSlice";
+} from "../../../redux/features/admin-slices/adminEmployeesSlice";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { TableSkeleton } from "../../_ui/Skeletons";

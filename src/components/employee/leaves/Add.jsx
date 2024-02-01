@@ -115,7 +115,7 @@ export default function Add({ appliedeaves, setAppliedLeaves }) {
 
         {/* add btn */}
         <button
-          className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
+          className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"
         >
           Send Request

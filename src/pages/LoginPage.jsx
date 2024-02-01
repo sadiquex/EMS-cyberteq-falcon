@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "../api/axios";
+import API from "../api/axios";
 import { useDispatch } from "react-redux";
-import { updateUserDetails } from "../features/UserSlice";
+import { updateUserDetails } from "../redux/features/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { Spinner } from "../components/_ui/Spinner";
@@ -39,23 +39,19 @@ const LoginPage = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post("/Users/login", data);
+      const response = await API.post("/Users/login", data);
       if (response.status === 200) {
-        console.log("Login successful:", response.data);
+        // console.log("Login successful:", response.data);
         toast.success("Login successful");
-
-        localStorage.setItem("userToken", response.data.result.token);
-        localStorage.setItem("userDetails", response.data.result.user);
 
         // check role here and display page accordingly
         const decodedToken = jwtDecode(response.data.result.token);
-        console.log(decodedToken);
         const role = decodedToken.role;
-        // console.log(role);
-
+        console.log(response.data.result.token);
+        // localStorage.setItem("userToken", response.data.result.token);
         // send data to user state
         dispatch(updateUserDetails(response.data.result.user));
-        dispatch(updateUserDetails(role));
+        dispatch(updateUserDetails(decodedToken));
 
         // role based routing
         if (role === "admin") {

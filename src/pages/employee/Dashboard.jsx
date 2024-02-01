@@ -1,7 +1,7 @@
 import Card from "../../components/_ui/Card";
 import { FaBowlFood } from "react-icons/fa6";
 import { GiVideoConference } from "react-icons/gi";
-import { MdTimeToLeave } from "react-icons/md";
+import { MdOutlineTimeToLeave, MdTimeToLeave } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4">
-      <h2 className="font-large">Home Dashboard</h2>
+      <h2 className="">Dashboard</h2>
 
       {/* user profile card */}
       <div className="flex flex-col md:flex-row gap-4">
@@ -80,7 +80,7 @@ export default function Dashboard() {
             className="object-cover w-full h-full"
           />
         </div>
-        <div className="flex-1 flex flex-col bg-gray-200 p-3">
+        <div className="flex-1 flex flex-col bg-gray-100 p-3">
           <p className="text-lg font-bold">
             Welcome,
             {userDetails?.name}
@@ -107,13 +107,58 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* image */}
-      <div className="w-full bg-red-300 md:h-[400px] p-1 rounded-lg overflow-hidden">
-        <img
-          src="https://citinewsroom.com/wp-content/uploads/2021/11/CYBERTEQ1.jpeg"
-          alt="portal homepage"
-          className="object-cover w-full h-full"
-        />
+      {/* 1st grid layer */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-secondaryColor">
+        {/* left side */}
+        {/* image */}
+        <div className="w-full col-span-2 rounded-lg shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] md:h-[300px] overflow-hidden">
+          <img
+            src="https://citinewsroom.com/wp-content/uploads/2021/11/CYBERTEQ1.jpeg"
+            alt="portal homepage"
+            className="object-cover w-full h-full"
+          />
+        </div>
+
+        {/* right side */}
+        <div className="space-y-6">
+          <Card cardType="displayCard">
+            <div className="flex justify-between w-full">
+              {/* left */}
+              <span className="text-center">
+                <p className="text-lg">5</p>
+                <p className="font-semibold text-sm">LEAVE TAKEN</p>
+              </span>
+
+              {/* line */}
+              <div className="border-l border-gray-500 h-full mx-4"></div>
+
+              {/* right */}
+              <span className="text-center">
+                <p className="text-lg">12</p>
+                <p className="font-semibold text-sm">REMAINING</p>
+              </span>
+            </div>
+          </Card>
+
+          <Card cardType="imageCard">
+            <img
+              src="https://cdn.educba.com/academy/wp-content/uploads/2019/01/Combination-Charts-Example-2-6.png"
+              alt="chart"
+              className="w-full overflow-hidden"
+            />
+          </Card>
+        </div>
+      </div>
+
+      {/* 2nd grid layer */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="col-span-2 w-full text-secondaryColor flex items-center gap-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-4">
+          <MdOutlineTimeToLeave size={24} />
+          <p>YOUR ANNUAL LEAVE STARTS TOMORROW</p>
+        </div>
+        <Card cardType="textCard" className="row-span-1">
+          HOLIDAY - 6TH MARCH
+        </Card>
       </div>
     </div>
   );

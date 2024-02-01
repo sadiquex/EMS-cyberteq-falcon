@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   userDetails: null,
+  // otherDetails: null,
 };
 
 const userDetailsSlice = createSlice({
@@ -12,7 +13,7 @@ const userDetailsSlice = createSlice({
   reducers: {
     updateUserDetails: (state, action) => {
       state.userDetails = {
-        ...state,
+        ...state.userDetails,
         ...action.payload,
       };
     },

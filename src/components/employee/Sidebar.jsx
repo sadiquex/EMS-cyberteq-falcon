@@ -5,7 +5,7 @@ import { CiLogout } from "react-icons/ci";
 import { TbStatusChange } from "react-icons/tb";
 import { FaUser } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { logOut } from "../../features/UserSlice";
+import { logOut } from "../../redux/features/UserSlice";
 
 export default function Sidebar() {
   const location = useLocation();

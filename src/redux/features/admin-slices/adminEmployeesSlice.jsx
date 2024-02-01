@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import API from "../../api/axios";
+import API from "../../../api/axios";
 
 // asynchronous way to get users in redux
 export const fetchUsers = createAsyncThunk("employees/fetchUsers", async () => {

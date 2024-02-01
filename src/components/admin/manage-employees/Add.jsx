@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../../features/admin-slices/adminEmployeesSlice";
+import { addEmployee } from "../../../redux/features/admin-slices/adminEmployeesSlice";
 import { useEffect, useState } from "react";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
@@ -246,7 +246,7 @@ export default function Add({ setIsAdding }) {
         </label>
 
         <button
-          className="bg-primaryColor text-white rounded-full p-4 hover:brightness-110 min-w-[140px]"
+          className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"
         >
           Add

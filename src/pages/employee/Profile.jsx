@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 
 export default function Profile() {
-  // const userDetails = useSelector((state) => state.user?.userDetails);
-  const userDetails = {};
+  const userDetails = useSelector((state) => state.user?.userDetails);
 
   const {
     name,
+    userName,
+    email,
+    phoneNumber,
     dateOfBirth,
     gender,
     ghanaCardNumber,
@@ -23,7 +25,7 @@ export default function Profile() {
     },
     {
       title: "Phone",
-      value: "+233 50 369 9012",
+      value: phoneNumber,
     },
     {
       title: "Address",
@@ -31,7 +33,7 @@ export default function Profile() {
     },
     {
       title: "Email",
-      value: "abubakasaddik1@gmail.com",
+      value: email,
     },
     {
       title: "Gender",
@@ -77,7 +79,6 @@ export default function Profile() {
           />
           {/* personal info */}
           <div className="">
-            {/* name */}
             <div>
               <h3 className="text-lg font-medium">{name}</h3>
               <p className="text-gray-400 text-xs font-semibold">

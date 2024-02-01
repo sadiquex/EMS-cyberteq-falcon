@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Card({ children, cardType }) {
   // shadow-[0_8px_30px_rgb(0,0,0,0.12)]
   // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -12,6 +10,14 @@ export default function Card({ children, cardType }) {
         ? "bg-secondaryColor hover:bg-secondaryColor"
         : "bg-white"
     }
+    ${cardType === "displayCard" ? "" : "bg-white"}
+    ${cardType === "imageCard" ? "p-0" : ""}
+    ${
+      cardType === "textCard"
+        ? "capitalize font-semibold flex items-center gap-2 h-auto rounded-none p-0"
+        : ""
+    }
+    
     `}
     >
       {children}
