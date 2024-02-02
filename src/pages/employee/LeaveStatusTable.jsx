@@ -16,10 +16,13 @@ export default function LeaveStatusTable() {
     const getAppliedLeaves = async () => {
       try {
         const response = await API.get(`/LeaveRequest`);
-        setAppliedLeaves(response.data.result);
-        console.log(response.data.result);
+        if (response.status === 200) {
+          setAppliedLeaves(response.data.result);
+          // toast.success("Leave deleted");
+        }
       } catch (error) {
         console.log(error);
+        toast.error(error);
       }
     };
     getAppliedLeaves();
@@ -29,6 +32,13 @@ export default function LeaveStatusTable() {
   const viewDetailsHandler = (id) => {
     const leave = appliedLeaves?.find((leave) => leave.id === id);
     setSelectedLeave(leave);
+  };
+
+  // delete leave
+  const deleteLeaveHandler = async (leaveId) => {
+    const response = await API.delete(`/LeaveRequest/${leaveId}`);
+    console.log(response);
+    setAppliedLeaves(appliedLeaves.filter((leave) => leave.id !== leaveId));
   };
 
   const closeModal = () => setSelectedLeave(null);
@@ -69,32 +79,21 @@ export default function LeaveStatusTable() {
                   className="bg-white hover:bg-gray-50 cursor-pointer"
                   onClick={() => viewDetailsHandler(leave.id)}
                 >
-                  {/* <td className="py-4">{leave.leaveType}</td> */}
+                  <td className="py-4">{leave.leaveType?.name} Leave</td>
                   <td>{leave.startDate}</td>
                   <td>{leave.endDate}</td>
                   <td>{leave.duration}</td>
-                  <td>{leave.reason}</td>
+                  <td>{leave.purpose}</td>
                   <td>
-                    <span
-                      className={`text-white p-2 rounded-lg ${
-                        leave.status === "Pending"
-                          ? "bg-yellow-500"
-                          : leave.status === "Approved"
-                          ? "bg-green-500"
-                          : leave.status === "Declined"
-                          ? "bg-red-500"
-                          : "bg-gray-500"
-                      }`}
-                    >
-                      {/* if leave status is null, set it to Pending by default */}
-                      {leave.status === null ? "Pending" : leave.status}
-                    </span>
+                    {leave.status}
                     {leave.status === "Pending" && (
                       <button
                         className="ml-2 text-md p-2 rounded-lg bg-red-400"
                         onClick={(e) => {
+                          alert("Please confirm to delete leave");
                           e.stopPropagation();
-                          alert("Please confirm to deleve leave");
+
+                          deleteLeaveHandler(leave.id);
                         }}
                       >
                         <MdDelete />
@@ -131,12 +130,13 @@ export default function LeaveStatusTable() {
               </button>
             </div>
             <div className="flex-1 space-y-4">
-              {/* <p>Leave type: {selectedLeave.leaveType}</p> */}
+              <p>Leave type: {selectedLeave.leaveType?.name}</p>
               <p>Start date: {selectedLeave.startDate}</p>
-              <p>Duration: {selectedLeave.duration}</p>
               <p>End date: {selectedLeave.endDate}</p>
-              <p>Reason: {selectedLeave.reason}</p>
+              <p>Duration: -- </p>
+              <p>Reason: {selectedLeave.purpose}</p>
               <p>Status: {selectedLeave.status}</p>
+              <p>Who Covers for you: {selectedLeave.cover}</p>
             </div>
           </div>
         </Modal>

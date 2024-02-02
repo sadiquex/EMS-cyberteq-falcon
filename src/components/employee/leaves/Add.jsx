@@ -13,7 +13,6 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
 
   const addNewLeave = async (data) => {
     console.log(data);
-    // api call here
     const response = await API.post(`/LeaveRequest`, data);
     setAppliedLeaves([response.data.result, ...appliedLeaves]);
 
@@ -73,7 +72,7 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
         </label>
         {/* cover */}
         <label className="block text-sm font-medium ">
-          Cover
+          Cover (who does your work in your absence)
           <input
             {...register("cover")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "

@@ -150,14 +150,14 @@ const LoginPage = () => {
         </form>
       </div>
 
-      <div className="flex gap-4 text-white">
+      {/* <div className="flex gap-4 text-white">
         <button className="bg-blue-700 p-4">
           <Link to="/admin/dashboard">Admin</Link>
         </button>
         <button className="bg-blue-700 p-4">
           <Link to="/employee/complete-profile">Employee</Link>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
