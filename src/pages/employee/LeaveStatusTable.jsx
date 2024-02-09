@@ -1,28 +1,33 @@
 import { useEffect, useState } from "react";
 import Add from "../../components/employee/leaves/Add";
-import { useLeaveContext } from "../../contexts/LeaveContext";
 import Modal from "../../components/_ui/Modal";
-import { IoCloseSharp } from "react-icons/io5";
+import { Spinner } from "../../components/_ui/Spinner";
+import { useLeaveContext } from "../../contexts/LeaveContext";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import API from "../../api/axios";
+import ViewLeaveDetails from "../../components/employee/leaves/ViewLeaveDetails";
+import { calculateLeaveDuration } from "../../utils/utilityFunctions";
 
 export default function LeaveStatusTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
   const [appliedLeaves, setAppliedLeaves] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAppliedLeaves = async () => {
       try {
+        setLoading(true);
         const response = await API.get(`/LeaveRequest`);
         if (response.status === 200) {
           setAppliedLeaves(response.data.result);
-          // toast.success("Leave deleted");
+          setLoading(false);
         }
       } catch (error) {
-        console.log(error);
         toast.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     getAppliedLeaves();
@@ -36,9 +41,18 @@ export default function LeaveStatusTable() {
 
   // delete leave
   const deleteLeaveHandler = async (leaveId) => {
-    const response = await API.delete(`/LeaveRequest/${leaveId}`);
-    console.log(response);
-    setAppliedLeaves(appliedLeaves.filter((leave) => leave.id !== leaveId));
+    try {
+      const response = await API.delete(`/LeaveRequest/${leaveId}`);
+      if (response.status === 200) {
+        // console.log(response);
+        toast.success("Leave deleted");
+        setAppliedLeaves(
+          appliedLeaves?.filter((leave) => leave.id !== leaveId)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const closeModal = () => setSelectedLeave(null);
@@ -57,6 +71,8 @@ export default function LeaveStatusTable() {
 
       {/* table for displaying leaves statuses */}
       <div className="w-[350px] md:w-full overflow-x-auto bg-red-500 p-[1px]">
+        {loading && <Spinner />}
+
         <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
           {/* head */}
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
@@ -71,7 +87,9 @@ export default function LeaveStatusTable() {
           </thead>
           {/* body */}
           <tbody>
+            {/* Check if there are applied leaves */}
             {appliedLeaves?.length > 0 ? (
+              // If there are applied leaves, map and display them
               appliedLeaves?.map((leave, i) => (
                 // row
                 <tr
@@ -79,10 +97,14 @@ export default function LeaveStatusTable() {
                   className="bg-white hover:bg-gray-50 cursor-pointer"
                   onClick={() => viewDetailsHandler(leave.id)}
                 >
-                  <td className="py-4">{leave.leaveType?.name} Leave</td>
+                  <td className="py-4">
+                    {leave.leaveType?.name || "Unknown"} Leave
+                  </td>
                   <td>{leave.startDate}</td>
                   <td>{leave.endDate}</td>
-                  <td>{leave.duration}</td>
+                  <td>
+                    {calculateLeaveDuration(leave.startDate, leave.endDate)}
+                  </td>
                   <td>{leave.purpose}</td>
                   <td>
                     {leave.status}
@@ -92,7 +114,6 @@ export default function LeaveStatusTable() {
                         onClick={(e) => {
                           alert("Please confirm to delete leave");
                           e.stopPropagation();
-
                           deleteLeaveHandler(leave.id);
                         }}
                       >
@@ -104,9 +125,13 @@ export default function LeaveStatusTable() {
                 </tr>
               ))
             ) : (
+              // If there are no applied leaves, display a message
               <tr className="bg-white border-b  hover:bg-gray-50 ">
-                {/* display a loader */}
-                <td colSpan={7}>You haven't applied for any leave...</td>
+                <td colSpan={6} className="py-4">
+                  {appliedLeaves?.length === 0
+                    ? "You haven't applied for any leave..."
+                    : "Loading"}
+                </td>
               </tr>
             )}
           </tbody>
@@ -115,30 +140,10 @@ export default function LeaveStatusTable() {
 
       {selectedLeave && (
         <Modal closeModal={closeModal}>
-          <div className="h-full flex flex-col space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-[30px] font-bold text-center text-slate-900">
-                Leave details
-              </h2>
-              {/* cancel btn */}
-              <button
-                type="button"
-                className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={closeModal}
-              >
-                <IoCloseSharp />
-              </button>
-            </div>
-            <div className="flex-1 space-y-4">
-              <p>Leave type: {selectedLeave.leaveType?.name}</p>
-              <p>Start date: {selectedLeave.startDate}</p>
-              <p>End date: {selectedLeave.endDate}</p>
-              <p>Duration: -- </p>
-              <p>Reason: {selectedLeave.purpose}</p>
-              <p>Status: {selectedLeave.status}</p>
-              <p>Who Covers for you: {selectedLeave.cover}</p>
-            </div>
-          </div>
+          <ViewLeaveDetails
+            selectedLeave={selectedLeave}
+            closeModal={closeModal}
+          />
         </Modal>
       )}
 

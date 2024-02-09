@@ -3,8 +3,8 @@ import Modal from "../../_ui/Modal";
 import { IoCloseSharp } from "react-icons/io5";
 import { useLeaveContext } from "../../../contexts/LeaveContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import API from "../../../api/axios";
+import { toast } from "react-toastify";
 
 export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
@@ -12,13 +12,24 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
 
   const addNewLeave = async (data) => {
-    console.log(data);
-    const response = await API.post(`/LeaveRequest`, data);
-    setAppliedLeaves([response.data.result, ...appliedLeaves]);
+    // console.log("frm add cmponent ", data);
+    try {
+      const response = await API.post(`/LeaveRequest`, data);
+      // console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        // update the state
+        // setAppliedLeaves([response.data.result, ...appliedLeaves]);
+        setAppliedLeaves(response.data.result);
+        toast.success("Leave request successful");
 
-    reset();
-    setIsAddingLeave(false);
-    navigate("/employee/leave-status");
+        reset();
+        setIsAddingLeave(false);
+        navigate("/employee/leave-status");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.errorMessages);
+    }
   };
 
   return (

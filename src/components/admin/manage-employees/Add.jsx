@@ -15,7 +15,6 @@ export default function Add({ setIsAdding }) {
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   // GET - departments, roles and employment types
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function Add({ setIsAdding }) {
       }
     };
 
-    // Call the fetchData function
     fetchData();
 
     // Cleanup function
@@ -99,33 +97,18 @@ export default function Add({ setIsAdding }) {
     try {
       setLoading(true);
 
-      const response = await API.post("/Users/register-user", newEmployee, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await API.post("/Users/register-user", newEmployee);
       if (response.status === 200) {
         console.log("successfully added", response.data);
-        toast.success("successfully added");
+        toast.success("employee successfully added");
 
         dispatch(addEmployee(newEmployee));
         reset(); // clear the form fields
         setLoading(false);
         setIsAdding(false);
-      } else if (response.status === 500) {
-        toast.error("Internal server error " + response.status);
-      } else {
-        console.error(
-          "Failed to add employee:",
-          response.status,
-          response.statusText
-        );
-        toast.error("Failed to add employee");
-        setLoading(false);
       }
     } catch (error) {
-      // console.error("error adding employee: ", error);
-      toast.error("error adding employee ", error);
+      toast.error(error.response.data.errorMessages);
     } finally {
       setLoading(false);
     }

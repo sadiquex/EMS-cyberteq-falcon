@@ -1,5 +1,5 @@
 import React from "react";
-import LeavesTable from "../../components/admin/manage-leaves/LeavesTable";
+import LeavesTable from "../../components/manager/manage-leaves/LeavesTable";
 
 export default function Leaves() {
   return (

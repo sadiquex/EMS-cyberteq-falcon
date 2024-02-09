@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+// context for ui functionality
+import { createContext, useContext, useState } from "react";
 import { employeeLeavesData as leavesArray } from "../data";
 
 const LeaveContext = createContext();

@@ -9,6 +9,7 @@ import axios from "../../api/axios";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
+import { todayDate } from "../../utils/utilityFunctions";
 
 export default function Dashboard() {
   // const userDetails = useSelector((state) => state.user?.userDetails);
@@ -107,7 +108,7 @@ export default function Dashboard() {
             Welcome,
             {name}
           </p>
-          <p className="text-sm">Monday, 20th Feb 2024</p>
+          <p className="text-sm">Today is: {todayDate}</p>
         </div>
       </div>
 

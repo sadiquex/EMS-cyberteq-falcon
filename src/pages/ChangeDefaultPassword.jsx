@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import API from "../api/axios";
+import { toast } from "react-toastify";
 
 const formFields = [
   {
@@ -34,16 +35,20 @@ export default function ChangeDefaultPassword() {
     formState: { errors },
   } = useForm();
 
+  const goToDashboard = () => {
+    navigate("/employee/dashboard");
+  };
+
   const togglePasswordVisibility = (fieldName) => {
     const passwordInput = document.getElementById(fieldName);
     const icon = document.querySelector(`#${fieldName}-toggle`);
 
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      icon.textContent = "👀";
+      icon.textContent = "Hide";
     } else {
       passwordInput.type = "password";
-      icon.textContent = "👁️";
+      icon.textContent = "Show";
     }
   };
 
@@ -53,12 +58,12 @@ export default function ChangeDefaultPassword() {
 
       const response = await API.post("/Users/change-password", data);
       if (response.status === 200) {
-        // Handle success
-      } else if (response.status === 400) {
-        console.log("Bad request " + response);
+        toast.success("Password changed");
+        navigate("/employee/dashboard");
       }
     } catch (error) {
       console.log("Error during login:", error);
+      toast.error(error.response.data.errorMessages);
     } finally {
       setLoading(false);
     }
@@ -69,7 +74,7 @@ export default function ChangeDefaultPassword() {
       <div className="md:max-w-[60%] h-auto md:min-h-[60vh] bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <form onSubmit={handleSubmit(onSubmit)} className="p-6">
           {loading && (
-            <div className="text-center text-primaryColor font-bold mb-4">
+            <div className="text-center text-secondaryColor font-bold mb-4">
               Loading...
             </div>
           )}
@@ -77,9 +82,9 @@ export default function ChangeDefaultPassword() {
 
           {formFields.map((field, i) => (
             <div className="mb-5" key={i}>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+              <label className="block mb-2 text-sm font-medium text-secondaryColor ">
                 {field.label}
-                <div className="password-container">
+                <div className="flex gap-2 items-center justify-center">
                   <input
                     id={field.name}
                     type={field.type}
@@ -109,11 +114,13 @@ export default function ChangeDefaultPassword() {
 
           <button
             type="submit"
-            className="text-white bg-primaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+            className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
           >
             Change Password
           </button>
         </form>
+
+        <button onClick={goToDashboard}>Skip</button>
       </div>
     </div>
   );

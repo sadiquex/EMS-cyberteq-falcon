@@ -12,6 +12,7 @@ import {
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { TableSkeleton } from "../../_ui/Skeletons";
+import ViewEmployeeDetails from "./ViewEmployeeDetails";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
@@ -65,7 +66,6 @@ export default function EmployeesTable({ editHandler }) {
       const response = await API.delete(`/Users/${employeeId}`);
 
       if (response.status === 200) {
-        // console.log("Successfully deleted employee:", employeeId);
         toast.success("Employee deleted successfully");
 
         // Update Redux store to remove the deleted employee
@@ -168,34 +168,7 @@ export default function EmployeesTable({ editHandler }) {
       {/* Modal for View Details */}
       {selectedEmployee && (
         <Modal closeModal={closeModal}>
-          <div className="flex flex-col h-full space-y-2">
-            {/* heading */}
-            <div className="flex justify-between items-center">
-              <h2 className="text-[30px] font-bold text-center text-slate-900">
-                Employee Details
-              </h2>
-
-              <button
-                type="button"
-                className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                onClick={closeModal}
-              >
-                <IoCloseSharp />
-              </button>
-            </div>
-            {/* details */}
-            <div className="flex flex-col flex-1 gap-4">
-              <p>ID: {selectedEmployee.id}</p>
-              <p>FirstName: {selectedEmployee.firstName}</p>
-              <p>LastName: {selectedEmployee.lastName}</p>
-              <p>Email: {selectedEmployee.email}</p>
-              <p>Department: {selectedEmployee.department}</p>
-              <p>Employment Type: {selectedEmployee.employmentType}</p>
-              <p>Date: {selectedEmployee.date}</p>
-              <p>Role: {selectedEmployee.role}</p>
-              <p>Phone Number: {selectedEmployee.phoneNumber}</p>
-            </div>
-          </div>
+          <ViewEmployeeDetails selectedEmployee={selectedEmployee} />
         </Modal>
       )}
     </div>

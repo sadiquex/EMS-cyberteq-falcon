@@ -1,18 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../../components/_ui/Card";
-import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import RecentInformation from "../../components/admin/dashboard/RecentInformation";
 import { fetchUsers } from "../../redux/features/admin-slices/adminEmployeesSlice";
 import { useEffect } from "react";
+import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.employees);
-
-  // load employees on initial render
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
+  //   const employees = 30;
 
   const cardDetails = [
     {
@@ -25,7 +21,7 @@ export default function Dashboard() {
     },
     {
       heading: "On Duty",
-      number: employees.length - (employees.length - 5),
+      number: employees.length - 5 < 0 ? 0 : employees.length - 5,
     },
   ];
 
@@ -50,11 +46,12 @@ export default function Dashboard() {
           {/* display image */}
           <figure className="flex-1">
             <img
-              className="h-64 object-cover w-[100%] rounded-lg "
-              src="https://citinewsroom.com/wp-content/uploads/2022/10/WhatsApp-Image-2022-10-25-at-4.35.00-PM.jpeg"
+              className="h-64 object-cover object-top w-[100%] rounded-lg "
+              src="https://thebftonline.com/wp-content/uploads/2022/12/Cyberteq-is-Cybersecurity-Consulting-Company-of-the-Year-again.jpg"
               alt="company"
             />
           </figure>
+
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
             <EmployeesChart />
           </div>
@@ -64,7 +61,6 @@ export default function Dashboard() {
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-blue-100 rounded-lg">
             some other content here
           </div>
-
           <div className="flex-1 max-h-64 overflow-y-scroll bg-gray-200 rounded-lg">
             <RecentInformation />
           </div>

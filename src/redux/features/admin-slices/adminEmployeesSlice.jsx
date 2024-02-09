@@ -5,7 +5,6 @@ import API from "../../../api/axios";
 export const fetchUsers = createAsyncThunk("employees/fetchUsers", async () => {
   try {
     const response = await API.get("/Users");
-    console.log(response.data.result);
     return response.data.result;
   } catch (error) {
     throw error;

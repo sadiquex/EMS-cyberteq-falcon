@@ -6,6 +6,7 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 import ChangeDefaultPassword from "./pages/ChangeDefaultPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ManagerLayout from "./pages/ManagerLayout";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route element={<ProtectedRoutes />}>
           <Route element={<AdminLayout />} path="/admin/*" />
           <Route element={<EmployeeLayout />} path="/employee/*" />
+          <Route element={<ManagerLayout />} path="/manager/*" />
         </Route>
 
         {/* all other routes */}
@@ -33,3 +35,4 @@ export default function App() {
 
 // abigailaidoo613@gmail.com
 // 123456Aa!
+// Secure123.

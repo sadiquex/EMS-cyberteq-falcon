@@ -13,7 +13,6 @@ export default function CompleteProfile() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const { id } = useSelector((state) => state.user?.userDetails);
-
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
@@ -139,8 +138,8 @@ export default function CompleteProfile() {
         <Button type="submit" className="mt-4">
           Submit
         </Button>
-        {loading && <Spinner />}
       </form>
+      {loading && <Spinner />}
     </div>
   );
 }
