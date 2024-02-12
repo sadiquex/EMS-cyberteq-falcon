@@ -11,7 +11,7 @@ import Profile from "./employee/Profile";
 
 // components
 import Sidebar from "../components/manager/Sidebar";
-import Header from "../components/manager/Header";
+import Header from "../components/_ui/Header";
 
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
@@ -33,10 +33,10 @@ function ManagerLayout() {
         <main className="col-span-1 p-4">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/leaves" element={<Leaves />} />
             <Route path="/leave-status" element={<LeaveStatusTable />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/lunch" element={<Lunch />} />
             <Route path="/conference-room" element={<ConferenceRoom />} />
             <Route path="/*" element={<div>Page not found</div>} />

@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { ChangeDate } from "../../utils/utilityFunctions";
 
 export default function Profile() {
   const userDetails = useSelector((state) => state.user?.userDetails);
@@ -31,7 +32,6 @@ export default function Profile() {
     age,
     created,
     userName,
-    email,
     dateOfBirth,
     department,
     gender,
@@ -45,7 +45,7 @@ export default function Profile() {
     employmentType,
   } = userData ?? {};
 
-  // console.log("userafd" + JSON.stringify(userData));
+  const email = userDetails.email;
 
   // user details table
   const userDetailsTable = [
@@ -108,7 +108,7 @@ export default function Profile() {
         {/* image and personal info */}
         <div className="flex items-center gap-4">
           <img
-            className="w-32 h-32 rounded-full p-1 bg-red-400 object-cover"
+            className="w-32 h-32 rounded-full p-1 bg-red-400 object-cover object-top"
             src={profileImageUrl}
             alt={name}
           />

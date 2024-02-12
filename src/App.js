@@ -14,15 +14,21 @@ export default function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/change-default-password"
-          element={<ChangeDefaultPassword />}
-        />
 
         {/* protected routes */}
-        <Route element={<ProtectedRoutes />}>
+        <Route element={<ProtectedRoutes allowedRoles={["admin"]} />}>
           <Route element={<AdminLayout />} path="/admin/*" />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["user"]} />}>
           <Route element={<EmployeeLayout />} path="/employee/*" />
+          <Route
+            path="/change-default-password"
+            element={<ChangeDefaultPassword />}
+          />
+        </Route>
+
+        <Route element={<ProtectedRoutes allowedRoles={["manager"]} />}>
           <Route element={<ManagerLayout />} path="/manager/*" />
         </Route>
 
@@ -33,6 +39,5 @@ export default function App() {
   );
 }
 
-// abigailaidoo613@gmail.com
 // 123456Aa!
 // Secure123.

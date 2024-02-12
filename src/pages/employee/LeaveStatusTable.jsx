@@ -7,13 +7,19 @@ import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import API from "../../api/axios";
 import ViewLeaveDetails from "../../components/employee/leaves/ViewLeaveDetails";
-import { calculateLeaveDuration } from "../../utils/utilityFunctions";
+import {
+  ChangeDate,
+  calculateLeaveDuration,
+} from "../../utils/utilityFunctions";
+import { updateLeaves } from "../../redux/features/employee-slices/LeaveSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function LeaveStatusTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
   const [appliedLeaves, setAppliedLeaves] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getAppliedLeaves = async () => {
@@ -22,6 +28,8 @@ export default function LeaveStatusTable() {
         const response = await API.get(`/LeaveRequest`);
         if (response.status === 200) {
           setAppliedLeaves(response.data.result);
+          // store the leaves in state
+          dispatch(updateLeaves(response.data.result));
           setLoading(false);
         }
       } catch (error) {
@@ -100,8 +108,8 @@ export default function LeaveStatusTable() {
                   <td className="py-4">
                     {leave.leaveType?.name || "Unknown"} Leave
                   </td>
-                  <td>{leave.startDate}</td>
-                  <td>{leave.endDate}</td>
+                  <td>{ChangeDate(leave.startDate)}</td>
+                  <td>{ChangeDate(leave.endDate)}</td>
                   <td>
                     {calculateLeaveDuration(leave.startDate, leave.endDate)}
                   </td>

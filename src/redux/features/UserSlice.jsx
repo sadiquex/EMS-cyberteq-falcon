@@ -18,7 +18,8 @@ const userDetailsSlice = createSlice({
       };
     },
     logOut: (state) => {
-      localStorage.removeItem("token");
+      localStorage.removeItem("userToken");
+      localStorage.clear();
       state.userDetails = null;
     },
   },

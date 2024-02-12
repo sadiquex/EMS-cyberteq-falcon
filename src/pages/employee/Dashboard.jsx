@@ -17,7 +17,11 @@ export default function Dashboard() {
   const userToken = localStorage.getItem("userToken");
   const [loading, setLoading] = useState();
   const [userData, setUserData] = useState(null);
-  const { id } = useSelector((state) => state.user?.userDetails);
+  const { id, employmentType } = useSelector(
+    (state) => state.user?.userDetails
+  );
+
+  const { name, profileImageUrl } = userData ?? {};
 
   useEffect(() => {
     const getUserData = async () => {
@@ -36,9 +40,6 @@ export default function Dashboard() {
     getUserData();
   }, [id]);
 
-  // the details from the user profile api
-  const { name, profileImageUrl } = userData ?? {};
-
   useEffect(() => {
     const getPortals = async () => {
       setLoading(true);
@@ -54,7 +55,13 @@ export default function Dashboard() {
           };
         });
 
-        setPortals(mappedPortals);
+        // set the portals according to employment type
+        if (employmentType === !"FTIME") {
+          setPortals(mappedPortals.slice(0, 2)); // show only the food and conference room
+        } else {
+          setPortals(mappedPortals); // show all portals
+        }
+
         setLoading(false);
       } catch (error) {
         console.error("error getting portals:", error);
@@ -100,7 +107,7 @@ export default function Dashboard() {
           <img
             src={profileImageUrl}
             alt={name}
-            className="object-cover w-full h-full"
+            className="object-cover object-top w-full h-full"
           />
         </div>
         <div className="flex-1 flex flex-col bg-gray-100 p-3">

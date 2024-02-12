@@ -124,8 +124,8 @@ export default function EmployeesTable({ editHandler }) {
                     <td>{employee.firstName}</td>
                     <td>{employee.lastName}</td>
                     <td>{employee.email}</td>
-                    <td>{employee.department}</td>
-                    <td>{employee.employmentType}</td>
+                    <td>{employee.department.name}</td>
+                    <td>{employee.employmentType.name}</td>
                     {/* <td>{employee.dateAdded}</td> */}
                     <td className="space-x-2 text-[20px] ">
                       {/* view btn */}

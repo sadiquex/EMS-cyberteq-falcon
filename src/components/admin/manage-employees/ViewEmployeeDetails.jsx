@@ -1,14 +1,52 @@
 import { IoCloseSharp } from "react-icons/io5";
-import {
-  ChangeDate,
-  calculateLeaveDuration,
-} from "../../../utils/utilityFunctions";
 
 export default function ViewEmployeeDetails({ closeModal, selectedEmployee }) {
-  const leaveDuration = calculateLeaveDuration(
-    selectedEmployee.startDate,
-    selectedEmployee.endDate
-  );
+  const {
+    id,
+    firstName,
+    lastName,
+    email,
+    employmentType,
+    department,
+    date,
+    role,
+    phoneNumber,
+  } = selectedEmployee;
+
+  const employeeDetails = [
+    {
+      field: "ID",
+      value: id,
+    },
+    {
+      field: "First Name",
+      value: firstName,
+    },
+    {
+      field: "Last Name",
+      value: lastName,
+    },
+    {
+      field: "Email",
+      value: email,
+    },
+    {
+      field: "Employment type",
+      value: employmentType.name,
+    },
+    {
+      field: "Department",
+      value: department.name,
+    },
+    {
+      field: "Date Added",
+      value: date,
+    },
+    {
+      field: "Phone Number",
+      value: phoneNumber,
+    },
+  ];
 
   return (
     <div>
@@ -24,8 +62,8 @@ export default function ViewEmployeeDetails({ closeModal, selectedEmployee }) {
           <IoCloseSharp />
         </button>
       </div>
-      {/* details here */}
 
+      {/* details here */}
       <div className="flex flex-col">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -42,64 +80,21 @@ export default function ViewEmployeeDetails({ closeModal, selectedEmployee }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b bg-neutral-50">
-                    <td className="whitespace-nowrap px-6 py-4">ID</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.id}
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-neutral-100">
-                    <td className="whitespace-nowrap px-6 py-4">First Name</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.firstName}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-50 ">
-                    <td className="whitespace-nowrap px-6 py-4">Last Name</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.lastName}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-100 ">
-                    <td className="whitespace-nowrap px-6 py-4">Email</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.email}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-50 ">
-                    <td className="whitespace-nowrap px-6 py-4">
-                      Employment Type
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.employmentType}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-100 ">
-                    <td className="whitespace-nowrap px-6 py-4">Date Added</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.date}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-50 ">
-                    <td className="whitespace-nowrap px-6 py-4">Role</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.role}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b bg-neutral-50 ">
-                    <td className="whitespace-nowrap px-6 py-4">
-                      Phone Number
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {selectedEmployee.phoneNumber}
-                    </td>
-                  </tr>
+                  {employeeDetails.map((detail, i) => (
+                    <tr
+                      className={`border-b ${
+                        i % 2 === 0 ? "bg-neutral-100" : "bg-neutral-50"
+                      }`}
+                      key={i}
+                    >
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {detail.field}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {detail.value}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

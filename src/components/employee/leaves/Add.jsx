@@ -8,14 +8,18 @@ import { toast } from "react-toastify";
 
 export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
 
+  // Get the value of the selected leave type
+  const leaveType = watch("leaveTypeId");
+
+  // Determine the initial value of the purpose field based on the selected leave type
+  const initialPurposeValue = leaveType === "MAT" ? "" : leaveType;
+
   const addNewLeave = async (data) => {
-    // console.log("frm add cmponent ", data);
     try {
       const response = await API.post(`/LeaveRequest`, data);
-      // console.log(response);
       if (response.status === 200 || response.status === 201) {
         // update the state
         // setAppliedLeaves([response.data.result, ...appliedLeaves]);
@@ -59,6 +63,9 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
             <option value="--Leave Type--" disabled hidden>
               --Leave Type--
             </option>
+            <option value="--" disabled selected>
+              --
+            </option>
             <option value="MAT">Maternity Leave</option>
             <option value="ANNU">Annual Leave</option>
             <option value="SICK">Sick Leave</option>
@@ -81,6 +88,7 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           />
         </label>
+
         {/* cover */}
         <label className="block text-sm font-medium ">
           Cover (who does your work in your absence)
@@ -93,11 +101,12 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
         <label className="block text-sm font-medium ">
           Purpose
           <textarea
-            {...register("purpose")}
+            {...register("purpose", { value: initialPurposeValue })}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             // disabled
           />
         </label>
+
         {/* add btn */}
         <button
           className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"

@@ -3,9 +3,12 @@ import { MdDashboard } from "react-icons/md";
 import { MdTimeToLeave } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/features/UserSlice";
 
 export default function Sidebar() {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const links = [
     {
@@ -59,6 +62,7 @@ export default function Sidebar() {
           <Link
             to="/"
             className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
+            onClick={() => dispatch(logOut())}
           >
             <span>
               <CiLogout />

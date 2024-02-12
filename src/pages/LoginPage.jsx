@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../api/axios";
 import { useDispatch } from "react-redux";
@@ -36,6 +36,14 @@ const LoginPage = () => {
   // state to handle invalid credeitials
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Check if the user has logged in before
+    const hasLoggedInBefore = localStorage.getItem("hasLoggedInBefore");
+    if (hasLoggedInBefore) {
+      navigate("/employee/dashboard");
+    }
+  }, []);
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -56,8 +64,13 @@ const LoginPage = () => {
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "user") {
-          // navigate("/employee/dashboard");
-          navigate("/change-default-password");
+          const hasLoggedInBefore = localStorage.getItem("hasLoggedInBefore");
+          if (!hasLoggedInBefore) {
+            localStorage.setItem("hasLoggedInBefore", true);
+            navigate("/change-default-password");
+          } else {
+            navigate("/employee/dashboard");
+          }
         } else if (role === "manager") {
           navigate("/manager/dashboard");
         } else {
@@ -65,7 +78,6 @@ const LoginPage = () => {
         }
       } else if (response.status === 400) {
         toast.error("bad request " + response);
-        // setInvalidCredentials(true);
       }
     } catch (error) {
       console.log("Error during login:", error);
@@ -78,10 +90,10 @@ const LoginPage = () => {
   return (
     <div className="w-full min-h-screen flex items-center rounded-lg px-3 md:px-0 bg-primaryColor">
       {/* login form and image */}
-      <div className="flex flex-1 gap-4 flex-col items-center justify-center md:flex-row  h-full mx-auto bg-white rounded-lg shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+      <div className="flex flex-1 gap-4 flex-col items-center justify-center md:flex-row  h-full mx-auto bg-primaryColor rounded-lg shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
         {/* image */}
         <div
-          className=" md:w-[50%] h-full relative md:flex flex-col pt-4 items-center"
+          className=" md:w-[50%] h-full md:h-screen relative md:flex flex-col pt-4 items-center justify-center"
           style={{
             backgroundImage:
               "url('https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?w=740&t=st=1705665643~exp=1705666243~hmac=3550ee53ba53d54b2624727e1180a2d6f70462e149c391cba6a2e405aa262fdf",
@@ -120,11 +132,11 @@ const LoginPage = () => {
                 </li>
               ))}
             </ul>
-            <img
+            {/* <img
               src="https://thebftonline.com/wp-content/uploads/2022/12/Cyberteq-is-Cybersecurity-Consulting-Company-of-the-Year-again.jpg"
               alt="display image"
               className="hidden md:block w-[400px] rounded-md"
-            />
+            /> */}
           </div>
         </div>
         {/* login form */}
@@ -169,7 +181,7 @@ const LoginPage = () => {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 text-white">
+      {/* <div className="flex flex-col gap-4 text-white">
         <button className="bg-blue-700 p-4">
           <Link to="/admin/dashboard">Admin</Link>
         </button>
@@ -179,7 +191,7 @@ const LoginPage = () => {
         <button className="bg-blue-700 p-4">
           <Link to="/manager/dashboard">Manager</Link>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

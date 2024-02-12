@@ -35,10 +35,6 @@ export default function ChangeDefaultPassword() {
     formState: { errors },
   } = useForm();
 
-  const goToDashboard = () => {
-    navigate("/employee/dashboard");
-  };
-
   const togglePasswordVisibility = (fieldName) => {
     const passwordInput = document.getElementById(fieldName);
     const icon = document.querySelector(`#${fieldName}-toggle`);
@@ -100,7 +96,7 @@ export default function ChangeDefaultPassword() {
                     className="toggle-password"
                     onClick={() => togglePasswordVisibility(field.name)}
                   >
-                    👁️
+                    Show
                   </span>
                 </div>
                 {errors[field.name]?.message && (
@@ -120,7 +116,15 @@ export default function ChangeDefaultPassword() {
           </button>
         </form>
 
-        <button onClick={goToDashboard}>Skip</button>
+        <button
+          type="submit"
+          className="text-primaryColor bg-red-600 hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+          onClick={() => {
+            navigate("/employee/dashboard");
+          }}
+        >
+          Skip
+        </button>
       </div>
     </div>
   );

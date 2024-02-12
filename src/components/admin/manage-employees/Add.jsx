@@ -20,6 +20,7 @@ export default function Add({ setIsAdding }) {
   useEffect(() => {
     const fetchData = async () => {
       const controller = new AbortController();
+      setLoading(true);
 
       try {
         const [employmentTypesResponse, departmentsResponse, rolesResponse] =
@@ -37,7 +38,8 @@ export default function Add({ setIsAdding }) {
         }
       } catch (error) {
         if (!controller.signal.aborted) {
-          console.error("Error fetching data:", error);
+          // toast.error(error.response.data.errorMessages);
+          toast.error("Error loading departments and roles");
           setLoading(false);
         }
       } finally {
@@ -99,7 +101,7 @@ export default function Add({ setIsAdding }) {
 
       const response = await API.post("/Users/register-user", newEmployee);
       if (response.status === 200) {
-        console.log("successfully added", response.data);
+        // console.log("successfully added", response.data);
         toast.success("employee successfully added");
 
         dispatch(addEmployee(newEmployee));
@@ -119,7 +121,7 @@ export default function Add({ setIsAdding }) {
   return (
     <Modal closeModal={closeModal}>
       {loading && (
-        <div className="text-center text-primaryColor font-bold mb-4">
+        <div className="text-center text-secondaryColor font-bold mb-4">
           Loading...
         </div>
       )}

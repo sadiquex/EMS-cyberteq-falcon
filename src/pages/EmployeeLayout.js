@@ -11,8 +11,9 @@ import Lunch from "./employee/Lunch";
 import Profile from "./employee/Profile";
 
 // components
-import Header from "../components/employee/Header";
 import Sidebar from "../components/employee/Sidebar";
+import Header from "../components/_ui/Header";
+
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
 
