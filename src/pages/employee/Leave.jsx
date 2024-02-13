@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
+import LeavesChart from "../../components/employee/leaves/LeavesChart";
 
 export default function Leave() {
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
@@ -51,8 +52,9 @@ export default function Leave() {
               <Link to={leave.route} key={i}>
                 <Card cardType="">
                   <p className="font-normal ">{leave.name} Leave</p>
-                  <h5 className="mb-2 text-3xl font-bold tracking-tight  ">
-                    {leave.allocatedDays} / {leave.allocatedDays}
+                  <LeavesChart leave={leave} />
+                  <h5 className="mb-2 text-3xl font-bold ">
+                    {/* {leave.allocatedDays} / {leave.allocatedDays} */}
                   </h5>
                 </Card>
               </Link>
