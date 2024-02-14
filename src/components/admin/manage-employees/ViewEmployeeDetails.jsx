@@ -1,17 +1,23 @@
 import { IoCloseSharp } from "react-icons/io5";
 
-export default function ViewEmployeeDetails({ closeModal, selectedEmployee }) {
+export default function ViewEmployeeDetails({
+  closeModal,
+  selectedEmployee,
+  loading,
+}) {
   const {
     id,
-    firstName,
-    lastName,
     email,
+    name,
     employmentType,
     department,
     date,
-    role,
+    roles,
+    created,
     phoneNumber,
   } = selectedEmployee;
+
+  const [firstName, lastName] = name.split(" ");
 
   const employeeDetails = [
     {
@@ -40,11 +46,16 @@ export default function ViewEmployeeDetails({ closeModal, selectedEmployee }) {
     },
     {
       field: "Date Added",
-      value: date,
+      value: created,
     },
     {
       field: "Phone Number",
       value: phoneNumber,
+    },
+    {
+      field: "Role",
+      // value: roles.map((role) => role),
+      value: roles,
     },
   ];
 

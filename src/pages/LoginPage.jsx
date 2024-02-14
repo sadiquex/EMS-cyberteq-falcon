@@ -37,7 +37,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Check if the user has logged in before
+    // check if the user has logged in before
     const hasLoggedInBefore = localStorage.getItem("hasLoggedInBefore");
     if (hasLoggedInBefore) {
       navigate("/employee/dashboard");
@@ -64,17 +64,15 @@ const LoginPage = () => {
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "user") {
-          const hasLoggedInBefore = localStorage.getItem("hasLoggedInBefore");
-          if (!hasLoggedInBefore) {
-            localStorage.setItem("hasLoggedInBefore", true);
-            navigate("/change-default-password");
-          } else {
+          if (response.data.result.user.profileCompleted) {
             navigate("/employee/dashboard");
+          } else {
+            navigate("/change-default-password");
           }
         } else if (role === "manager") {
           navigate("/manager/dashboard");
         } else {
-          alert("invalid role: " + role);
+          toast.error("invalid role: " + role);
         }
       } else if (response.status === 400) {
         toast.error("bad request " + response);

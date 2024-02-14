@@ -10,9 +10,10 @@ import { CardSkeleton } from "../../components/_ui/Skeletons";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { todayDate } from "../../utils/utilityFunctions";
+import { Spinner } from "../../components/_ui/Spinner";
 
 export default function Dashboard() {
-  // const userDetails = useSelector((state) => state.user?.userDetails);
+  const userDetails = useSelector((state) => state.user?.userDetails);
   const [portals, setPortals] = useState([]);
   const userToken = localStorage.getItem("userToken");
   const [loading, setLoading] = useState();
@@ -103,17 +104,21 @@ export default function Dashboard() {
 
       {/* user profile card */}
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="rounded-lg w-20 h-20 bg-red-400 p-[2px]">
-          <img
-            src={profileImageUrl}
-            alt={name}
-            className="object-cover object-top w-full h-full"
-          />
+        <div className="rounded-lg w-20 h-20 overflow-hidden bg-red-200 p-[2px] flex items-center justify-center">
+          {loading ? (
+            <Spinner />
+          ) : (
+            <img
+              src={profileImageUrl}
+              alt={name}
+              className="object-cover object-top w-full h-full"
+            />
+          )}
         </div>
         <div className="flex-1 flex flex-col bg-gray-100 p-3">
           <p className="text-lg font-bold">
             Welcome,
-            {name}
+            {userDetails.name}
           </p>
           <p className="text-sm">Today is: {todayDate}</p>
         </div>

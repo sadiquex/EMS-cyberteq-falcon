@@ -10,13 +10,18 @@ import { Spinner } from "../../components/_ui/Spinner";
 
 export default function CompleteProfile() {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
   const { id } = useSelector((state) => state.user?.userDetails);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const response = await API.put(
         `/Users/profile-details`,
         {
@@ -35,7 +40,7 @@ export default function CompleteProfile() {
       );
 
       if (response.status === 200) {
-        setLoading(true);
+        setLoading(false);
         dispatch(updateUserDetails(data));
         toast.success("details updated");
 
@@ -62,14 +67,15 @@ export default function CompleteProfile() {
             <select
               {...register("Gender", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue="--Select Gender--"
+              defaultValue=""
             >
-              <option value="--Select Gender--" disabled>
-                --Select Gender--
-              </option>
+              <option value="">--Select Gender--</option>{" "}
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
+            {errors.Gender && (
+              <span className="text-red-500">Gender is required</span>
+            )}
           </label>
 
           {/* Date of Birth */}
@@ -83,6 +89,11 @@ export default function CompleteProfile() {
               })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             />
+            {errors.DateOfBirth && (
+              <span className="text-red-500">
+                Please enter your Date of Birth
+              </span>
+            )}
           </label>
 
           {/* ghana card */}
@@ -123,7 +134,13 @@ export default function CompleteProfile() {
               type="number"
               {...register("AlternatePhoneNumber", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="eg: +233 20 301 9988"
             />
+            {errors.AlternatePhoneNumber && (
+              <span className="text-red-500">
+                Alternative Phone Number is required
+              </span>
+            )}
           </label>
           {/* profile picture */}
           <label className="block text-sm font-medium ">
@@ -133,13 +150,19 @@ export default function CompleteProfile() {
               {...register("ProfileImage", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
+            {errors.ProfileImage && (
+              <span className="text-red-500">Profile Picture is required</span>
+            )}
           </label>
         </div>
-        <Button type="submit" className="mt-4">
-          Submit
+        <Button
+          type="submit"
+          className={`mt-4 ${loading ? "bg-gray-300 cursor-not-allowed" : ""}`}
+          disabled={loading}
+        >
+          {loading ? <Spinner /> : "Submit"}
         </Button>
       </form>
-      {loading && <Spinner />}
     </div>
   );
 }

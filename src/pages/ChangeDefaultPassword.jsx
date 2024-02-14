@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import API from "../api/axios";
 import { toast } from "react-toastify";
 
@@ -27,6 +27,7 @@ export default function ChangeDefaultPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { profileCompleted } = useSelector((state) => state.user?.userDetails);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -48,6 +49,15 @@ export default function ChangeDefaultPassword() {
     }
   };
 
+  const checkProfileCompleted = () => {
+    // if he hasn't completed his profile
+    if (profileCompleted !== "True") {
+      navigate("employee/complete-profile");
+    } else {
+      navigate("/employee/dashboard");
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -55,10 +65,9 @@ export default function ChangeDefaultPassword() {
       const response = await API.post("/Users/change-password", data);
       if (response.status === 200) {
         toast.success("Password changed");
-        navigate("/employee/dashboard");
+        checkProfileCompleted();
       }
     } catch (error) {
-      console.log("Error during login:", error);
       toast.error(error.response.data.errorMessages);
     } finally {
       setLoading(false);
@@ -119,9 +128,7 @@ export default function ChangeDefaultPassword() {
         <button
           type="submit"
           className="text-primaryColor bg-red-600 hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
-          onClick={() => {
-            navigate("/employee/dashboard");
-          }}
+          onClick={checkProfileCompleted}
         >
           Skip
         </button>

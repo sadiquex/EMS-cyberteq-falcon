@@ -21,7 +21,7 @@ export default function Sidebar() {
       name: "Manage Employees",
       route: "/admin/employees",
       icon: <FaUsers size={24} />,
-      child: "+",
+      child: "",
     },
     {
       name: "Leave Requests",

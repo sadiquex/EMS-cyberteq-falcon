@@ -13,6 +13,8 @@ import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { TableSkeleton } from "../../_ui/Skeletons";
 import ViewEmployeeDetails from "./ViewEmployeeDetails";
+import { FullScreenSpinner } from "../../_ui/Spinner";
+import EmployeeDetails from "./EmployeeDetails";
 
 export default function EmployeesTable({ editHandler }) {
   const dispatch = useDispatch();
@@ -41,23 +43,30 @@ export default function EmployeesTable({ editHandler }) {
     };
   });
 
+  // Filter employees by first name based on searchTerm
+  const filteredEmployees = employeesWithSeparatedNames.filter((employee) =>
+    employee.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // VIEW details
   const viewDetailsHandler = async (id) => {
     //  --- this approach also works ---
-    const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
-    setSelectedEmployee(employee);
+    // const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
+    // setSelectedEmployee(employee);
 
     // hit the employee details endpoint
-    // try {
-    //   const response = await API.get(`/Users/user-profile/${id}`);
-    //   if (response.statusCode === 200) {
-    //     // setSelectedEmployee(employee);
-    //     console.log(response.data);
-    //   }
-    // } catch (error) {
-    //   toast.error(error)
-    //   console.log(error);
-    // }
+    setLoading(true);
+    try {
+      const response = await API.get(`/Users/user-profile/${id}`);
+      if (response.status === 200) {
+        setSelectedEmployee(response.data.result);
+      }
+    } catch (error) {
+      toast.error(error.response.data.errorMessages);
+      // console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // DELETE employee
@@ -99,12 +108,12 @@ export default function EmployeesTable({ editHandler }) {
       />
 
       <div className="w-full overflow-x-auto">
-        {employeesWithSeparatedNames?.length > 0 ? (
-          <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap">
+        {filteredEmployees?.length > 0 ? (
+          <table className="w-full overflow-x-auto text-sm text-left rtl:text-right text-gray-700 whitespace-nowrap px-2">
             {/* table heading */}
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr className="text-[16px] space-x-4">
-                <th className="py-3">ID</th>
+                <th className="py-3 px-4">ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -116,17 +125,19 @@ export default function EmployeesTable({ editHandler }) {
             </thead>
             {/* body */}
             <tbody>
-              {employeesWithSeparatedNames?.length > 0 ? (
-                employeesWithSeparatedNames?.map((employee, i) => (
+              {filteredEmployees?.length > 0 ? (
+                filteredEmployees?.map((employee, i) => (
                   // row
-                  <tr key={i} className="bg-white hover:bg-gray-50 ">
-                    <td className="py-3 ">{i + 1}</td>
+                  <tr key={i} className="bg-white px-4 hover:bg-orange-50 ">
+                    <td className="py-3 px-4">{i + 1}</td>
                     <td>{employee.firstName}</td>
                     <td>{employee.lastName}</td>
                     <td>{employee.email}</td>
                     <td>{employee.department.name}</td>
                     <td>{employee.employmentType.name}</td>
                     {/* <td>{employee.dateAdded}</td> */}
+
+                    {/* action btns */}
                     <td className="space-x-2 text-[20px] ">
                       {/* view btn */}
                       <button onClick={() => viewDetailsHandler(employee.id)}>
@@ -161,15 +172,20 @@ export default function EmployeesTable({ editHandler }) {
             </tbody>
           </table>
         ) : (
-          <TableSkeleton />
+          <p>Sorry, no employee found</p>
         )}
       </div>
 
       {/* Modal for View Details */}
-      {selectedEmployee && (
-        <Modal closeModal={closeModal}>
-          <ViewEmployeeDetails selectedEmployee={selectedEmployee} />
-        </Modal>
+      {loading ? (
+        <FullScreenSpinner />
+      ) : (
+        selectedEmployee && (
+          <Modal type="employeeDetails" closeModal={closeModal}>
+            <EmployeeDetails selectedEmployee={selectedEmployee} />
+            {/* <ViewEmployeeDetails selectedEmployee={selectedEmployee} /> */}
+          </Modal>
+        )
       )}
     </div>
   );

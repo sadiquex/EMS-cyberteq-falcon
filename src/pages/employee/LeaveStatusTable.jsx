@@ -31,6 +31,8 @@ export default function LeaveStatusTable() {
           // store the leaves in state
           dispatch(updateLeaves(response.data.result));
           setLoading(false);
+        } else if (response.status === 500) {
+          setLoading(false);
         }
       } catch (error) {
         toast.error(error);
@@ -42,9 +44,26 @@ export default function LeaveStatusTable() {
   }, []);
 
   // view details
-  const viewDetailsHandler = (id) => {
-    const leave = appliedLeaves?.find((leave) => leave.id === id);
-    setSelectedLeave(leave);
+  // const viewDetailsHandler = (id) => {
+  //   const leave = appliedLeaves?.find((leave) => leave.id === id);
+  //   setSelectedLeave(leave);
+  // };
+
+  // VIEW details
+  const viewDetailsHandler = async (id) => {
+    // setLoading(true);
+    try {
+      const response = await API.get(`/LeaveRequest/${id}`);
+      if (response.status === 200) {
+        toast.success(response.data.result);
+        setSelectedLeave(response.data.result);
+      }
+    } catch (error) {
+      toast.error(error.response.data.errorMessages);
+      // console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // delete leave
@@ -133,12 +152,13 @@ export default function LeaveStatusTable() {
                 </tr>
               ))
             ) : (
-              // If there are no applied leaves, display a message
               <tr className="bg-white border-b  hover:bg-gray-50 ">
                 <td colSpan={6} className="py-4">
-                  {appliedLeaves?.length === 0
-                    ? "You haven't applied for any leave..."
-                    : "Loading"}
+                  {appliedLeaves?.length === 0 ? (
+                    "You haven't applied for any leave..."
+                  ) : (
+                    <Spinner />
+                  )}
                 </td>
               </tr>
             )}

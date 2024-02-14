@@ -5,24 +5,67 @@ import { useLeaveContext } from "../../../contexts/LeaveContext";
 import { useNavigate } from "react-router-dom";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
   const { register, handleSubmit, reset, watch } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
+  const [userData, setUserData] = useState([]) ?? null;
+  const { id, userName, departmentId } = useSelector(
+    (state) => state.user?.userDetails
+  );
+  const [loading, setLoading] = useState(false);
+  const [purpose, setPurpose] = useState("");
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await API.get(`/Users/user-profile/${id}`);
+        setUserData(response.data.result);
+      } catch (err) {
+        toast.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getUserData();
+  }, [id]);
 
   // Get the value of the selected leave type
   const leaveType = watch("leaveTypeId");
 
-  // Determine the initial value of the purpose field based on the selected leave type
-  const initialPurposeValue = leaveType === "MAT" ? "" : leaveType;
+  // Update purpose state based on the selected leave type
+  useEffect(() => {
+    if (leaveType === "MAT" || leaveType === "ANNU" || leaveType === "SICK") {
+      setPurpose(
+        `${
+          leaveType === "MAT"
+            ? "Maternity"
+            : leaveType === "ANNU"
+            ? "Annual"
+            : "Sick"
+        } Leave`
+      );
+    } else {
+      setPurpose("");
+    }
+  }, [leaveType]);
 
   const addNewLeave = async (data) => {
     try {
-      const response = await API.post(`/LeaveRequest`, data);
+      const requestData = {
+        ...data,
+        userName: userData.name,
+        departmentId: departmentId,
+      };
+
+      const response = await API.post(`/LeaveRequest`, requestData);
       if (response.status === 200 || response.status === 201) {
         // update the state
-        // setAppliedLeaves([response.data.result, ...appliedLeaves]);
         setAppliedLeaves(response.data.result);
         toast.success("Leave request successful");
 
@@ -53,18 +96,38 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
           </button>
         </div>
         {/* input fields */}
+        {/* username */}
+        <label className="block text-sm font-medium hidden">
+          User Name <span className="text-red-600">*</span>
+          <input
+            {...register("userName")}
+            defaultValue={userName}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            disabled
+          />
+        </label>
+
+        {/* department */}
+        <label className="block text-sm font-medium hidden">
+          Department <span className="text-red-600">*</span>
+          <input
+            {...register("department")}
+            defaultValue={departmentId}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            disabled
+          />
+        </label>
+
         {/* leave type */}
         <label className="block text-sm font-medium ">
           Leave type <span className="text-red-700">*</span>
           <select
             {...register("leaveTypeId")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            defaultValue="--Leave Type--"
           >
             <option value="--Leave Type--" disabled hidden>
               --Leave Type--
-            </option>
-            <option value="--" disabled selected>
-              --
             </option>
             <option value="MAT">Maternity Leave</option>
             <option value="ANNU">Annual Leave</option>
@@ -85,25 +148,28 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
           <input
             type="date"
             {...register("endDate")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
         </label>
 
         {/* cover */}
         <label className="block text-sm font-medium ">
-          Cover (who does your work in your absence)
+          Cover <span className="text-red-700">*</span>
           <input
             {...register("cover")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            placeholder="Who does your work in your absence"
           />
         </label>
         {/* purpose */}
         <label className="block text-sm font-medium ">
-          Purpose
+          Purpose <span className="text-red-700">*</span>
           <textarea
-            {...register("purpose", { value: initialPurposeValue })}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            // disabled
+            {...register("purpose")}
+            value={`${purpose} .`}
+            onChange={(e) => setPurpose(e.target.value)}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter the reason for your leave"
           />
         </label>
 
