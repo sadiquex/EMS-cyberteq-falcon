@@ -57,7 +57,7 @@ export default function Dashboard() {
         });
 
         // set the portals according to employment type
-        if (employmentType === !"FTIME") {
+        if (employmentType !== "FTIME") {
           setPortals(mappedPortals.slice(0, 2)); // show only the food and conference room
         } else {
           setPortals(mappedPortals); // show all portals
@@ -65,7 +65,8 @@ export default function Dashboard() {
 
         setLoading(false);
       } catch (error) {
-        console.error("error getting portals:", error);
+        // console.error("error getting portals:", error);
+        toast.error(error.result.errorMessages);
         setLoading(false);
       } finally {
         setLoading(false);

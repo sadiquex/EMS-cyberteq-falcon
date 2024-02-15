@@ -52,7 +52,7 @@ export default function ChangeDefaultPassword() {
   const checkProfileCompleted = () => {
     // if he hasn't completed his profile
     if (profileCompleted !== "True") {
-      navigate("employee/complete-profile");
+      window.location.replace("/employee/complete-profile");
     } else {
       navigate("/employee/dashboard");
     }

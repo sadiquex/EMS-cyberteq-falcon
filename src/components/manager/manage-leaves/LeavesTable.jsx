@@ -25,7 +25,7 @@ export default function LeavesTable() {
           setLeavesData(response.data.result);
         }
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message + " getting leaves");
       }
     };
 

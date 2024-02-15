@@ -20,16 +20,18 @@ export default function LeaveStatusTable() {
   const [appliedLeaves, setAppliedLeaves] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.user?.userDetails);
 
   useEffect(() => {
     const getAppliedLeaves = async () => {
       try {
         setLoading(true);
-        const response = await API.get(`/LeaveRequest`);
+        const response = await API.get(`/LeaveRequest/`);
+
         if (response.status === 200) {
           setAppliedLeaves(response.data.result);
           // store the leaves in state
-          dispatch(updateLeaves(response.data.result));
+          // dispatch(updateLeaves(response.data.result));
           setLoading(false);
         } else if (response.status === 500) {
           setLoading(false);
@@ -74,7 +76,8 @@ export default function LeaveStatusTable() {
         // console.log(response);
         toast.success("Leave deleted");
         setAppliedLeaves(
-          appliedLeaves?.filter((leave) => leave.id !== leaveId)
+          // appliedLeaves?.filter((leave) => leave.id !== leaveId)
+          appliedLeaves?.filter((leave) => leave.user.id === id)
         );
       }
     } catch (error) {

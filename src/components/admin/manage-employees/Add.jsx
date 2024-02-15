@@ -57,13 +57,6 @@ export default function Add({ setIsAdding }) {
     };
   }, []);
 
-  // const isEmployeeAlreadyAdded = (firstName, lastName) => {
-  //   return employees?.some(
-  //     (employee) =>
-  //       employee.firstName === firstName && employee.lastName === lastName
-  //   );
-  // };
-
   const addEmployeeHandler = async (data) => {
     const {
       firstName,
@@ -79,11 +72,6 @@ export default function Add({ setIsAdding }) {
       alert("Please fill out all required fields");
       return;
     }
-
-    // if (isEmployeeAlreadyAdded(firstName, lastName)) {
-    //   alert("Employee with the same name is already added");
-    //   return;
-    // }
 
     const newEmployee = {
       firstName,
@@ -188,8 +176,8 @@ export default function Add({ setIsAdding }) {
             defaultValue="--Select role--"
           >
             {roles.map((role) => (
-              <option key={role.id} value={role.id}>
-                {role.name.toUpperCase()}
+              <option key={role.id} value={role.name}>
+                {role.name.charAt(0).toUpperCase() + role.name.slice(1)}
               </option>
             ))}
           </select>

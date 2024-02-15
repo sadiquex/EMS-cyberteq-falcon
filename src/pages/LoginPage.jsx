@@ -139,8 +139,6 @@ const LoginPage = () => {
         </div>
         {/* login form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 w-full flex-1">
-          {loading && <Spinner />}
-
           <h1 className="text-xl mb-4 font-bold whitespace-normal">
             Login to your account
           </h1>
@@ -167,6 +165,8 @@ const LoginPage = () => {
               </label>
             </div>
           ))}
+
+          {loading && <Spinner />}
 
           <div className="flex justify-between gap-2">
             <button

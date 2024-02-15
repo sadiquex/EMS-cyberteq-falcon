@@ -137,16 +137,14 @@ export default function Profile() {
           <div className="">
             <div>
               <h3 className="text-lg font-medium">{name}</h3>
-              <p className="text-gray-400 text-xs font-semibold">
+              <p className="text-gray-400 font-semibold">
                 {employmentType} Employee
               </p>
             </div>
             {/* id */}
             <div>
-              <h3 className="text-lg font-medium">ID: INT 123-456</h3>
-              <p className="text-gray-400 text-xs font-semibold">
-                {department}
-              </p>
+              {/* <h3 className="text-lg font-medium">{id}</h3> */}
+              <p className="text-lg font-medium">{department}</p>
             </div>
           </div>
         </div>
@@ -156,7 +154,7 @@ export default function Profile() {
         {/* contact info */}
         <div className=" h-full flex-1">
           <div className="p-2">
-            <table className="text-xs my-3">
+            <table className="my-3">
               <tbody>
                 {userDetailsTable.map((row, i) => (
                   <tr key={i}>
@@ -173,11 +171,11 @@ export default function Profile() {
       </div>
       {/* other info */}
       <div className="w-1/2 rounded-lg p-3 grid grid-cols-2 divide-x shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
-        <table className="text-xs my-3">
+        <table className="my-3">
           <tbody>
             {otherDetailsTable.map((row, i) => (
               <tr key={i}>
-                <td className="px-2 py-2 text-gray-500 font-semibold">
+                <td className="px-2 py-2 text-gray-500 font-semibold whitespace-nowrap">
                   {row.title}
                 </td>
                 <td className="px-2 py-2">{row.value}</td>

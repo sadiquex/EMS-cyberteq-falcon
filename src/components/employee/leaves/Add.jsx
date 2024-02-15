@@ -10,7 +10,13 @@ import { useSelector } from "react-redux";
 
 export default function Add({ appliedLeaves, setAppliedLeaves }) {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
   const [userData, setUserData] = useState([]) ?? null;
   const { id, userName, departmentId } = useSelector(
@@ -59,8 +65,9 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
     try {
       const requestData = {
         ...data,
-        userName: userData.name,
+        userName: userName,
         departmentId: departmentId,
+        purpose: purpose, // Set purpose here
       };
 
       const response = await API.post(`/LeaveRequest`, requestData);
@@ -96,34 +103,14 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
           </button>
         </div>
         {/* input fields */}
-        {/* username */}
-        <label className="block text-sm font-medium hidden">
-          User Name <span className="text-red-600">*</span>
-          <input
-            {...register("userName")}
-            defaultValue={userName}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            disabled
-          />
-        </label>
-
-        {/* department */}
-        <label className="block text-sm font-medium hidden">
-          Department <span className="text-red-600">*</span>
-          <input
-            {...register("department")}
-            defaultValue={departmentId}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            disabled
-          />
-        </label>
-
         {/* leave type */}
         <label className="block text-sm font-medium ">
           Leave type <span className="text-red-700">*</span>
           <select
-            {...register("leaveTypeId")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("leaveTypeId", { required: "Leave type is required" })}
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              errors.leaveTypeId && "border-red-500"
+            }`}
             defaultValue="--Leave Type--"
           >
             <option value="--Leave Type--" disabled hidden>
@@ -134,44 +121,69 @@ export default function Add({ appliedLeaves, setAppliedLeaves }) {
             <option value="SICK">Sick Leave</option>
             <option value="EMRG">Emergency Leave</option>
           </select>
+          {errors.leaveTypeId && (
+            <p className="text-red-500 text-sm">{errors.leaveTypeId.message}</p>
+          )}
         </label>
         <label className="block text-sm font-medium ">
           Start date <span className="text-red-700">*</span>
           <input
             type="date"
-            {...register("startDate")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("startDate", { required: "Enter the Start Date" })}
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              errors.startDate && "border-red-500"
+            }`}
           />
+          {errors.startDate && (
+            <p className="text-red-500 text-sm">{errors.startDate.message}</p>
+          )}
         </label>
         <label className="block text-sm font-medium ">
           End date <span className="text-red-700">*</span>
           <input
             type="date"
-            {...register("endDate")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            {...register("endDate", { required: "Enter the End Date" })}
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              errors.endDate && "border-red-500"
+            }`}
           />
+          {errors.endDate && (
+            <p className="text-red-500 text-sm">{errors.endDate.message}</p>
+          )}
         </label>
 
         {/* cover */}
         <label className="block text-sm font-medium ">
           Cover <span className="text-red-700">*</span>
           <input
-            {...register("cover")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            {...register("cover", { required: "Cover is required" })}
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              errors.cover && "border-red-500"
+            }`}
             placeholder="Who does your work in your absence"
           />
+          {errors.cover && (
+            <p className="text-red-500 text-sm">{errors.cover.message}</p>
+          )}
         </label>
         {/* purpose */}
-        <label className="block text-sm font-medium ">
-          Purpose <span className="text-red-700">*</span>
-          <textarea
-            {...register("purpose")}
-            value={`${purpose} .`}
-            onChange={(e) => setPurpose(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="Enter the reason for your leave"
-          />
-        </label>
+        {leaveType === "EMRG" && (
+          <label className="block text-sm font-medium ">
+            Purpose <span className="text-red-700">*</span>
+            <textarea
+              {...register("purpose", { required: "Purpose is required" })}
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
+              className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+                errors.purpose && "border-red-500"
+              }`}
+              placeholder="Enter the reason for your leave"
+            />
+            {errors.purpose && (
+              <p className="text-red-500 text-sm">{errors.purpose.message}</p>
+            )}
+          </label>
+        )}
 
         {/* add btn */}
         <button
