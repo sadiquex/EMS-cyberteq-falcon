@@ -11,60 +11,55 @@ import {
   ChangeDate,
   calculateLeaveDuration,
 } from "../../utils/utilityFunctions";
-import { updateLeaves } from "../../redux/features/employee-slices/LeaveSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query"; // Import useQuery from react-query
+import { useSelector } from "react-redux";
 
 export default function LeaveStatusTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
-  const [appliedLeaves, setAppliedLeaves] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const { id } = useSelector((state) => state.user?.userDetails);
+  console.log(id);
 
-  useEffect(() => {
-    const getAppliedLeaves = async () => {
+  // Fetch applied leaves using React Query
+  const {
+    isLoading,
+    isError,
+    data: appliedLeaves,
+    refetch,
+  } = useQuery({
+    queryKey: "appliedLeaves", // Query key
+    queryFn: async () => {
       try {
-        setLoading(true);
         const response = await API.get(`/LeaveRequest/`);
 
         if (response.status === 200) {
-          setAppliedLeaves(response.data.result);
-          // store the leaves in state
-          // dispatch(updateLeaves(response.data.result));
-          setLoading(false);
+          return response.data?.result;
         } else if (response.status === 500) {
-          setLoading(false);
+          toast.error("Failed to fetch applied leaves");
         }
       } catch (error) {
         toast.error(error);
-      } finally {
-        setLoading(false);
       }
-    };
-    getAppliedLeaves();
-  }, []);
+    },
+    retry: false, // Disable automatic retries
+  });
 
-  // view details
-  // const viewDetailsHandler = (id) => {
-  //   const leave = appliedLeaves?.find((leave) => leave.id === id);
-  //   setSelectedLeave(leave);
-  // };
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error fetching applied leaves");
+    }
+  }, [isError]);
 
   // VIEW details
   const viewDetailsHandler = async (id) => {
-    // setLoading(true);
     try {
       const response = await API.get(`/LeaveRequest/${id}`);
       if (response.status === 200) {
-        toast.success(response.data.result);
-        setSelectedLeave(response.data.result);
+        toast.success(response.data?.result);
+        setSelectedLeave(response.data?.result);
       }
     } catch (error) {
-      toast.error(error.response.data.errorMessages);
-      // console.log(error);
-    } finally {
-      setLoading(false);
+      toast.error(error.response.data?.errorMessages);
     }
   };
 
@@ -73,15 +68,11 @@ export default function LeaveStatusTable() {
     try {
       const response = await API.delete(`/LeaveRequest/${leaveId}`);
       if (response.status === 200) {
-        // console.log(response);
         toast.success("Leave deleted");
-        setAppliedLeaves(
-          // appliedLeaves?.filter((leave) => leave.id !== leaveId)
-          appliedLeaves?.filter((leave) => leave.user.id === id)
-        );
+        refetch(); // Refresh the data after deletion
       }
     } catch (error) {
-      console.log(error);
+      toast.error("Error deleting leave");
     }
   };
 
@@ -101,7 +92,7 @@ export default function LeaveStatusTable() {
 
       {/* table for displaying leaves statuses */}
       <div className="w-[350px] md:w-full overflow-x-auto bg-red-500 p-[1px]">
-        {loading && <Spinner />}
+        {isLoading && <Spinner />}
 
         <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
           {/* head */}
@@ -148,7 +139,6 @@ export default function LeaveStatusTable() {
                         }}
                       >
                         <MdDelete />
-                        {/* Delete */}
                       </button>
                     )}
                   </td>
@@ -179,12 +169,7 @@ export default function LeaveStatusTable() {
       )}
 
       {/* adding leave */}
-      {isAddingLeave && (
-        <Add
-          appliedLeaves={appliedLeaves}
-          setAppliedLeaves={setAppliedLeaves}
-        />
-      )}
+      {isAddingLeave && <Add />}
     </div>
   );
 }

@@ -4,24 +4,42 @@ import RecentInformation from "../../components/admin/dashboard/RecentInformatio
 import { fetchUsers } from "../../redux/features/admin-slices/adminEmployeesSlice";
 import { useEffect } from "react";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
+import API from "../../api/axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Dashboard() {
-  const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees.employees);
-  //   const employees = 30;
+  const { userDetails } = useSelector((state) => state.user);
+  const managerDepartmentId = userDetails.departmentId;
+
+  const {
+    isLoading,
+    error,
+    data: employees,
+  } = useQuery({
+    queryKey: "employees",
+    queryFn: async () => {
+      const response = await API.get("/Users");
+      return response.data.result;
+    },
+  });
+
+  // Filter employees by department
+  const departmentEmployees = employees?.filter(
+    (employee) => employee.department.id === managerDepartmentId
+  );
 
   const cardDetails = [
     {
       heading: "Total Employees",
-      number: employees.length,
+      number: departmentEmployees?.length || 0,
     },
     {
       heading: "On Leave",
-      number: employees.length - 5 < 0 ? 0 : employees.length - 5,
+      number: departmentEmployees?.length ? departmentEmployees.length - 5 : 0,
     },
     {
       heading: "On Duty",
-      number: employees.length - 5 < 0 ? 0 : employees.length - 5,
+      number: departmentEmployees?.length ? departmentEmployees.length - 5 : 0,
     },
   ];
 
@@ -30,15 +48,19 @@ export default function Dashboard() {
       <h2>Dashboard</h2>
 
       {/* top cards container */}
-      <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
-        {cardDetails.map((card, i) => (
-          <Card key={i}>
-            <p className="font-normal text-gray-700">{card.heading}</p>
-            <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900 ">
-              {card.number}
-            </h5>
-          </Card>
-        ))}
+      <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
+        {isLoading ? (
+          <div>loading...</div>
+        ) : (
+          cardDetails.map((card, i) => (
+            <Card key={i}>
+              <p className="font-normal text-gray-700">{card.heading}</p>
+              <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900 ">
+                {card.number}
+              </h5>
+            </Card>
+          ))
+        )}
       </div>
 
       <div className="space-y-4">

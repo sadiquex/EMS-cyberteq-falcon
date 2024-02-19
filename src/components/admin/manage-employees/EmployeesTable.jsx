@@ -59,10 +59,10 @@ export default function EmployeesTable({ editHandler }) {
     try {
       const response = await API.get(`/Users/user-profile/${id}`);
       if (response.status === 200) {
-        setSelectedEmployee(response.data.result);
+        setSelectedEmployee(response.data?.result);
       }
     } catch (error) {
-      toast.error(error.response.data.errorMessages);
+      toast.error(error.response.data?.errorMessages);
       // console.log(error);
     } finally {
       setLoading(false);

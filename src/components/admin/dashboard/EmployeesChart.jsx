@@ -43,16 +43,16 @@ const chartData = {
     {
       label: "On Duty",
       data: Data.map((data) => data.staffOnDuty),
-      backgroundColor: ["#888", "orangered", "#50AF95", "#f3ba2f", "#2a71d0"],
+      backgroundColor: ["#A4A9AD", "#E58F65", "#50AF95", "#F7EE7F", "#FBBFCA"],
       borderColor: "black",
       borderWidth: 2,
     },
     {
       label: "On Leave",
       data: Data.map((data) => data.staffOnLeave),
-      backgroundColor: ["#eee"],
+      backgroundColor: ["#FEEFDD"],
       borderColor: "black",
-      borderWidth: 2,
+      borderWidth: 1,
     },
   ],
 };

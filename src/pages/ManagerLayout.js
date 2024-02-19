@@ -4,8 +4,6 @@ import { Routes, Route } from "react-router-dom";
 // pages
 import CompleteProfile from "./employee/CompleteProfile";
 import Dashboard from "./manager/Dashboard";
-import LeaveStatusTable from "./employee/LeaveStatusTable";
-import ConferenceRoom from "./employee/ConferenceRoom";
 import Lunch from "./employee/Lunch";
 import Profile from "./employee/Profile";
 
@@ -16,6 +14,7 @@ import Header from "../components/_ui/Header";
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
 import Leaves from "./manager/Leaves";
+import EmployeesTable from "../components/manager/EmployeesTable";
 
 function ManagerLayout() {
   return (
@@ -34,11 +33,11 @@ function ManagerLayout() {
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leaves" element={<Leaves />} />
-            <Route path="/leave-status" element={<LeaveStatusTable />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/lunch" element={<Lunch />} />
-            <Route path="/conference-room" element={<ConferenceRoom />} />
+            <Route path="/employees" element={<EmployeesTable />} />
+            {/* <Route path="/conference-room" element={<ConferenceRoom />} /> */}
             <Route path="/*" element={<div>Page not found</div>} />
           </Routes>
         </main>

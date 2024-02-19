@@ -23,11 +23,17 @@ export default function Sidebar() {
       icon: <MdTimeToLeave size={24} />,
       child: "3",
     },
+    {
+      name: "Manage Employees",
+      route: "/manager/employees",
+      icon: <FaUsers size={24} />,
+      child: "",
+    },
   ];
 
   return (
     <div className="fixed">
-      <aside className="z-40 h-screen shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <aside className="z-40 h-screen ">
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-full md:h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium">
             {links.map((link, i) => (

@@ -53,18 +53,18 @@ const LoginPage = () => {
         toast.success("Login successful");
 
         // check role here and display page accordingly
-        const decodedToken = jwtDecode(response.data.result.token);
+        const decodedToken = jwtDecode(response.data?.result.token);
         const role = decodedToken.role;
-        localStorage.setItem("userToken", response.data.result.token);
+        localStorage.setItem("userToken", response.data?.result.token);
         // send data to user state
-        dispatch(updateUserDetails(response.data.result.user));
+        dispatch(updateUserDetails(response.data?.result.user));
         dispatch(updateUserDetails(decodedToken));
 
         // role based routing
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "user") {
-          if (response.data.result.user.profileCompleted) {
+          if (response.data?.result.user.profileCompleted) {
             navigate("/employee/dashboard");
           } else {
             navigate("/change-default-password");
@@ -78,8 +78,8 @@ const LoginPage = () => {
         toast.error("bad request " + response);
       }
     } catch (error) {
-      console.log("Error during login:", error);
-      toast.error(error.response.data.errorMessages);
+      // console.log("Error during login:", error);
+      toast.error(error.response.data?.errorMessages);
     } finally {
       setLoading(false);
     }

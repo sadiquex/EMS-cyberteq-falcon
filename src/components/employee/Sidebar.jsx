@@ -10,7 +10,11 @@ import { logOut } from "../../redux/features/UserSlice";
 export default function Sidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { profileCompleted } = useSelector((state) => state.user?.userDetails);
+  const { profileCompleted, employmentType } = useSelector(
+    (state) => state.user?.userDetails
+  );
+
+  // if employmentType !== 'FTIME', don't show the leave status tab
 
   const links = [
     {
@@ -20,17 +24,22 @@ export default function Sidebar() {
       child: "",
     },
     {
-      name: "Leave Status",
-      route: "/employee/leave-status",
-      icon: <TbStatusChange size={24} />,
-      child: "2",
-    },
-    {
       name: "Profile",
       route: "/employee/profile",
       icon: <FaUser size={24} />,
       child: "",
     },
+    // conditionally include the "Leave Status" tab based on employmentType
+    ...(employmentType === "FTIME"
+      ? [
+          {
+            name: "Leave Status",
+            route: "/employee/leave-status",
+            icon: <TbStatusChange size={24} />,
+            child: "2",
+          },
+        ]
+      : []),
     // conditionally include the "Complete Profile" tab based on profileCompleted
     ...(profileCompleted === "False"
       ? [
