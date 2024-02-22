@@ -1,15 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../../components/_ui/Card";
 import RecentInformation from "../../components/admin/dashboard/RecentInformation";
-import { fetchUsers } from "../../redux/features/admin-slices/adminEmployeesSlice";
 import { useEffect } from "react";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import API from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
+import SlidingImage from "../../components/_ui/SlidingImage";
+import { toast } from "react-toastify";
+import Portals from "../../components/Portals";
 
 export default function Dashboard() {
   const { userDetails } = useSelector((state) => state.user);
   const managerDepartmentId = userDetails.departmentId;
+
+  const { id, profileCompleted } = useSelector(
+    (state) => state.user?.userDetails
+  );
 
   const {
     isLoading,
@@ -23,6 +29,12 @@ export default function Dashboard() {
     },
   });
 
+  useEffect(() => {
+    if (profileCompleted !== "True") {
+      toast.warning("Please complete your profile");
+    }
+  }, []);
+
   // Filter employees by department
   const departmentEmployees = employees?.filter(
     (employee) => employee.department.id === managerDepartmentId
@@ -35,17 +47,19 @@ export default function Dashboard() {
     },
     {
       heading: "On Leave",
-      number: departmentEmployees?.length ? departmentEmployees.length - 5 : 0,
+      number: 0,
     },
     {
       heading: "On Duty",
-      number: departmentEmployees?.length ? departmentEmployees.length - 5 : 0,
+      number: 0,
     },
   ];
 
   return (
     <div className="space-y-4">
       <h2>Dashboard</h2>
+
+      <Portals />
 
       {/* top cards container */}
       <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -65,13 +79,8 @@ export default function Dashboard() {
 
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
-          {/* display image */}
-          <figure className="flex-1">
-            <img
-              className="h-64 object-cover object-top w-[100%] rounded-lg "
-              src="https://thebftonline.com/wp-content/uploads/2022/12/Cyberteq-is-Cybersecurity-Consulting-Company-of-the-Year-again.jpg"
-              alt="company"
-            />
+          <figure className="flex-1 flex items-center justify-center rounded-lg overflow-hidden">
+            <SlidingImage />
           </figure>
 
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">

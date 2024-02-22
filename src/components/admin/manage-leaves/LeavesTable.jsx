@@ -8,7 +8,6 @@ import { ChangeDate } from "../../../utils/utilityFunctions";
 import ViewLeaveDetails from "./ViewLeaveDetails";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { Spinner } from "../../_ui/Spinner";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
@@ -22,14 +21,22 @@ export default function LeavesTable() {
     isError,
     data: leavesData,
   } = useQuery({
-    queryKey: "leavesData", // Query key
+    queryKey: ["leavesData"],
     queryFn: async () => {
       try {
-        // leaves in MY DEPARTMENT
-        const response = await API.get(`/LeaveRequest/leaves-by-manager`);
+        const response = await API.get(`/LeaveRequest`);
 
         if (response.status === 200) {
-          return response.data?.result;
+          console.log(response);
+          // Check if response data is an empty array
+          if (
+            Array.isArray(response.data.result) &&
+            response.data.result.length === 0
+          ) {
+            return []; // Return an empty array
+          } else {
+            return response.data.result;
+          }
         }
       } catch (error) {
         toast.error(error.message);
@@ -77,28 +84,26 @@ export default function LeavesTable() {
           </button>
         ))}
       </div>
+      <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
+        {/* head */}
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+          <tr className="text-[16px]">
+            <th className="py-3">Employee</th>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-      {isLoading ? (
-        <Spinner />
-      ) : isError ? (
-        // Display error message if data fetching fails
-        <div>Error fetching data...</div>
-      ) : (
-        // Display leaves table if data is available
-        <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
-          {/* head */}
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-            <tr className="text-[16px]">
-              <th className="py-3">Employee</th>
-              <th>Leave Type</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          {/* body */}
+        {/* body */}
+        {isLoading ? (
+          // <div>Loading...</div>
+          <tr>
+            <td>Loading...</td>
+          </tr>
+        ) : (
           <tbody>
             {filterLeavesHandler()?.length > 0 ? (
               // Display leaves data if available
@@ -134,13 +139,12 @@ export default function LeavesTable() {
             ) : (
               // Display message if no leaves found
               <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>No leaves...</td>
+                <td colSpan={7}>No leaves from managers...</td>
               </tr>
             )}
           </tbody>
-        </table>
-      )}
-
+        )}
+      </table>
       {/* display leave details */}
       {selectedLeave && (
         <Modal closeModal={closeModal}>

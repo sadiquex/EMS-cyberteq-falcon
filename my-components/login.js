@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../api/axios";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,16 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
+  // state to handle invalid credeitials
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // check if the user has logged in before
+    const hasLoggedInBefore = localStorage.getItem("hasLoggedInBefore");
+    if (hasLoggedInBefore) {
+      navigate("/employee/dashboard");
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -42,36 +51,31 @@ const LoginPage = () => {
       const response = await API.post("/Users/login", data);
       if (response.status === 200) {
         toast.success("Login successful");
+
+        // check role here and display page accordingly
+        const decodedToken = jwtDecode(response.data?.result.token);
+        const role = decodedToken.role;
+        localStorage.setItem("userToken", response.data?.result.token);
         // send data to user state
         dispatch(updateUserDetails(response.data?.result.user));
-        localStorage.setItem("userToken", response.data?.result.token);
-
-        const decodedToken = jwtDecode(response.data?.result.token);
         dispatch(updateUserDetails(decodedToken));
-
-        const role = decodedToken.role;
 
         // role based routing
         if (role === "admin") {
           navigate("/admin/dashboard");
-        }
-        // employee
-        else if (role === "user") {
-          if (decodedToken.profileCompleted !== "True") {
-            navigate("/change-default-password");
-          } else {
+        } else if (role === "user") {
+          if (response.data?.result.user.profileCompleted) {
             navigate("/employee/dashboard");
-          }
-        }
-        // manager
-        else if (role === "manager") {
-          if (decodedToken.profileCompleted !== "True") {
-            // navigate("/change-default-password");
-            navigate("/manager/complete-profile");
           } else {
-            navigate("/manager/dashboard");
+            navigate("/change-default-password");
           }
+        } else if (role === "manager") {
+          navigate("/manager/dashboard");
+        } else {
+          toast.error("invalid role: " + role);
         }
+      } else if (response.status === 400) {
+        toast.error("bad request " + response);
       }
     } catch (error) {
       // console.log("Error during login:", error);
@@ -140,7 +144,7 @@ const LoginPage = () => {
           </h1>
 
           {formFields.map((field, i) => (
-            <div className="mb-4 md:w-1/2" key={i}>
+            <div className="mb-6 md:w-1/2" key={i}>
               <label className="text-sm font-medium text-gray-900 flex flex-col gap-3">
                 {field.label}
                 <input
@@ -162,9 +166,7 @@ const LoginPage = () => {
             </div>
           ))}
 
-          <div className="md:w-1/2 pb-4 flex justify-center items-center">
-            {loading && <Spinner />}
-          </div>
+          {loading && <Spinner />}
 
           <div className="flex justify-between gap-2">
             <button

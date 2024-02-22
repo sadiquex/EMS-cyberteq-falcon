@@ -6,15 +6,36 @@ import { TbStatusChange } from "react-icons/tb";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/features/UserSlice";
+import { useQuery } from "@tanstack/react-query";
+import API from "../../api/axios";
+import { toast } from "react-toastify";
+import { CardSkeleton } from "../_ui/Skeletons";
 
 export default function Sidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { profileCompleted, employmentType } = useSelector(
+  const { id, profileCompleted, employmentType } = useSelector(
     (state) => state.user?.userDetails
   );
 
-  // if employmentType !== 'FTIME', don't show the leave status tab
+  // Fetch user data using React Query
+  const {
+    isLoading: userDataLoading,
+    isError: userDataError,
+    data: userData,
+  } = useQuery({
+    queryKey: ["userData", id], // query for only that current user
+    queryFn: async () => {
+      const response = await API.get(`/Users/user-profile/${id}`);
+      return response.data.result;
+    },
+    enabled: !!id,
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const { profileImageUrl } = userData || {};
 
   const links = [
     {
@@ -57,6 +78,18 @@ export default function Sidebar() {
       <aside className="z-40 bg-primaryColor h-screen shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium w-[50px] md:w-[230px]">
+            {/* profile image */}
+            <div className="flex items-center justify-center mb-4 object-cover">
+              {userDataLoading ? (
+                <CardSkeleton />
+              ) : (
+                <img
+                  className="w-24 h-24 rounded-full p-[2px] bg-red-400 object-cover object-top"
+                  src={profileImageUrl}
+                  alt="Profile image"
+                />
+              )}
+            </div>
             {links.map(
               (link, i) =>
                 // only render the "Complete Profile" tab if profileCompleted is false

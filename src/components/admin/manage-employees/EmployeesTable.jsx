@@ -62,8 +62,8 @@ export default function EmployeesTable({ editHandler }) {
         setSelectedEmployee(response.data?.result);
       }
     } catch (error) {
-      toast.error(error.response.data?.errorMessages);
-      // console.log(error);
+      // toast.error(error.response.data?.errorMessages);
+      toast.warning("Employee must complete their profile details");
     } finally {
       setLoading(false);
     }

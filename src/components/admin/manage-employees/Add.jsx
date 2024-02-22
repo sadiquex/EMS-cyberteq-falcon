@@ -6,6 +6,7 @@ import { addEmployee } from "../../../redux/features/admin-slices/adminEmployees
 import { useEffect, useState } from "react";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
+import { Spinner } from "../../_ui/Spinner";
 
 export default function Add({ setIsAdding }) {
   const { register, handleSubmit, reset } = useForm();
@@ -108,11 +109,7 @@ export default function Add({ setIsAdding }) {
 
   return (
     <Modal closeModal={closeModal}>
-      {loading && (
-        <div className="text-center text-secondaryColor font-bold mb-4">
-          Loading...
-        </div>
-      )}
+      {loading && <Spinner />}
 
       <form onSubmit={handleSubmit(addEmployeeHandler)} className="space-y-4">
         <div className="flex justify-between items-center">

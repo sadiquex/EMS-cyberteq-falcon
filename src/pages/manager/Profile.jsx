@@ -146,7 +146,7 @@ export default function Profile() {
       <div className="flex justify-between items-center w-full">
         <h2>My Details</h2>
         <button className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm px-8 py-2.5 text-center">
-          {/* <Link to="employee/complete-profile">Edit Profile</Link> */}
+          <Link to="/employee/complete-profile">Edit Profile</Link>
         </button>
       </div>
       {/* personal info card */}

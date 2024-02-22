@@ -10,6 +10,7 @@ import Profile from "./employee/Profile";
 import Sidebar from "../components/employee/Sidebar";
 import Header from "../components/_ui/Header";
 import { LeaveProvider } from "../contexts/LeaveContext";
+import SensitiveData from "./employee/SensitiveData";
 
 function EmployeeLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
@@ -27,6 +28,7 @@ function EmployeeLayout() {
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
+            <Route path="/sensitive-data" element={<SensitiveData />} />
             <Route path="/leave" element={<Leave />} />
             {employmentType === "FTIME" && (
               <Route path="/leave-status" element={<LeaveStatusTable />} />

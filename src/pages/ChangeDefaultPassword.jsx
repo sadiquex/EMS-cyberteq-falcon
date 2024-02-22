@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import API from "../api/axios";
 import { toast } from "react-toastify";
+import { Spinner } from "../components/_ui/Spinner";
 
 const formFields = [
   {
@@ -52,9 +53,10 @@ export default function ChangeDefaultPassword() {
   const checkProfileCompleted = () => {
     // if he hasn't completed his profile
     if (profileCompleted !== "True") {
-      window.location.replace("/employee/complete-profile");
+      console.log("please complete your profile");
+      // window.location.replace("/employee/complete-profile");
     } else {
-      navigate("/employee/dashboard");
+      // navigate("/employee/dashboard");
     }
   };
 
@@ -78,11 +80,6 @@ export default function ChangeDefaultPassword() {
     <div className="w-full h-screen flex items-center justify-center rounded-lg ">
       <div className="md:max-w-[60%] h-auto md:min-h-[60vh] bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-          {loading && (
-            <div className="text-center text-secondaryColor font-bold mb-4">
-              Loading...
-            </div>
-          )}
           <h1 className="text-2xl font-bold">Change Password</h1>
 
           {formFields.map((field, i) => (
@@ -116,22 +113,22 @@ export default function ChangeDefaultPassword() {
               </label>
             </div>
           ))}
+          {loading && <Spinner />}
 
           <button
             type="submit"
-            className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+            className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-4"
           >
             Change Password
           </button>
+          <button
+            // type="submit"
+            className="text-primaryColor bg-red-600 hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+            onClick={checkProfileCompleted}
+          >
+            Skip (remove)
+          </button>
         </form>
-
-        <button
-          type="submit"
-          className="text-primaryColor bg-red-600 hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
-          onClick={checkProfileCompleted}
-        >
-          Skip
-        </button>
       </div>
     </div>
   );

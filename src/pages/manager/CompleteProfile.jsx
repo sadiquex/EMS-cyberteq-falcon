@@ -45,7 +45,7 @@ export default function CompleteProfile() {
         dispatch(updateUserDetails(data));
         toast.success("Details updated successfully!");
         // proceed to fill your sensitive information
-        navigate("/manager/sensitive-data");
+        navigate("/employee/sensitive-data");
       } else {
         console.error("failed to update user details:", response.data);
       }

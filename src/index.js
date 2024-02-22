@@ -20,7 +20,7 @@ root.render(
         <PersistGate loading={null} persistor={persistor}>
           <QueryClientProvider client={queryClient}>
             <App />
-            {/* <ReactQueryDevtools /> */}
+            <ReactQueryDevtools />
           </QueryClientProvider>
         </PersistGate>
       </Provider>

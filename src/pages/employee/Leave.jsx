@@ -19,10 +19,10 @@ export default function Leave() {
       try {
         setLoading(true);
         const response = await API.get(`/LeaveType`);
-        setTypesofLeave(response.data.result);
+        setTypesofLeave(response.data?.result);
       } catch (error) {
         // console.log(error);
-        toast.error(error.response.data.errorMessages);
+        toast.error(error.response.data?.errorMessages);
       } finally {
         setLoading(false);
       }

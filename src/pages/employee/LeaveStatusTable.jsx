@@ -11,14 +11,12 @@ import {
   ChangeDate,
   calculateLeaveDuration,
 } from "../../utils/utilityFunctions";
-import { useQuery } from "@tanstack/react-query"; // Import useQuery from react-query
-import { useSelector } from "react-redux";
+import { QueryCache, useMutation, useQuery } from "@tanstack/react-query";
+import { TableSkeleton } from "../../components/_ui/Skeletons";
 
 export default function LeaveStatusTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
-  const { id } = useSelector((state) => state.user?.userDetails);
-  console.log(id);
 
   // Fetch applied leaves using React Query
   const {
@@ -27,7 +25,7 @@ export default function LeaveStatusTable() {
     data: appliedLeaves,
     refetch,
   } = useQuery({
-    queryKey: "appliedLeaves", // Query key
+    queryKey: ["appliedLeaves"],
     queryFn: async () => {
       try {
         const response = await API.get(`/LeaveRequest/`);
@@ -41,7 +39,6 @@ export default function LeaveStatusTable() {
         toast.error(error);
       }
     },
-    retry: false, // Disable automatic retries
   });
 
   useEffect(() => {
@@ -63,7 +60,6 @@ export default function LeaveStatusTable() {
     }
   };
 
-  // delete leave
   const deleteLeaveHandler = async (leaveId) => {
     try {
       const response = await API.delete(`/LeaveRequest/${leaveId}`);
@@ -91,8 +87,8 @@ export default function LeaveStatusTable() {
       </div>
 
       {/* table for displaying leaves statuses */}
-      <div className="w-[350px] md:w-full overflow-x-auto bg-red-500 p-[1px]">
-        {isLoading && <Spinner />}
+      <div className="w-[350px] md:w-full overflow-x-auto ">
+        {isLoading && <TableSkeleton />}
 
         <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
           {/* head */}

@@ -38,6 +38,3 @@ export default function App() {
     </>
   );
 }
-
-// 123456Aa!
-// Secure123.

@@ -9,10 +9,14 @@ import Modal from "../_ui/Modal";
 import EmployeeDetails from "../admin/manage-employees/EmployeeDetails";
 import { TableSkeleton } from "../_ui/Skeletons";
 import { FullScreenSpinner } from "../_ui/Spinner";
+import { useSelector } from "react-redux";
 
 export default function EmployeesTable({ editHandler }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+
+  const { userDetails } = useSelector((state) => state.user);
+  const managerDepartmentId = userDetails.departmentId;
 
   // Fetch employees data using React Query
   const {
@@ -37,7 +41,9 @@ export default function EmployeesTable({ editHandler }) {
     },
   });
 
+  // query employees with the same department id as manager
   const filteredEmployees = employees
+    ?.filter((employee) => employee.department.id === managerDepartmentId)
     ?.filter((employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase())
     )

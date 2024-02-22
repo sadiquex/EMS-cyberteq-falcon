@@ -3,6 +3,8 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./admin/Dashboard";
 import Employees from "./admin/Employees";
+import Leaves from "./admin/Leaves";
+
 import Sidebar from "../components/admin/Sidebar";
 import Header from "../components/_ui/Header";
 
@@ -23,6 +25,7 @@ export default function AdminLayout() {
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
+          <Route path="/leaves" element={<Leaves />} />
 
           <Route path="/*" element={<div>Page not found</div>} />
         </Routes>

@@ -19,9 +19,13 @@ export default function Add() {
     formState: { errors },
   } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
-  const { id, userName, departmentId } = useSelector(
+  const { id, userName, departmentId, role } = useSelector(
     (state) => state.user?.userDetails
   );
+
+  // to route correctly after applying for leave
+  const adjustedRole = role === "user" ? "employee" : role;
+
   const [purpose, setPurpose] = useState("");
 
   // Use the correct syntax for useQuery
@@ -37,8 +41,6 @@ export default function Add() {
     },
   });
 
-  console.log("query user: " + JSON.stringify(userData));
-
   const addNewLeave = async (data) => {
     try {
       const requestData = {
@@ -53,7 +55,9 @@ export default function Add() {
         toast.success("Leave request successful");
         reset();
         setIsAddingLeave(false);
-        navigate("/employee/leave-status");
+
+        // go to leave status after successful request
+        navigate(`/${adjustedRole}/leave-status`);
       }
     } catch (error) {
       console.log(error);
@@ -91,13 +95,13 @@ export default function Add() {
             <h2 className="text-[30px] font-bold text-center text-slate-900">
               Request Leave Form
             </h2>
-            <button
+            {/* <button
               type="button"
               className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
               onClick={addLeaveHandler}
             >
               <IoCloseSharp />
-            </button>
+            </button> */}
           </div>
           <label className="block text-sm font-medium ">
             Leave type <span className="text-red-700">*</span>
@@ -190,6 +194,14 @@ export default function Add() {
             type="submit"
           >
             Send Request
+          </button>
+
+          <button
+            type="button"
+            className="bg-gray-400 text-primaryColor rounded-full ml-4 p-4 hover:brightness-110 min-w-[140px]"
+            onClick={addLeaveHandler}
+          >
+            Cancel
           </button>
         </form>
       )}

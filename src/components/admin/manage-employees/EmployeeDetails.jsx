@@ -12,21 +12,25 @@ export default function EmployeeDetails({ selectedEmployee }) {
   const {
     name,
     age,
-    created,
     userName,
     department,
-    gender,
+    // gender,
     email,
     // id,
     profileImageUrl,
     alternatePhoneNumber,
+    phoneNumber,
     employmentType,
   } = selectedEmployee;
 
-  const { ghanaCardNumber, ssnitNumber, bankAccountNumber, phoneNumber } =
-    sensitiveData ?? {};
-
   const dateOfBirth = ChangeDate(selectedEmployee.dateOfBirth);
+  const dateAdded = ChangeDate(selectedEmployee.created);
+
+  // format gender to capitalize first letter
+  const formattedGender =
+    selectedEmployee.gender &&
+    selectedEmployee.gender.charAt(0).toUpperCase() +
+      selectedEmployee.gender.slice(1);
 
   // user details table
   const userDetailsTable = [
@@ -48,34 +52,15 @@ export default function EmployeeDetails({ selectedEmployee }) {
     },
     {
       title: "Gender",
-      value: gender,
+      value: formattedGender,
     },
     {
       title: "Employment Type",
       value: employmentType,
     },
-  ];
-
-  const otherDetailsTable = [
     {
-      title: "Username",
-      value: userName,
-    },
-    {
-      title: "Alternative Phone No.",
-      value: alternatePhoneNumber,
-    },
-    {
-      title: "SSNIT No.",
-      value: ssnitNumber,
-    },
-    {
-      title: "Bank Acc",
-      value: bankAccountNumber,
-    },
-    {
-      title: "Ghana Card",
-      value: ghanaCardNumber,
+      title: "Date created",
+      value: dateAdded,
     },
   ];
 
@@ -85,8 +70,6 @@ export default function EmployeeDetails({ selectedEmployee }) {
         <h2>Employee Details</h2>
       </div>
       {/* personal info card */}
-
-      {/* <div className="bg-red-200 shadow-xl rounded-lg p-3 flex gap-2 items-center"> */}
       <div className="shadow rounded-lg p-3 grid grid-cols-2 divide-x">
         {/* image and personal info */}
         <div className="flex items-center gap-4">
@@ -132,22 +115,6 @@ export default function EmployeeDetails({ selectedEmployee }) {
             </table>
           </div>
         </div>
-      </div>
-
-      {/* other info */}
-      <div className="w-1/2 rounded-lg p-3 grid grid-cols-2 divide-x shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
-        <table className="text-xs my-3">
-          <tbody>
-            {otherDetailsTable.map((row, i) => (
-              <tr key={i}>
-                <td className="px-2 py-2 text-gray-500 font-semibold whitespace-nowrap">
-                  {row.title}
-                </td>
-                <td className="px-2 py-2">{row.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );
