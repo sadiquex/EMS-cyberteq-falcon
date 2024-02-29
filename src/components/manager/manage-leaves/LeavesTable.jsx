@@ -82,7 +82,7 @@ export default function LeavesTable() {
         <Spinner />
       ) : isError ? (
         // Display error message if data fetching fails
-        <div>Error fetching data...</div>
+        <div>No data found..</div>
       ) : (
         // Display leaves table if data is available
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">

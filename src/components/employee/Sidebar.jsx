@@ -1,11 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
-import { CiLogout } from "react-icons/ci";
 import { TbStatusChange } from "react-icons/tb";
-import { FaUser } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../redux/features/UserSlice";
+import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
@@ -13,7 +10,6 @@ import { CardSkeleton } from "../_ui/Skeletons";
 
 export default function Sidebar() {
   const location = useLocation();
-  const dispatch = useDispatch();
   const { id, profileCompleted, employmentType } = useSelector(
     (state) => state.user?.userDetails
   );
@@ -35,7 +31,7 @@ export default function Sidebar() {
     },
   });
 
-  const { profileImageUrl } = userData || {};
+  const { profileImageUrl, name } = userData || {};
 
   const links = [
     {
@@ -44,12 +40,12 @@ export default function Sidebar() {
       icon: <MdDashboard size={24} />,
       child: "",
     },
-    {
-      name: "Profile",
-      route: "/employee/profile",
-      icon: <FaUser size={24} />,
-      child: "",
-    },
+    // {
+    //   name: "Profile",
+    //   route: "/employee/profile",
+    //   icon: <FaUser size={24} />,
+    //   child: "",
+    // },
     // conditionally include the "Leave Status" tab based on employmentType
     ...(employmentType === "FTIME"
       ? [
@@ -79,17 +75,17 @@ export default function Sidebar() {
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium w-[50px] md:w-[230px]">
             {/* profile image */}
-            <div className="flex items-center justify-center mb-4 object-cover">
+            {/* <div className="flex items-center justify-center mb-4 object-cover">
               {userDataLoading ? (
                 <CardSkeleton />
               ) : (
                 <img
                   className="w-24 h-24 rounded-full p-[2px] bg-red-400 object-cover object-top"
                   src={profileImageUrl}
-                  alt="Profile image"
+                  alt={name}
                 />
               )}
-            </div>
+            </div> */}
             {links.map(
               (link, i) =>
                 // only render the "Complete Profile" tab if profileCompleted is false
@@ -123,16 +119,6 @@ export default function Sidebar() {
                 )
             )}
           </ul>
-          <Link
-            to="/"
-            className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
-            onClick={() => dispatch(logOut())}
-          >
-            <span>
-              <CiLogout />
-            </span>
-            <span className="hidden md:block">Log out</span>
-          </Link>
         </div>
       </aside>
     </div>

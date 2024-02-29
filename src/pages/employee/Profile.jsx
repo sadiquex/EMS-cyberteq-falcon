@@ -3,12 +3,11 @@ import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { ChangeDate } from "../../utils/utilityFunctions";
-import Button from "../../components/_ui/Button";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Profile() {
-  const userDetails = useSelector((state) => state.user?.userDetails);
+  const { userDetails } = useSelector((state) => state.user?.userDetails);
   const { id } = useSelector((state) => state.user?.userDetails);
 
   // Fetch user data using React Query
@@ -63,21 +62,18 @@ export default function Profile() {
 
   const {
     name,
-    age,
-    created,
     userName,
     department,
-    gender,
     dateOfBirth,
     profileImageUrl,
     phoneNumber,
     alternatePhoneNumber,
     employmentType,
-  } = userDetailsData;
+  } = userDetailsData || {};
 
   const { bankAccount, nationalId, tin, ssnit, apexNumber } = sensitiveUserData;
 
-  const email = userDetails.email;
+  const email = userDetails?.email;
   const formattedDateOfBirth = ChangeDate(dateOfBirth);
 
   // format gender to capitalize first letter
@@ -146,7 +142,8 @@ export default function Profile() {
       <div className="flex justify-between items-center w-full">
         <h2>My Details</h2>
         <button className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm px-8 py-2.5 text-center">
-          {/* <Link to="employee/complete-profile">Edit Profile</Link> */}
+          <Link to="manager/complete-profile">Edit Profile</Link>
+          {/* <Link to="">Edit Profile</Link> */}
         </button>
       </div>
       {/* personal info card */}

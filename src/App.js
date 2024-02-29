@@ -10,7 +10,8 @@ import ManagerLayout from "./pages/ManagerLayout";
 
 export default function App() {
   return (
-    <>
+    // <div className="max-w-[1300px] mx-auto">
+    <div>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -35,6 +36,6 @@ export default function App() {
         {/* all other routes */}
         <Route path="/*" element={<div>Page not found</div>} />
       </Routes>
-    </>
+    </div>
   );
 }

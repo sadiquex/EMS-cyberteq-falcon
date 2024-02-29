@@ -1,24 +1,26 @@
-// contains employees' routes
+// file for manager's pages
 
 import { Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 // pages
 import CompleteProfile from "./employee/CompleteProfile";
 import Dashboard from "./manager/Dashboard";
+import Leaves from "./manager/Leaves";
+
 import Lunch from "./employee/Lunch";
 import Profile from "./employee/Profile";
+import SensitiveData from "./employee/SensitiveData";
+import Leave from "./employee/Leave";
 
 // components
 import Sidebar from "../components/manager/Sidebar";
 import Header from "../components/_ui/Header";
+import EmployeesTable from "../components/manager/EmployeesTable";
+import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
-import Leaves from "./manager/Leaves";
-import EmployeesTable from "../components/manager/EmployeesTable";
-import SensitiveData from "./employee/SensitiveData";
-import Leave from "./employee/Leave";
-import LeaveStatusTable from "./employee/LeaveStatusTable";
-import { useSelector } from "react-redux";
 
 function ManagerLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);

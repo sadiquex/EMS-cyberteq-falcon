@@ -1,10 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { MdTimeToLeave } from "react-icons/md";
-import { CiLogout } from "react-icons/ci";
-import { FaUser, FaUsers } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../redux/features/UserSlice";
+import { PiDivideFill } from "react-icons/pi";
+import { FaUsers } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { GrUserWorker } from "react-icons/gr";
 import { useQuery } from "@tanstack/react-query";
 import API from "../../api/axios";
@@ -13,8 +12,7 @@ import { toast } from "react-toastify";
 
 export default function Sidebar() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { id, profileCompleted, employmentType } = useSelector(
+  const { id, name, profileCompleted } = useSelector(
     (state) => state.user?.userDetails
   );
 
@@ -45,10 +43,16 @@ export default function Sidebar() {
       child: "",
     },
     {
-      name: "Leave Requests",
+      name: "Dept. Leaves",
       route: "/manager/leaves",
-      icon: <MdTimeToLeave size={24} />,
+      icon: <PiDivideFill size={24} />,
       child: "3",
+    },
+    {
+      name: "My Leaves",
+      route: "/manager/leaves-status",
+      icon: <MdTimeToLeave size={24} />,
+      child: "",
     },
     {
       name: "Manage Employees",
@@ -56,12 +60,7 @@ export default function Sidebar() {
       icon: <FaUsers size={24} />,
       child: "",
     },
-    {
-      name: "Profile",
-      route: "/manager/profile",
-      icon: <FaUser size={24} />,
-      child: "",
-    },
+
     // conditionally include the "Complete Profile" tab based on profileCompleted
     ...(profileCompleted === "False"
       ? [
@@ -80,18 +79,17 @@ export default function Sidebar() {
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-full md:h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium">
             {/* profile image */}
-            <div className="flex items-center justify-center mb-4 object-cover">
+            {/* <div className="flex items-center justify-center mb-4 object-cover">
               {userDataLoading ? (
                 <CardSkeleton />
               ) : (
                 <img
-                  className="w-24 h-24 rounded-full p-[2px] bg-red-400 object-cover object-top"
+                  className="w-24 h-24 rounded-full object-cover"
                   src={profileImageUrl}
-                  alt="Profile image"
-                  // className="w-16 h-16 rounded-full"
+                  alt={name}
                 />
               )}
-            </div>
+            </div> */}
 
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
@@ -116,7 +114,7 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
-          <Link
+          {/* <Link
             to="/"
             className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
             onClick={() => dispatch(logOut())}
@@ -125,7 +123,7 @@ export default function Sidebar() {
               <CiLogout />
             </span>
             <span className="hidden md:block">Log out</span>
-          </Link>
+          </Link> */}
         </div>
       </aside>
     </div>

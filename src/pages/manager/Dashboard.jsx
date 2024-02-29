@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import SlidingImage from "../../components/_ui/SlidingImage";
 import { toast } from "react-toastify";
 import Portals from "../../components/Portals";
+import { todayDate } from "../../utils/utilityFunctions";
 
 export default function Dashboard() {
   const { userDetails } = useSelector((state) => state.user);
@@ -58,6 +59,14 @@ export default function Dashboard() {
   return (
     <div className="space-y-4">
       <h2>Dashboard</h2>
+
+      {/* user profile card */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1 flex flex-col bg-gray-100 p-3">
+          <p className="text-lg font-bold">Welcome, {userDetails.name}</p>
+          <p className="text-sm">Today is: {todayDate}</p>
+        </div>
+      </div>
 
       <Portals />
 
