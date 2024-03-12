@@ -28,7 +28,9 @@ export default function ChangeDefaultPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { profileCompleted } = useSelector((state) => state.user?.userDetails);
+  const { profileCompleted, role } = useSelector(
+    (state) => state.user?.userDetails
+  );
   const [loading, setLoading] = useState(false);
 
   const {
@@ -50,15 +52,7 @@ export default function ChangeDefaultPassword() {
     }
   };
 
-  const checkProfileCompleted = () => {
-    // if he hasn't completed his profile
-    if (profileCompleted !== "True") {
-      console.log("please complete your profile");
-      // window.location.replace("/employee/complete-profile");
-    } else {
-      // navigate("/employee/dashboard");
-    }
-  };
+  const adjustedRole = role === "user" ? "employee" : role;
 
   const onSubmit = async (data) => {
     try {
@@ -67,7 +61,7 @@ export default function ChangeDefaultPassword() {
       const response = await API.post("/Users/change-password", data);
       if (response.status === 200) {
         toast.success("Password changed");
-        checkProfileCompleted();
+        navigate(`/${adjustedRole}/dashboard`);
       }
     } catch (error) {
       toast.error(error.response.data.errorMessages);
@@ -120,13 +114,6 @@ export default function ChangeDefaultPassword() {
             className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-4"
           >
             Change Password
-          </button>
-          <button
-            // type="submit"
-            className="text-primaryColor bg-red-600 hover:brightness-125 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
-            onClick={checkProfileCompleted}
-          >
-            Skip (remove)
           </button>
         </form>
       </div>

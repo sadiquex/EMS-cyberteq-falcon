@@ -121,9 +121,9 @@ export default function EmployeesTable({ editHandler }) {
                   <td>{employee.employmentType.name}</td>
                   <td className="space-x-2 text-[20px] ">
                     {/* view btn */}
-                    <button onClick={() => viewDetailsHandler(employee.id)}>
+                    {/* <button onClick={() => viewDetailsHandler(employee.id)}>
                       <FaEye />
-                    </button>
+                    </button> */}
                     {/* edit btn */}
                     <button
                       onClick={() => editHandler(employee.id)}

@@ -33,8 +33,6 @@ export default function Sidebar() {
     },
   });
 
-  const { profileImageUrl } = userData || {};
-
   const links = [
     {
       name: "Dashboard",
@@ -48,12 +46,12 @@ export default function Sidebar() {
       icon: <PiDivideFill size={24} />,
       child: "3",
     },
-    {
-      name: "My Leaves",
-      route: "/manager/leaves-status",
-      icon: <MdTimeToLeave size={24} />,
-      child: "",
-    },
+    // {
+    //   name: "My Leaves",
+    //   route: "/manager/leaves-status",
+    //   icon: <MdTimeToLeave size={24} />,
+    //   child: "",
+    // },
     {
       name: "Manage Employees",
       route: "/manager/employees",
@@ -78,19 +76,6 @@ export default function Sidebar() {
       <aside className="z-40 h-screen ">
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-full md:h-[calc(100%-10%)] ">
           <ul className="space-y-6 font-medium">
-            {/* profile image */}
-            {/* <div className="flex items-center justify-center mb-4 object-cover">
-              {userDataLoading ? (
-                <CardSkeleton />
-              ) : (
-                <img
-                  className="w-24 h-24 rounded-full object-cover"
-                  src={profileImageUrl}
-                  alt={name}
-                />
-              )}
-            </div> */}
-
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
                 <Link
@@ -114,16 +99,6 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
-          {/* <Link
-            to="/"
-            className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
-            onClick={() => dispatch(logOut())}
-          >
-            <span>
-              <CiLogout />
-            </span>
-            <span className="hidden md:block">Log out</span>
-          </Link> */}
         </div>
       </aside>
     </div>

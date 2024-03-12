@@ -59,7 +59,7 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
-          <Link
+          {/* <Link
             to="/"
             className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
             onClick={() => dispatch(logOut())}
@@ -68,7 +68,7 @@ export default function Sidebar() {
               <CiLogout />
             </span>
             <span className="hidden md:block">Log out</span>
-          </Link>
+          </Link> */}
         </div>
       </aside>
     </div>

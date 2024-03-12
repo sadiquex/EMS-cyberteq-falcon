@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import CompleteProfile from "./employee/CompleteProfile";
 import Dashboard from "./manager/Dashboard";
 import Leaves from "./manager/Leaves";
-
 import Lunch from "./employee/Lunch";
 import Profile from "./employee/Profile";
 import SensitiveData from "./employee/SensitiveData";
@@ -21,6 +20,7 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
+import ConferenceRoom from "./employee/ConferenceRoom";
 
 function ManagerLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
@@ -52,9 +52,10 @@ function ManagerLayout() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/sensitive-data" element={<SensitiveData />} />
-            <Route path="/lunch" element={<Lunch />} />
             <Route path="/employees" element={<EmployeesTable />} />
-            {/* <Route path="/conference-room" element={<ConferenceRoom />} /> */}
+
+            <Route path="/lunch" element={<Lunch />} />
+            <Route path="/conference-room" element={<ConferenceRoom />} />
             <Route path="/*" element={<div>Page not found</div>} />
           </Routes>
         </main>

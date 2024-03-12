@@ -68,7 +68,7 @@ export default function Portals() {
         return { route: `/${adjustedRole}/lunch`, icon: <FaBowlFood /> };
       case "CONV":
         return {
-          route: "/employee/conference-room",
+          route: `/${adjustedRole}/conference-room`,
           icon: <GiVideoConference size={24} />,
         };
       case "LEAVE":
@@ -84,7 +84,7 @@ export default function Portals() {
   return loading ? (
     <CardSkeleton />
   ) : (
-    <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4 text-white">
+    <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
       {portals?.map((portal, i) => (
         <Link to={portal.route} key={i}>
           <Card>

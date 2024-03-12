@@ -38,6 +38,8 @@ export default function LeavesTable() {
     },
   });
 
+  console.log("dept leaves " + leavesData);
+
   const approveModalHandler = (id) => {
     setIsApproving(!isApproving);
     setSelectedItemId(id); // Set the selectedItemId when the button is clicked
@@ -80,9 +82,6 @@ export default function LeavesTable() {
 
       {isLoading ? (
         <Spinner />
-      ) : isError ? (
-        // Display error message if data fetching fails
-        <div>No data found..</div>
       ) : (
         // Display leaves table if data is available
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
@@ -134,7 +133,7 @@ export default function LeavesTable() {
             ) : (
               // Display message if no leaves found
               <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>No leaves...</td>
+                <td colSpan={7}>No leaves from your dept....</td>
               </tr>
             )}
           </tbody>

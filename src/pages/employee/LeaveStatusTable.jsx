@@ -77,13 +77,13 @@ export default function LeaveStatusTable() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-        <h2>Leave Dashboard</h2>
-        <button
+        <h2>My Leaves</h2>
+        {/* <button
           className="bg-secondaryColor text-primaryColor rounded-lg md:rounded-full p-2 md:p-4 hover:brightness-110"
           onClick={addLeaveHandler}
         >
           + Request For Leave
-        </button>
+        </button> */}
       </div>
 
       {/* table for displaying leaves statuses */}

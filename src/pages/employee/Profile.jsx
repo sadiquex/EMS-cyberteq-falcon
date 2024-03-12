@@ -8,7 +8,9 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Profile() {
   const { userDetails } = useSelector((state) => state.user?.userDetails);
-  const { id } = useSelector((state) => state.user?.userDetails);
+  const { id, role } = useSelector((state) => state.user?.userDetails);
+
+  const adjustedRole = role === "user" ? "employee" : role;
 
   // Fetch user data using React Query
   const {
@@ -39,7 +41,6 @@ export default function Profile() {
         // backend requires you include 'user-data' to the GET request
         `/Users/sensitive-user-data/user-data-${id}`
       );
-      // console.log(response.data?.result);
       return response.data?.result;
     },
     enabled: !!id,
@@ -142,8 +143,7 @@ export default function Profile() {
       <div className="flex justify-between items-center w-full">
         <h2>My Details</h2>
         <button className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm px-8 py-2.5 text-center">
-          <Link to="manager/complete-profile">Edit Profile</Link>
-          {/* <Link to="">Edit Profile</Link> */}
+          <Link to={`/${adjustedRole}/complete-profile`}>Edit Profile</Link>
         </button>
       </div>
       {/* personal info card */}
@@ -151,7 +151,7 @@ export default function Profile() {
         {/* image and personal info */}
         <div className="flex items-center gap-4">
           <img
-            className="w-32 h-32 rounded-full p-1 bg-red-400 object-cover object-top"
+            className="w-32 h-32 rounded-full p-[1px] bg-red-200 object-cover object-top"
             src={profileImageUrl}
             alt={name}
           />
@@ -160,7 +160,7 @@ export default function Profile() {
             <div>
               <h3 className="text-lg font-medium">{name}</h3>
               <p className="text-gray-400 font-semibold">
-                {employmentType} Employee
+                {employmentType + " Employee"}
               </p>
             </div>
             {/* id */}
@@ -196,11 +196,11 @@ export default function Profile() {
         <table className="my-3">
           <tbody>
             {sensitiveDataTable.map((row, i) => (
-              <tr key={i}>
-                <td className="px-2 py-2 text-gray-500 font-semibold whitespace-nowrap">
+              <tr key={i} className="whitespace-nowrap">
+                <td className="px-2 py-2 text-gray-500 font-semibold">
                   {row.title}
                 </td>
-                <td className="px-2 py-2">{row.value}</td>
+                <td className="px-2 py-2 ">{row.value}</td>
               </tr>
             ))}
           </tbody>

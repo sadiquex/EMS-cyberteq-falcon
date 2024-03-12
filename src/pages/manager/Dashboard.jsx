@@ -62,9 +62,9 @@ export default function Dashboard() {
 
       {/* user profile card */}
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 flex flex-col bg-gray-100 p-3">
+        <div className="flex-1 flex flex-col gap-2 bg-gray-100 p-3">
           <p className="text-lg font-bold">Welcome, {userDetails.name}</p>
-          <p className="text-sm">Today is: {todayDate}</p>
+          <p className="text-md">Today: {todayDate}</p>
         </div>
       </div>
 

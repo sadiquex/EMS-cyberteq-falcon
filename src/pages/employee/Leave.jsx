@@ -7,6 +7,7 @@ import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
 import LeavesChart from "../../components/employee/leaves/LeavesChart";
+import LeaveStatusTable from "./LeaveStatusTable";
 
 export default function Leave() {
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
@@ -47,7 +48,7 @@ export default function Leave() {
         {loading ? (
           <CardSkeleton />
         ) : (
-          <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-900">
+          <div className=" md:max-w-[1100px] grid grid-cols-1 md:grid-cols-4 gap-4 text-gray-900">
             {typesofLeave?.map((leave, i) => (
               <Link to={leave.route} key={i}>
                 <Card cardType="">
@@ -61,6 +62,11 @@ export default function Leave() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* render leaves status table */}
+      <div className="pt-6">
+        <LeaveStatusTable />
       </div>
 
       {/* adding leave */}

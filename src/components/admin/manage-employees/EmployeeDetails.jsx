@@ -1,14 +1,6 @@
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Button from "../../_ui/Button";
 import { ChangeDate } from "../../../utils/utilityFunctions";
 
 export default function EmployeeDetails({ selectedEmployee }) {
-  const [userData, setUserData] = useState(null);
-  const [sensitiveData, setSensitiveData] = useState(null);
-  const [loading, setLoading] = useState(false);
-
   const {
     name,
     age,
@@ -21,7 +13,7 @@ export default function EmployeeDetails({ selectedEmployee }) {
     alternatePhoneNumber,
     phoneNumber,
     employmentType,
-  } = selectedEmployee;
+  } = selectedEmployee || {};
 
   const dateOfBirth = ChangeDate(selectedEmployee.dateOfBirth);
   const dateAdded = ChangeDate(selectedEmployee.created);
@@ -41,10 +33,6 @@ export default function EmployeeDetails({ selectedEmployee }) {
     {
       title: "Phone",
       value: phoneNumber,
-    },
-    {
-      title: "Address",
-      value: "--",
     },
     {
       title: "Email",
@@ -74,7 +62,7 @@ export default function EmployeeDetails({ selectedEmployee }) {
         {/* image and personal info */}
         <div className="flex items-center gap-4">
           <img
-            className="w-32 h-32 rounded-full p-1 bg-red-400 object-cover object-top"
+            className="w-32 h-32 rounded-full object-cover object-top"
             src={profileImageUrl}
             alt={name}
           />
@@ -88,10 +76,10 @@ export default function EmployeeDetails({ selectedEmployee }) {
             </div>
             {/* id */}
             <div>
-              <h3 className="text-lg font-medium">ID: INT 123-456</h3>
-              <p className="text-gray-400 text-xs font-semibold">
+              <h3 className="text-lg font-medium">Department: {department}</h3>
+              {/* <p className="text-gray-400 text-xs font-semibold">
                 {department}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -99,16 +87,18 @@ export default function EmployeeDetails({ selectedEmployee }) {
         {/* line divider here */}
 
         {/* contact info */}
-        <div className=" h-full flex-1">
+        <div className="flex-1">
           <div className="p-2">
             <table className="text-xs my-3">
               <tbody>
                 {userDetailsTable.map((row, i) => (
                   <tr key={i}>
-                    <td className="px-2 py-2 text-gray-500 font-semibold">
+                    <td className="px-2 py-2 font-semibold md:text-sm lg:text-lg">
                       {row.title}
                     </td>
-                    <td className="px-2 py-2">{row.value}</td>
+                    <td className="px-2 py-2 sm:text-sm lg:text-lg">
+                      {row.value}
+                    </td>
                   </tr>
                 ))}
               </tbody>

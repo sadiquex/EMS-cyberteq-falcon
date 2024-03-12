@@ -10,7 +10,11 @@ export default function Card({ children, cardType }) {
         ? "bg-secondaryColor hover:bg-secondaryColor"
         : "bg-white"
     }
-    ${cardType === "displayCard" ? "" : "bg-white"}
+    ${
+      cardType === "displayCard"
+        ? ""
+        : "bg-orange-50 hover:bg-orange-500 hover:text-white transition-all duration-400 ease"
+    }
     ${cardType === "imageCard" ? "p-0" : ""}
     ${
       cardType === "textCard"

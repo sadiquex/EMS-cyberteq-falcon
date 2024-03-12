@@ -40,25 +40,31 @@ const LoginPage = () => {
       setLoading(true);
 
       const response = await API.post("/Users/login", data);
-      if (response.status === 200) {
+      if (response?.status === 200) {
         toast.success("Login successful");
         // send data to user state
-        dispatch(updateUserDetails(response.data?.result.user));
-        localStorage.setItem("userToken", response.data?.result.token);
+        dispatch(updateUserDetails(response?.data?.result.user));
+        localStorage.setItem("userToken", response?.data?.result.token);
 
-        const decodedToken = jwtDecode(response.data?.result.token);
+        const decodedToken = jwtDecode(response?.data?.result.token);
         dispatch(updateUserDetails(decodedToken));
 
-        const role = decodedToken.role;
+        const role = decodedToken?.role;
 
         // role based routing
         if (role === "admin") {
-          navigate("/admin/dashboard");
+          if (decodedToken.profileCompleted !== "True") {
+            // navigate("/change-default-password");
+            navigate("/admin/complete-profile");
+          } else {
+            navigate("/admin/dashboard");
+          }
         }
         // employee
         else if (role === "user") {
           if (decodedToken.profileCompleted !== "True") {
-            navigate("/change-default-password");
+            // navigate("/change-default-password");
+            navigate("/employee/complete-profile");
           } else {
             navigate("/employee/dashboard");
           }
@@ -75,7 +81,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       // console.log("Error during login:", error);
-      toast.error(error.response.data?.errorMessages);
+      toast.error(error.response?.data?.errorMessages);
     } finally {
       setLoading(false);
     }

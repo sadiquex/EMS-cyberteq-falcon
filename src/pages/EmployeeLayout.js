@@ -44,6 +44,8 @@ function EmployeeLayout() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/lunch" element={<Lunch />} />
             <Route path="/conference-room" element={<ConferenceRoom />} />
+
+            {/* all other routes */}
             <Route
               path="/*"
               element={<Navigate to="/employee/dashboard" replace />}

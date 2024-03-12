@@ -31,6 +31,7 @@ export default function Dashboard() {
           <p className="text-sm">Today is: {todayDate}</p>
         </div>
       </div>
+      {/* display portals */}
       <Portals />
 
       {/* 1st grid layer */}

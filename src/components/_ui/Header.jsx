@@ -14,7 +14,7 @@ export default function Header() {
 
   const userDetails = useSelector((state) => state.user?.userDetails);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  console.log(userDetails);
+  // console.log(userDetails);
 
   const { role, id } = userDetails;
 
