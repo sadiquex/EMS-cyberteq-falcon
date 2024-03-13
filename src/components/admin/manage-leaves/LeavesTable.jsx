@@ -8,6 +8,7 @@ import { ChangeDate } from "../../../utils/utilityFunctions";
 import ViewLeaveDetails from "./ViewLeaveDetails";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { TableSkeleton } from "../../_ui/Skeletons";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
@@ -27,7 +28,6 @@ export default function LeavesTable() {
         const response = await API.get(`/LeaveRequest`);
 
         if (response.status === 200) {
-          console.log(response);
           // Check if response data is an empty array
           if (
             Array.isArray(response.data.result) &&
@@ -84,26 +84,25 @@ export default function LeavesTable() {
           </button>
         ))}
       </div>
-      <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
-        {/* head */}
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-          <tr className="text-[16px]">
-            <th className="py-3">Employee</th>
-            <th>Leave Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        {/* body */}
-        {isLoading ? (
-          // <div>Loading...</div>
-          <tr>
-            <td>Loading...</td>
-          </tr>
-        ) : (
+      {isLoading ? (
+        // Show loader if data is loading
+        <TableSkeleton />
+      ) : isError ? (
+        <div>Error loading leaves</div>
+      ) : (
+        <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
+          {/* head */}
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <tr className="text-[16px]">
+              <th className="py-3">Employee</th>
+              <th>Leave Type</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          {/* body */}
           <tbody>
             {filterLeavesHandler()?.length > 0 ? (
               // Display leaves data if available
@@ -138,13 +137,13 @@ export default function LeavesTable() {
               ))
             ) : (
               // Display message if no leaves found
-              <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>No leaves from managers...</td>
+              <tr className="bg-white border-b text-lg hover:bg-gray-50 ">
+                <td colSpan={6}>No leaves from managers...</td>
               </tr>
             )}
           </tbody>
-        )}
-      </table>
+        </table>
+      )}
       {/* display leave details */}
       {selectedLeave && (
         <Modal closeModal={closeModal}>

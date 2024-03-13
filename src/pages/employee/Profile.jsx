@@ -7,8 +7,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Profile() {
-  const { userDetails } = useSelector((state) => state.user?.userDetails);
-  const { id, role } = useSelector((state) => state.user?.userDetails);
+  const { id, role, email } = useSelector((state) => state.user?.userDetails);
 
   const adjustedRole = role === "user" ? "employee" : role;
 
@@ -74,7 +73,6 @@ export default function Profile() {
 
   const { bankAccount, nationalId, tin, ssnit, apexNumber } = sensitiveUserData;
 
-  const email = userDetails?.email;
   const formattedDateOfBirth = ChangeDate(dateOfBirth);
 
   // format gender to capitalize first letter

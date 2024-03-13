@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "../../_ui/Spinner";
 
 export default function Add() {
   const navigate = useNavigate();
@@ -28,7 +29,6 @@ export default function Add() {
 
   const [purpose, setPurpose] = useState("");
 
-  // Use the correct syntax for useQuery
   const {
     isLoading,
     error,
@@ -41,6 +41,7 @@ export default function Add() {
     },
   });
 
+  // collect leave request data for api
   const addNewLeave = async (data) => {
     try {
       const requestData = {
@@ -83,25 +84,29 @@ export default function Add() {
     }
   }, [watch("leaveTypeId")]);
 
+  // validation to ensure end date is not earlier than start date
+  const onSubmitLeave = (data) => {
+    const { startDate, endDate } = data;
+    if (new Date(endDate) < new Date(startDate)) {
+      // If end date is earlier than start date, set an error
+      return toast.error("End date cannot be earlier than Start date");
+    }
+    // pass the data to the addNewLeave function
+    addNewLeave(data);
+  };
+
   return (
     <Modal closeModal={addLeaveHandler}>
       {isLoading ? (
-        <div>Loading...</div>
+        <Spinner />
       ) : error ? (
         <div>Error: {error.message}</div>
       ) : (
-        <form onSubmit={handleSubmit(addNewLeave)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmitLeave)} className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-[30px] font-bold text-center text-slate-900">
               Request Leave Form
             </h2>
-            {/* <button
-              type="button"
-              className="end-2.5 text-black bg-gray-100 hover:bg-gray-300 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-              onClick={addLeaveHandler}
-            >
-              <IoCloseSharp />
-            </button> */}
           </div>
           <label className="block text-sm font-medium ">
             Leave type <span className="text-red-700">*</span>

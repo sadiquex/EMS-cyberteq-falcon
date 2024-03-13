@@ -86,7 +86,7 @@ export default function Dashboard() {
         {/* Second column */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-blue-100 rounded-lg">
-            Some other content here
+            {/* Some other content here */}.
           </div>
 
           <div className="flex-1 max-h-64 overflow-y-scroll bg-gray-200 rounded-lg">

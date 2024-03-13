@@ -13,7 +13,7 @@ export default function Card({ children, cardType }) {
     ${
       cardType === "displayCard"
         ? ""
-        : "bg-orange-50 hover:bg-orange-500 hover:text-white transition-all duration-400 ease"
+        : "bg-orange-50 hover:bg-gray-100 hover:text-white transition-all duration-400 ease"
     }
     ${cardType === "imageCard" ? "p-0" : ""}
     ${

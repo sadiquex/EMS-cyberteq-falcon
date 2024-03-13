@@ -54,7 +54,6 @@ export default function EmployeesTable({ editHandler }) {
     // const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
     // setSelectedEmployee(employee);
 
-    // hit the employee details endpoint
     setLoading(true);
     try {
       const response = await API.get(`/Users/user-profile/${id}`);
@@ -119,7 +118,6 @@ export default function EmployeesTable({ editHandler }) {
                 <th>Email</th>
                 <th>Department</th>
                 <th>Employment Type</th>
-                {/* <th>Date Added</th> */}
                 <th>Actions</th>
               </tr>
             </thead>
@@ -172,7 +170,8 @@ export default function EmployeesTable({ editHandler }) {
             </tbody>
           </table>
         ) : (
-          <p>Sorry, no employee found</p>
+          // <p>Sorry, no employee found</p>
+          <TableSkeleton />
         )}
       </div>
 
@@ -183,7 +182,6 @@ export default function EmployeesTable({ editHandler }) {
         selectedEmployee && (
           <Modal type="employeeDetails" closeModal={closeModal}>
             <EmployeeDetails selectedEmployee={selectedEmployee} />
-            {/* <ViewEmployeeDetails selectedEmployee={selectedEmployee} /> */}
           </Modal>
         )
       )}

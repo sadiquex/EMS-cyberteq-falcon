@@ -38,8 +38,6 @@ export default function LeavesTable() {
     },
   });
 
-  console.log("dept leaves " + leavesData);
-
   const approveModalHandler = (id) => {
     setIsApproving(!isApproving);
     setSelectedItemId(id); // Set the selectedItemId when the button is clicked

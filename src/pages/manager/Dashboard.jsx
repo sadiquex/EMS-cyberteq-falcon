@@ -9,6 +9,7 @@ import SlidingImage from "../../components/_ui/SlidingImage";
 import { toast } from "react-toastify";
 import Portals from "../../components/Portals";
 import { todayDate } from "../../utils/utilityFunctions";
+import { Spinner } from "../../components/_ui/Spinner";
 
 export default function Dashboard() {
   const { userDetails } = useSelector((state) => state.user);
@@ -73,7 +74,7 @@ export default function Dashboard() {
       {/* top cards container */}
       <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
         {isLoading ? (
-          <div>loading...</div>
+          <Spinner />
         ) : (
           cardDetails.map((card, i) => (
             <Card key={i}>

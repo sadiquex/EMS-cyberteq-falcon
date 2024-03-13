@@ -9,7 +9,12 @@ import { toast } from "react-toastify";
 import { Spinner } from "../../_ui/Spinner";
 
 export default function Add({ setIsAdding }) {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
   const [employmentTypes, setEmploymentTypes] = useState([]);
@@ -90,8 +95,7 @@ export default function Add({ setIsAdding }) {
 
       const response = await API.post("/Users/register-user", newEmployee);
       if (response.status === 200) {
-        // console.log("successfully added", response.data);
-        toast.success("employee successfully added");
+        toast.success("Employee successfully added");
 
         dispatch(addEmployee(newEmployee));
         reset(); // clear the form fields
@@ -158,11 +162,24 @@ export default function Add({ setIsAdding }) {
         <label className="block text-sm font-medium ">
           Phone Number <span className="text-red-600">*</span>
           <input
-            type="tel"
-            {...register("phoneNumber")}
-            placeholder="+233 50 369 9012"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+            type="number"
+            {...register("phoneNumber", {
+              required: "Phone number is required",
+              pattern: {
+                value: /^\d{10}$/,
+                message: "Please enter a valid 10-digit phone number",
+              },
+            })}
+            placeholder="0503699012"
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 ${
+              errors.phoneNumber ? "border-red-500" : ""
+            }`}
           />
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.phoneNumber.message}
+            </p>
+          )}
         </label>
         {/* role */}
         <label className="block text-sm font-medium ">
@@ -198,9 +215,7 @@ export default function Add({ setIsAdding }) {
         {/* employee type*/}
         <label className="block text-sm font-medium ">
           Employment Type <span className="text-red-600">*</span>
-          {loading ? (
-            <div>loading...</div>
-          ) : (
+          {
             <select
               {...register("employmentTypeId")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
@@ -212,14 +227,14 @@ export default function Add({ setIsAdding }) {
                 </option>
               ))}
             </select>
-          )}
+          }
         </label>
 
         <button
           className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"
           type="submit"
         >
-          Add
+          {loading ? <Spinner /> : "Add"}
         </button>
       </form>
     </Modal>

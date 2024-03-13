@@ -41,7 +41,7 @@ const LoginPage = () => {
 
       const response = await API.post("/Users/login", data);
       if (response?.status === 200) {
-        toast.success("Login successful");
+        // toast.success("Login successful");
         // send data to user state
         dispatch(updateUserDetails(response?.data?.result.user));
         localStorage.setItem("userToken", response?.data?.result.token);
@@ -113,7 +113,8 @@ const LoginPage = () => {
               <img
                 src="https://media.licdn.com/dms/image/C4E0BAQEesPIaxnBiAg/company-logo_200_200/0/1677239200791?e=2147483647&v=beta&t=oX4AuTtqmATxNQuPJJvZNdnJZqJxROJFQV4Tyd7n3Lg"
                 alt="logo"
-                className="w-[80px] h-[80px] object-cover rounded-full animate-bounce"
+                className="w-[80px] h-[80px] object-cover rounded-full"
+                // animate-bounce
               />
             </div>
 

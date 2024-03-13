@@ -15,20 +15,11 @@ export default function SlidingImage() {
     setCurrentSlide(index);
   };
 
-  const handleMouseEnter = () => {
-    clearInterval(interval);
-    setIsPaused(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsPaused(false);
-  };
-
   useEffect(() => {
     if (!isPaused) {
       interval = setInterval(() => {
         setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
-      }, 1600);
+      }, 2000);
     }
     return () => clearInterval(interval);
   }, [isPaused]);
@@ -36,10 +27,15 @@ export default function SlidingImage() {
   return (
     <div className="relative w-full h-full overflow-hidden">
       <div
-        className="flex transition-transform duration-800 ease-in-out"
+        className="flex transition-transform duration-1000 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        // hover the slider
+        onMouseEnter={() => {
+          clearInterval(interval);
+          setIsPaused(true);
+        }}
+        // unhover the slider
+        onMouseLeave={() => setIsPaused(false)}
       >
         {images.map((image, index) => (
           <img

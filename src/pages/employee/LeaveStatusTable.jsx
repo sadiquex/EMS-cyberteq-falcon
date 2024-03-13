@@ -11,7 +11,7 @@ import {
   ChangeDate,
   calculateLeaveDuration,
 } from "../../utils/utilityFunctions";
-import { QueryCache, useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { TableSkeleton } from "../../components/_ui/Skeletons";
 
 export default function LeaveStatusTable() {
