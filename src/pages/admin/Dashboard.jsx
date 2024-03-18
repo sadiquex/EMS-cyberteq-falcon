@@ -54,7 +54,6 @@ export default function Dashboard() {
 
       {/* Display loading indicator while data is fetching */}
       {isLoading ? (
-        // <div>Loading...</div>
         <CardSkeleton />
       ) : isError ? (
         // Display error message if data fetching fails
@@ -80,7 +79,7 @@ export default function Dashboard() {
             <SlidingImage />
           </figure>
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
-            <EmployeesChart />
+            {employees && <EmployeesChart employees={employees} />}
           </div>
         </div>
         {/* Second column */}

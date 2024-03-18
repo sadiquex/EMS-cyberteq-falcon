@@ -31,8 +31,6 @@ export default function Sidebar() {
     },
   });
 
-  const { profileImageUrl, name } = userData || {};
-
   const links = [
     {
       name: "Dashboard",
@@ -71,21 +69,9 @@ export default function Sidebar() {
 
   return (
     <div className="fixed">
-      <aside className="z-40 bg-primaryColor h-screen shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+      <aside className="z-40 bg-primaryColor h-screen">
         <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-[calc(100%-10%)] ">
-          <ul className="space-y-6 font-medium w-[50px] md:w-[230px]">
-            {/* profile image */}
-            {/* <div className="flex items-center justify-center mb-4 object-cover">
-              {userDataLoading ? (
-                <CardSkeleton />
-              ) : (
-                <img
-                  className="w-24 h-24 rounded-full p-[2px] bg-red-400 object-cover object-top"
-                  src={profileImageUrl}
-                  alt={name}
-                />
-              )}
-            </div> */}
+          <ul className="space-y-6 font-medium w-[50px] md:w-[230px] transition-all duration-300">
             {links.map(
               (link, i) =>
                 // only render the "Complete Profile" tab if profileCompleted is false

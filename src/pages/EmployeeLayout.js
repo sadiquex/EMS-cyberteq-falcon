@@ -19,6 +19,7 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contects
 import { LeaveProvider } from "../contexts/LeaveContext";
+import ChangeDefaultPassword from "./ChangeDefaultPassword";
 
 function EmployeeLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
@@ -46,10 +47,7 @@ function EmployeeLayout() {
             <Route path="/conference-room" element={<ConferenceRoom />} />
 
             {/* all other routes */}
-            <Route
-              path="/*"
-              element={<Navigate to="/employee/dashboard" replace />}
-            />
+            <Route path="/*" element={<div>Page not found</div>} />
           </Routes>
         </main>
       </LeaveProvider>

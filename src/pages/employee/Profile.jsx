@@ -58,7 +58,6 @@ export default function Profile() {
   }, [userDataError, sensitiveDataError]);
 
   const userDetailsData = userData ?? {};
-  const sensitiveUserData = sensitiveData ?? {};
 
   const {
     name,
@@ -71,7 +70,8 @@ export default function Profile() {
     employmentType,
   } = userDetailsData || {};
 
-  const { bankAccount, nationalId, tin, ssnit, apexNumber } = sensitiveUserData;
+  const { bankAccount, nationalId, tin, ssnit, apexNumber } =
+    sensitiveData ?? {};
 
   const formattedDateOfBirth = ChangeDate(dateOfBirth);
 

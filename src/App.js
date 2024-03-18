@@ -1,39 +1,51 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminLayout from "./pages/AdminLayout";
 import EmployeeLayout from "./pages/EmployeeLayout";
+import ManagerLayout from "./pages/ManagerLayout";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import ChangeDefaultPassword from "./pages/ChangeDefaultPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ManagerLayout from "./pages/ManagerLayout";
+import { useSelector } from "react-redux";
 
 export default function App() {
+  const isAuthenticated = useSelector((state) => state.user?.userDetails);
+
   return (
-    // <div className="max-w-[1300px] mx-auto">
     <div>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<LoginPage />} />
 
-        {/* protected routes */}
+        {/* Routes for admin */}
         <Route element={<ProtectedRoutes allowedRoles={["admin"]} />}>
           <Route element={<AdminLayout />} path="/admin/*" />
         </Route>
 
+        {/* Routes for user */}
         <Route element={<ProtectedRoutes allowedRoles={["user"]} />}>
           <Route element={<EmployeeLayout />} path="/employee/*" />
-          <Route
-            path="/change-default-password"
-            element={<ChangeDefaultPassword />}
-          />
         </Route>
 
+        {/* Routes for manager */}
         <Route element={<ProtectedRoutes allowedRoles={["manager"]} />}>
           <Route element={<ManagerLayout />} path="/manager/*" />
         </Route>
 
-        {/* all other routes */}
+        {/* Route for change default password */}
+        <Route
+          path="/change-default-password"
+          element={
+            isAuthenticated ? (
+              <ChangeDefaultPassword />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        {/* Page not found */}
         <Route path="/*" element={<div>Page not found</div>} />
       </Routes>
     </div>

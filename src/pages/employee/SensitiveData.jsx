@@ -14,10 +14,12 @@ export default function SensitiveData() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
   const navigate = useNavigate();
-  const { id } = useSelector((state) => state.user?.userDetails);
+  const { role, id } = useSelector((state) => state.user?.userDetails);
+
+  const adjustedRole = role === "user" ? "employee" : role;
+
   const [loading, setLoading] = useState(false);
 
   const sensitiveDataFields = [
@@ -26,7 +28,7 @@ export default function SensitiveData() {
       label: "Bank Account Number",
       type: "number",
       placeholder: "eg: **** **** **** ****",
-      errorMessage: "Bank account number is required",
+      errorMessage: "Please enter your bank account number",
     },
     {
       name: "nationalId",
@@ -75,9 +77,8 @@ export default function SensitiveData() {
         setLoading(false);
         // dispatch(updateUserDetails(data));
         toast.success("Sensitive information updated");
-        toast.success("Please login again");
-        dispatch(logOut());
-        // navigate("/employee/dashboard");
+        // dispatch(logOut());
+        navigate(`/${adjustedRole}/dashboard`);
       } else {
         console.error(
           "Failed to update sensitive user details:",

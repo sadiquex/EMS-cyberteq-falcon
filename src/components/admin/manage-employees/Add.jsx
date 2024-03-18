@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../../redux/features/admin-slices/adminEmployeesSlice";
 import { useEffect, useState } from "react";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { Spinner } from "../../_ui/Spinner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Add({ setIsAdding }) {
   const {
@@ -15,16 +14,16 @@ export default function Add({ setIsAdding }) {
     reset,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees);
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   // GET - departments, roles and employment types
   useEffect(() => {
     const fetchData = async () => {
+      // cancel ongoing requests when the component unmounts
       const controller = new AbortController();
       setLoading(true);
 
@@ -36,6 +35,7 @@ export default function Add({ setIsAdding }) {
             API.get("/Role", { signal: controller.signal }),
           ]);
 
+        // cancel ongoin request when the component unmounts
         if (!controller.signal.aborted) {
           setEmploymentTypes(employmentTypesResponse.data.result);
           setDepartments(departmentsResponse.data.result);
@@ -62,6 +62,8 @@ export default function Add({ setIsAdding }) {
       controller.abort();
     };
   }, []);
+
+  const closeModal = () => setIsAdding(false);
 
   const addEmployeeHandler = async (data) => {
     const {
@@ -94,10 +96,12 @@ export default function Add({ setIsAdding }) {
       setLoading(true);
 
       const response = await API.post("/Users/register-user", newEmployee);
-      if (response.status === 200) {
+      console.log(response);
+      if (response.data) {
         toast.success("Employee successfully added");
+        // invalidate query to refetch employees
+        queryClient.invalidateQueries("employees");
 
-        dispatch(addEmployee(newEmployee));
         reset(); // clear the form fields
         setLoading(false);
         setIsAdding(false);
@@ -108,8 +112,6 @@ export default function Add({ setIsAdding }) {
       setLoading(false);
     }
   };
-
-  const closeModal = () => setIsAdding(false);
 
   return (
     <Modal closeModal={closeModal}>

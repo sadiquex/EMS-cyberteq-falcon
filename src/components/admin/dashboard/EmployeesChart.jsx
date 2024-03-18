@@ -4,60 +4,56 @@ import { Bar, Pie } from "react-chartjs-2";
 
 Chart.register(CategoryScale);
 
-const Data = [
-  {
-    id: 3,
-    department: "Falcon",
-    staffOnDuty: 7,
-    staffOnLeave: 2,
-  },
-  {
-    id: 4,
-    department: "InfoSec",
-    staffOnDuty: 4,
-    staffOnLeave: 3,
-  },
-  {
-    id: 5,
-    department: "SOC",
-    staffOnDuty: 13,
-    staffOnLeave: 4,
-  },
-  {
-    id: 5,
-    department: "Sales",
-    staffOnDuty: 6,
-    staffOnLeave: 0,
-  },
-  {
-    id: 5,
-    department: "Offensive",
-    staffOnDuty: 9,
-    staffOnLeave: 3,
-  },
-];
+export default function EmployeesChart({ employees }) {
+  employees?.forEach((emp) => console.log(emp.department));
 
-const chartData = {
-  labels: Data.map((data) => data.department),
-  datasets: [
+  const Data = [
     {
-      label: "On Duty",
-      data: Data.map((data) => data.staffOnDuty),
-      backgroundColor: ["#A4A9AD", "#E58F65", "#50AF95", "#F7EE7F", "#FBBFCA"],
-      borderColor: "transparent",
-      borderWidth: 2,
+      id: 3,
+      department: "Falcon",
+      staffOnDuty: 7,
+      staffOnLeave: 2,
     },
     {
-      label: "On Leave",
-      data: Data.map((data) => data.staffOnLeave),
-      backgroundColor: ["#FEEFDD"],
-      borderColor: "#777",
-      borderWidth: 1,
+      id: 4,
+      department: "InfoSec",
+      staffOnDuty: 4,
+      staffOnLeave: 3,
     },
-  ],
-};
+    {
+      id: 5,
+      department: "SOC",
+      staffOnDuty: 13,
+      staffOnLeave: 4,
+    },
+  ];
 
-export default function EmployeesChart() {
+  const chartData = {
+    labels: Data.map((data) => data.department),
+    datasets: [
+      {
+        label: "On Duty",
+        data: Data.map((data) => data.staffOnDuty),
+        backgroundColor: [
+          "#A4A9AD",
+          "#E58F65",
+          "#50AF95",
+          "#F7EE7F",
+          "#FBBFCA",
+        ],
+        borderColor: "transparent",
+        borderWidth: 2,
+      },
+      {
+        label: "On Leave",
+        data: Data.map((data) => data.staffOnLeave),
+        backgroundColor: ["#FEEFDD"],
+        borderColor: "#777",
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div className="w-full h-full flex items-center justify-center">
       <Bar

@@ -1,14 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { MdTimeToLeave } from "react-icons/md";
-import { CiLogout } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../redux/features/UserSlice";
 
 export default function Sidebar() {
   const location = useLocation();
-  const dispatch = useDispatch();
 
   const links = [
     {
@@ -34,8 +30,8 @@ export default function Sidebar() {
   return (
     <div className="fixed">
       <aside className="z-40 h-screen ">
-        <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-full md:h-[calc(100%-10%)] ">
-          <ul className="space-y-6 font-medium">
+        <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-full md:h-[calc(100%-10%)]">
+          <ul className="space-y-6 font-medium w-[50px] md:w-[230px] transition-all duration-300">
             {links.map((link, i) => (
               <li key={i} className="border-2 border-gray-200 border-dashed">
                 <Link
@@ -59,16 +55,6 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
-          {/* <Link
-            to="/"
-            className="mb-10 py-4 text-primaryColor flex justify-center gap-1 bg-secondaryColor"
-            onClick={() => dispatch(logOut())}
-          >
-            <span>
-              <CiLogout />
-            </span>
-            <span className="hidden md:block">Log out</span>
-          </Link> */}
         </div>
       </aside>
     </div>

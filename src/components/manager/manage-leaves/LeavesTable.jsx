@@ -26,7 +26,8 @@ export default function LeavesTable() {
     queryFn: async () => {
       try {
         // leaves in MY DEPARTMENT
-        const response = await API.get(`/LeaveRequest/leaves-by-manager`);
+        // create function to get only your dept
+        const response = await API.get(`/LeaveRequest/`);
 
         if (response.status === 200) {
           return response.data?.result;

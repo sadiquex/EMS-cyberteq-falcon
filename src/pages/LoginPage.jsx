@@ -14,7 +14,7 @@ const formFields = [
     name: "email",
     label: "Your email",
     type: "email",
-    placeholder: "e.g; abubakasaddik1@email.com",
+    placeholder: "e.g; employee@falcontech.com",
   },
   {
     name: "password",
@@ -41,20 +41,21 @@ const LoginPage = () => {
 
       const response = await API.post("/Users/login", data);
       if (response?.status === 200) {
-        // toast.success("Login successful");
         // send data to user state
         dispatch(updateUserDetails(response?.data?.result.user));
+        //
         localStorage.setItem("userToken", response?.data?.result.token);
 
         const decodedToken = jwtDecode(response?.data?.result.token);
         dispatch(updateUserDetails(decodedToken));
 
+        // role based routing
         const role = decodedToken?.role;
 
-        // role based routing
         if (role === "admin") {
-          if (decodedToken.profileCompleted !== "True") {
-            // navigate("/change-default-password");
+          if (decodedToken.passwordChanged === "False") {
+            navigate("/change-default-password");
+          } else if (decodedToken.profileCompleted === "False") {
             navigate("/admin/complete-profile");
           } else {
             navigate("/admin/dashboard");
@@ -62,17 +63,21 @@ const LoginPage = () => {
         }
         // employee
         else if (role === "user") {
-          if (decodedToken.profileCompleted !== "True") {
-            // navigate("/change-default-password");
+          if (decodedToken.passwordChanged === "False") {
+            navigate("/change-default-password");
+          } else if (decodedToken.profileCompleted === "False") {
             navigate("/employee/complete-profile");
-          } else {
+          }
+          // if both are true, go to dashboard
+          else {
             navigate("/employee/dashboard");
           }
         }
         // manager
         else if (role === "manager") {
-          if (decodedToken.profileCompleted !== "True") {
-            // navigate("/change-default-password");
+          if (decodedToken.passwordChanged === "False") {
+            navigate("/change-default-password");
+          } else if (decodedToken.profileCompleted === "False") {
             navigate("/manager/complete-profile");
           } else {
             navigate("/manager/dashboard");
@@ -80,7 +85,6 @@ const LoginPage = () => {
         }
       }
     } catch (error) {
-      // console.log("Error during login:", error);
       toast.error(error.response?.data?.errorMessages);
     } finally {
       setLoading(false);
@@ -118,7 +122,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl ">
               Welcome to the Cyberteq-Falcon Dashboard
             </h1>
             <ul className="hidden md:block">
@@ -133,11 +137,6 @@ const LoginPage = () => {
                 </li>
               ))}
             </ul>
-            {/* <img
-              src="https://thebftonline.com/wp-content/uploads/2022/12/Cyberteq-is-Cybersecurity-Consulting-Company-of-the-Year-again.jpg"
-              alt="display image"
-              className="hidden md:block w-[400px] rounded-md"
-            /> */}
           </div>
         </div>
         {/* login form */}
@@ -183,18 +182,6 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
-
-      {/* <div className="flex flex-col gap-4 text-white">
-        <button className="bg-blue-700 p-4">
-          <Link to="/admin/dashboard">Admin</Link>
-        </button>
-        <button className="bg-blue-700 p-4">
-          <Link to="/employee/complete-profile">Employee</Link>
-        </button>
-        <button className="bg-blue-700 p-4">
-          <Link to="/manager/dashboard">Manager</Link>
-        </button>
-      </div> */}
     </div>
   );
 };

@@ -21,9 +21,11 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
 import ConferenceRoom from "./employee/ConferenceRoom";
+import ChangeDefaultPassword from "./ChangeDefaultPassword";
 
 function ManagerLayout() {
-  const { employmentType } = useSelector((state) => state.user?.userDetails);
+  const { employmentType } =
+    useSelector((state) => state.user?.userDetails) || {};
 
   return (
     <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] ">
@@ -56,6 +58,7 @@ function ManagerLayout() {
 
             <Route path="/lunch" element={<Lunch />} />
             <Route path="/conference-room" element={<ConferenceRoom />} />
+
             <Route path="/*" element={<div>Page not found</div>} />
           </Routes>
         </main>

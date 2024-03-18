@@ -14,10 +14,12 @@ export default function CompleteProfile() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
   const navigate = useNavigate();
-  const { id } = useSelector((state) => state.user?.userDetails);
+  const { role, id } = useSelector((state) => state.user?.userDetails);
+
+  const adjustedRole = role === "user" ? "employee" : role;
+
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
@@ -44,14 +46,13 @@ export default function CompleteProfile() {
         setLoading(false);
         dispatch(updateUserDetails(data));
         toast.success("Details updated successfully!");
-        // proceed to fill your sensitive information
-        navigate("/manager/sensitive-data");
+        // proceed fill your sensitive data
+        navigate(`/${adjustedRole}/sensitive-data`);
       } else {
-        console.error("failed to update user details:", response.data);
+        console.error("Failed to update user details:", response.data);
       }
     } catch (error) {
       toast.error("Please check your details");
-      // toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -111,15 +112,16 @@ export default function CompleteProfile() {
           <label className="block text-sm font-medium ">
             Alternative Phone Number <span className="text-red-700">*</span>
             <input
-              type="tel"
+              type="number"
               {...register("AlternatePhoneNumber", {
                 required: true,
+                // accept only 10 digits
                 pattern: /^\d{10}$/,
               })}
               className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                 errors.AlternatePhoneNumber ? "border-red-500" : ""
               }`}
-              placeholder="eg: +233 20 301 9988"
+              placeholder="020561288"
             />
             {errors.AlternatePhoneNumber && (
               <span className="text-red-500">

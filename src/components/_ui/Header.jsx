@@ -14,9 +14,8 @@ export default function Header() {
 
   const userDetails = useSelector((state) => state.user?.userDetails);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  // console.log(userDetails);
 
-  const { role, id } = userDetails;
+  const { role, id } = userDetails || {};
 
   // Fetch user data using React Query
   const {
@@ -70,7 +69,7 @@ export default function Header() {
               />
             </span>
             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-secondaryColor">
-              Hey, {userDetails.name.split(" ")[0]}
+              Hey, {userDetails?.name.split(" ")[0]}
             </span>
           </div>
           {/* right side */}

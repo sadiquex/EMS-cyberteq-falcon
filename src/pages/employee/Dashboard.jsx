@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { todayDate } from "../../utils/utilityFunctions";
 import SlidingImage from "../../components/_ui/SlidingImage";
 import Portals from "../../components/Portals";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export default function Dashboard() {
   const userToken = localStorage.getItem("userToken");
@@ -26,9 +27,12 @@ export default function Dashboard() {
 
       {/* user profile card */}
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 flex flex-col bg-gray-100 p-3">
-          <p className="text-lg font-bold">Welcome, {name}</p>
-          <p className="text-sm">Today is: {todayDate}</p>
+        <div className="flex-1 md:max-w-[1000px] flex flex-col md:flex-row justify-between w-full gap-2 bg-gray-100 p-3">
+          <p className="text-lg font-semibold">Welcome, {name}</p>
+          <p className="text-lg flex items-center gap-2">
+            <FaCalendarAlt size={20} />
+            {todayDate}
+          </p>
         </div>
       </div>
       {/* display portals */}

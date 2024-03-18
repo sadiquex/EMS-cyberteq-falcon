@@ -10,6 +10,7 @@ import Header from "../components/_ui/Header";
 import Profile from "./employee/Profile";
 import CompleteProfile from "./employee/CompleteProfile";
 import SensitiveData from "./employee/SensitiveData";
+import ChangeDefaultPassword from "./ChangeDefaultPassword";
 
 export default function AdminLayout() {
   return (
@@ -27,10 +28,11 @@ export default function AdminLayout() {
       <main className="col-span-1 p-4">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/complete-profile" element={<CompleteProfile />} />
           <Route path="/sensitive-data" element={<SensitiveData />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/leaves" element={<Leaves />} />
+
+          <Route path="/complete-profile" element={<CompleteProfile />} />
 
           <Route path="/profile" element={<Profile />} />
 

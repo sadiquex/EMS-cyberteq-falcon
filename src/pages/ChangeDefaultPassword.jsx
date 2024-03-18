@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,7 +61,14 @@ export default function ChangeDefaultPassword() {
       const response = await API.post("/Users/change-password", data);
       if (response.status === 200) {
         toast.success("Password changed");
-        navigate(`/${adjustedRole}/dashboard`);
+
+        // check if profileCompleted is false after changing the password
+        if (profileCompleted !== "True") {
+          navigate(`/${adjustedRole}/complete-profile`);
+        } else {
+          // redirect based on user role
+          navigate(`/${adjustedRole}/dashboard`);
+        }
       }
     } catch (error) {
       toast.error(error.response.data.errorMessages);
@@ -73,12 +80,15 @@ export default function ChangeDefaultPassword() {
   return (
     <div className="w-full h-screen flex items-center justify-center rounded-lg ">
       <div className="md:max-w-[60%] h-auto md:min-h-[60vh] bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-          <h1 className="text-2xl font-bold">Change Password</h1>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="p-6 flex flex-col gap-4 items-center"
+        >
+          <h1 className="text-2xl font-semibold">Change Password</h1>
 
           {formFields.map((field, i) => (
-            <div className="mb-5" key={i}>
-              <label className="block mb-2 text-sm font-medium text-secondaryColor ">
+            <div key={i}>
+              <label className="block  text-sm font-medium text-secondaryColor ">
                 {field.label}
                 <div className="flex gap-2 items-center justify-center">
                   <input

@@ -1,34 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-import { IoCloseSharp } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteEmployee,
-  fetchUsers,
-} from "../../../redux/features/admin-slices/adminEmployeesSlice";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { TableSkeleton } from "../../_ui/Skeletons";
-import ViewEmployeeDetails from "./ViewEmployeeDetails";
 import { FullScreenSpinner } from "../../_ui/Spinner";
 import EmployeeDetails from "./EmployeeDetails";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function EmployeesTable({ editHandler }) {
-  const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees.employees);
+export default function EmployeesTable({ editHandler, employees }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
+  const queryClient = useQueryClient();
 
   if (!Array.isArray(employees)) {
-    return <div>Loading...</div>;
+    return <TableSkeleton />;
   }
 
   // Separate first and last names
@@ -50,10 +39,6 @@ export default function EmployeesTable({ editHandler }) {
 
   // VIEW details
   const viewDetailsHandler = async (id) => {
-    //  --- this approach also works ---
-    // const employee = employeesWithSeparatedNames.find((emp) => emp.id === id);
-    // setSelectedEmployee(employee);
-
     setLoading(true);
     try {
       const response = await API.get(`/Users/user-profile/${id}`);
@@ -72,12 +57,10 @@ export default function EmployeesTable({ editHandler }) {
   const deleteEmployeeHandler = async (employeeId) => {
     try {
       const response = await API.delete(`/Users/${employeeId}`);
-
       if (response.status === 200) {
         toast.success("Employee deleted successfully");
-
-        // Update Redux store to remove the deleted employee
-        dispatch(deleteEmployee(employeeId));
+        // Invalidate the query to trigger a refetch
+        queryClient.invalidateQueries("employees");
       } else {
         console.error(
           "Failed to delete employee:",
@@ -153,7 +136,6 @@ export default function EmployeesTable({ editHandler }) {
                           if (
                             window.confirm("Are you sure you want to delete")
                           ) {
-                            // dispatch(deleteEmployee(employee.id));
                             deleteEmployeeHandler(employee.id);
                           }
                         }}
