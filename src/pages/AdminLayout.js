@@ -10,11 +10,10 @@ import Header from "../components/_ui/Header";
 import Profile from "./employee/Profile";
 import CompleteProfile from "./employee/CompleteProfile";
 import SensitiveData from "./employee/SensitiveData";
-import ChangeDefaultPassword from "./ChangeDefaultPassword";
 
 export default function AdminLayout() {
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr]">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
       {/* taking row - horizontal */}
       <header className="col-span-2">
         <Header />

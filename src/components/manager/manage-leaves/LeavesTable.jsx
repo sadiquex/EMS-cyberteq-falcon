@@ -1,43 +1,18 @@
 import { useState } from "react";
 import Modal from "../../_ui/Modal";
-import { FaEye } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import LeaveApprovalModal from "./LeaveApprovalModal";
-import API from "../../../api/axios";
 import { ChangeDate } from "../../../utils/utilityFunctions";
 import ViewLeaveDetails from "./ViewLeaveDetails";
-import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { Spinner } from "../../_ui/Spinner";
+import useLeavesData from "../../../hooks/useLeavesData";
+import { TableSkeleton } from "../../_ui/Skeletons";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [selectedTab, setSelectedTab] = useState("All");
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isApproving, setIsApproving] = useState(false);
-
-  // GET applied leaves using React Query
-  const {
-    isLoading,
-    isError,
-    data: leavesData,
-  } = useQuery({
-    queryKey: "leavesData", // Query key
-    queryFn: async () => {
-      try {
-        // leaves in MY DEPARTMENT
-        // create function to get only your dept
-        const response = await API.get(`/LeaveRequest/`);
-
-        if (response.status === 200) {
-          return response.data?.result;
-        }
-      } catch (error) {
-        toast.error(error.message);
-        throw new Error(error.message + " getting leaves");
-      }
-    },
-  });
+  const { loadingLeavesData, leavesData, leavesDataError } = useLeavesData();
 
   const approveModalHandler = (id) => {
     setIsApproving(!isApproving);
@@ -79,8 +54,8 @@ export default function LeavesTable() {
         ))}
       </div>
 
-      {isLoading ? (
-        <Spinner />
+      {loadingLeavesData ? (
+        <TableSkeleton />
       ) : (
         // Display leaves table if data is available
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
@@ -108,12 +83,14 @@ export default function LeavesTable() {
                   <td>{ChangeDate(item.startDate)}</td>
                   <td>{ChangeDate(item.endDate)}</td>
                   <td>{item.status}</td>
-                  <td className="flex gap-2">
-                    <BsThreeDotsVertical
-                      className="cursor-pointer"
-                      size={18}
-                      onClick={() => approveModalHandler(item.id)}
-                    />
+                  <td className="flex items-center gap-2">
+                    {item.status === "Pending" && (
+                      <BsThreeDotsVertical
+                        className="cursor-pointer"
+                        size={18}
+                        onClick={() => approveModalHandler(item.id)}
+                      />
+                    )}
                     {/* approval modal */}
                     {isApproving && selectedItemId === item.id && (
                       <LeaveApprovalModal
@@ -121,18 +98,19 @@ export default function LeavesTable() {
                         leaveId={item.id}
                       />
                     )}
-                    <FaEye
-                      size={18}
+                    <button
                       onClick={() => viewDetailsHandler(item.id)}
-                      className="cursor-pointer"
-                    />
+                      className="cursor-pointer py-1 px-2 border-2 hover:bg-gray-200 border-blue-300 rounded-md"
+                    >
+                      VIEW
+                    </button>
                   </td>
                 </tr>
               ))
             ) : (
               // Display message if no leaves found
               <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={7}>No leaves from your dept....</td>
+                <td colSpan={7}>No leaves....</td>
               </tr>
             )}
           </tbody>

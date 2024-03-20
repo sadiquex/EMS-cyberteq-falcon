@@ -1,15 +1,14 @@
 import { useForm } from "react-hook-form";
 import Modal from "../../_ui/Modal";
-import { IoCloseSharp } from "react-icons/io5";
 import { useLeaveContext } from "../../../contexts/LeaveContext";
 import { useNavigate } from "react-router-dom";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "../../_ui/Spinner";
-
+import useUserData from "../../../hooks/useUserData";
+import Button from "./../../_ui/Button.jsx";
 export default function Add() {
   const navigate = useNavigate();
   const {
@@ -23,23 +22,12 @@ export default function Add() {
   const { id, userName, departmentId, role } = useSelector(
     (state) => state.user?.userDetails
   );
+  const { userDataLoading, userDataError, userData } = useUserData(id);
 
   // to route correctly after applying for leave
   const adjustedRole = role === "user" ? "employee" : role;
 
   const [purpose, setPurpose] = useState("");
-
-  const {
-    isLoading,
-    error,
-    data: userData,
-  } = useQuery({
-    queryKey: ["userData", id],
-    queryFn: async () => {
-      const response = await API.get(`/Users/user-profile/${id}`);
-      return response.data?.result;
-    },
-  });
 
   // collect leave request data for api
   const addNewLeave = async (data) => {
@@ -97,10 +85,10 @@ export default function Add() {
 
   return (
     <Modal closeModal={addLeaveHandler}>
-      {isLoading ? (
+      {userDataLoading ? (
         <Spinner />
-      ) : error ? (
-        <div>Error: {error.message}</div>
+      ) : userDataError ? (
+        <div>Error: {userDataError.message}</div>
       ) : (
         <form onSubmit={handleSubmit(onSubmitLeave)} className="space-y-4">
           <div className="flex justify-between items-center">
@@ -193,17 +181,11 @@ export default function Add() {
             </label>
           )}
 
-          {/* Add button */}
-          <button
-            className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"
-            type="submit"
-          >
-            Send Request
-          </button>
+          <Button type="submit">Send Request</Button>
 
           <button
             type="button"
-            className="bg-gray-400 text-primaryColor rounded-full ml-4 p-4 hover:brightness-110 min-w-[140px]"
+            className="bg-gray-400 hover:bg-gray-500 text-primaryColor rounded-sm ml-4 p-4 min-w-[140px]"
             onClick={addLeaveHandler}
           >
             Cancel

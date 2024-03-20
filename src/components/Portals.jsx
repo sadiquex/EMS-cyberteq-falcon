@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { toast } from "react-toastify";
 import { FaBowlFood } from "react-icons/fa6";
@@ -8,59 +7,33 @@ import Card from "./_ui/Card";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CardSkeleton } from "./_ui/Skeletons";
+import { useQuery } from "@tanstack/react-query";
 
-export default function Portals() {
-  const [portals, setPortals] = useState([]);
-  const [loading, setLoading] = useState();
-  const userToken = localStorage.getItem("userToken");
-  const { employmentType, role } = useSelector(
-    (state) => state.user?.userDetails
-  );
-
-  useEffect(() => {
-    const getPortals = async () => {
-      setLoading(true);
+const usePortals = () => {
+  // fetch portals data using react query
+  return useQuery({
+    queryKey: ["portals"],
+    queryFn: async () => {
       try {
         const response = await API.get("/Portal");
-
-        // manually add route and portal icons
-        const mappedPortals = response.data?.result.map((portal) => {
-          return {
-            ...portal,
-            route: mapRouteAndIcon(portal.id).route,
-            icon: mapRouteAndIcon(portal.id).icon,
-          };
-        });
-
-        // set the portals according to employment type
-        if (employmentType !== "FTIME") {
-          setPortals(mappedPortals.slice(0, 2)); // show only the food and conference room
-        } else {
-          setPortals(mappedPortals); // show all portals
+        if (response.status === 200) {
+          return response.data?.result;
         }
-
-        setLoading(false);
       } catch (error) {
-        // console.error("error getting portals:", error);
-        toast.error(error.result.data?.errorMessages);
-        setLoading(false);
-      } finally {
-        setLoading(false);
+        toast.error(error.message);
+        throw new Error(error.message + " getting portals");
       }
-    };
+    },
+  });
+};
 
-    getPortals();
-
-    // cleanup fucntion
-    return () => {
-      const controller = new AbortController();
-      controller.abort();
-    };
-  }, [userToken]);
+export default function Portals() {
+  const { data: portals, isLoading, error, refetch } = usePortals();
+  const { role } = useSelector((state) => state.user?.userDetails);
 
   // manually map portal IDs to routes and icons
   const mapRouteAndIcon = (portalId) => {
-    // check if role is 'user', change it to 'employee'
+    // check if role is 'user', change it to 'employee' to enable correct routing
     const adjustedRole = role === "user" ? "employee" : role;
 
     switch (portalId) {
@@ -81,17 +54,23 @@ export default function Portals() {
     }
   };
 
-  return loading ? (
-    <CardSkeleton />
+  return isLoading ? (
+    <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
+      {[1, 2, 3].map((num, i) => (
+        <CardSkeleton key={i} />
+      ))}
+    </div>
+  ) : error ? (
+    <div>Error: {error.message}</div>
   ) : (
     <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
       {portals?.map((portal, i) => (
-        <Link to={portal.route} key={i}>
+        <Link to={mapRouteAndIcon(portal.id).route} key={i}>
           <Card>
             <h5 className="mb-2 text-3xl font-bold tracking-tight  ">
-              {portal.icon}
+              {mapRouteAndIcon(portal.id).icon}
             </h5>
-            <p className="font-normal ">{portal.name} Portal</p>
+            <p className="font-normal">{portal.name} Portal</p>
           </Card>
         </Link>
       ))}

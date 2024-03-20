@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
@@ -9,12 +9,14 @@ import { TableSkeleton } from "../../_ui/Skeletons";
 import { FullScreenSpinner } from "../../_ui/Spinner";
 import EmployeeDetails from "./EmployeeDetails";
 import { useQueryClient } from "@tanstack/react-query";
+import useEmployees from "../../../hooks/useEmployees";
 
-export default function EmployeesTable({ editHandler, employees }) {
+export default function EmployeesTable({ editHandler }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { isLoading, error, employees, refetch } = useEmployees();
 
   if (!Array.isArray(employees)) {
     return <TableSkeleton />;
@@ -62,14 +64,10 @@ export default function EmployeesTable({ editHandler, employees }) {
         // Invalidate the query to trigger a refetch
         queryClient.invalidateQueries("employees");
       } else {
-        console.error(
-          "Failed to delete employee:",
-          response.status,
-          response.statusText
-        );
+        console.error("Failed to delete employee ", response.status);
       }
     } catch (error) {
-      console.error("Error during employee deletion:", error);
+      console.error("Error during employee deletion ", error);
       toast.error("Failed to delete employee");
     } finally {
       setLoading(false);
@@ -109,42 +107,51 @@ export default function EmployeesTable({ editHandler, employees }) {
               {filteredEmployees?.length > 0 ? (
                 filteredEmployees?.map((employee, i) => (
                   // row
-                  <tr key={i} className="bg-white px-4 hover:bg-orange-50 ">
-                    <td className="py-3 px-4">{i + 1}</td>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.lastName}</td>
-                    <td>{employee.email}</td>
-                    <td>{employee.department.name}</td>
-                    <td>{employee.employmentType.name}</td>
-                    {/* <td>{employee.dateAdded}</td> */}
+                  <React.Fragment key={i}>
+                    <tr className="bg-white px-4 hover:bg-orange-50 ">
+                      <td className="py-3 px-4">{i + 1}</td>
+                      <td>{employee.firstName}</td>
+                      <td>{employee.lastName}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.department.name}</td>
+                      <td>{employee.employmentType.name}</td>
+                      {/* <td>{employee.dateAdded}</td> */}
 
-                    {/* action btns */}
-                    <td className="space-x-2 text-[20px] ">
-                      {/* view btn */}
-                      <button onClick={() => viewDetailsHandler(employee.id)}>
-                        <FaEye />
-                      </button>
-                      {/* edit btn */}
-                      <button
-                        onClick={() => editHandler(employee.id)}
-                        className="text-red-500"
-                      >
-                        <MdOutlineEdit />
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (
-                            window.confirm("Are you sure you want to delete")
-                          ) {
-                            deleteEmployeeHandler(employee.id);
-                          }
-                        }}
-                        className="text-red-600"
-                      >
-                        <MdDelete />
-                      </button>
-                    </td>
-                  </tr>
+                      {/* action btns */}
+                      <td className="space-x-2 text-[20px] text-center">
+                        {/* view btn */}
+                        <button onClick={() => viewDetailsHandler(employee.id)}>
+                          <FaEye />
+                        </button>
+                        {/* edit btn */}
+                        {/* <button
+                          onClick={() => editHandler(employee.id)}
+                          className="text-red-500"
+                        >
+                          <MdOutlineEdit />
+                        </button> */}
+                        <button
+                          onClick={() => {
+                            if (
+                              window.confirm("Are you sure you want to delete")
+                            ) {
+                              deleteEmployeeHandler(employee.id);
+                            }
+                          }}
+                          className="text-red-600"
+                        >
+                          <MdDelete />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <hr
+                          style={{ border: "1px solid #E5E7EB", margin: "0" }}
+                        />
+                      </td>
+                    </tr>
+                  </React.Fragment>
                 ))
               ) : (
                 <TableSkeleton />

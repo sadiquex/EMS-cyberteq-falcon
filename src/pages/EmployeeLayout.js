@@ -19,13 +19,12 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contects
 import { LeaveProvider } from "../contexts/LeaveContext";
-import ChangeDefaultPassword from "./ChangeDefaultPassword";
 
 function EmployeeLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
 
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] ">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
       <header className="col-span-2">
         <Header />
       </header>

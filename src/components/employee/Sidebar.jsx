@@ -3,33 +3,12 @@ import { MdDashboard } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
 import { TbStatusChange } from "react-icons/tb";
 import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import API from "../../api/axios";
-import { toast } from "react-toastify";
-import { CardSkeleton } from "../_ui/Skeletons";
 
 export default function Sidebar() {
   const location = useLocation();
   const { id, profileCompleted, employmentType } = useSelector(
     (state) => state.user?.userDetails
   );
-
-  // Fetch user data using React Query
-  const {
-    isLoading: userDataLoading,
-    isError: userDataError,
-    data: userData,
-  } = useQuery({
-    queryKey: ["userData", id], // query for only that current user
-    queryFn: async () => {
-      const response = await API.get(`/Users/user-profile/${id}`);
-      return response.data.result;
-    },
-    enabled: !!id,
-    onError: (error) => {
-      toast.error(error);
-    },
-  });
 
   const links = [
     {
@@ -68,9 +47,9 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="fixed">
-      <aside className="z-40 bg-primaryColor h-screen">
-        <div className="px-3 pt-6 bg-primaryColor flex flex-col justify-between h-[calc(100%-10%)] ">
+    <div className="fixed rounded-md mb-4 px-2">
+      <aside className="z-40 h-screen">
+        <div className="px-3 pt-4 bg-primaryColor rounded-2xl flex flex-col justify-between h-full md:h-[calc(100%-16%)]">
           <ul className="space-y-6 font-medium w-[50px] md:w-[230px] transition-all duration-300">
             {links.map(
               (link, i) =>
@@ -79,15 +58,12 @@ export default function Sidebar() {
                   link.name === "Complete Profile" &&
                   profileCompleted === "True"
                 ) && (
-                  <li
-                    key={i}
-                    className="border-2 border-gray-200 border-dashed"
-                  >
+                  <li key={i}>
                     <Link
                       to={link.route}
-                      className={`flex items-center p-2 text-gray-900  hover:bg-gray-100 ${
+                      className={`rounded-md flex items-center p-3 text-gray-900  hover:bg-gray-100 ${
                         location.pathname === link.route
-                          ? "bg-secondaryColor text-white font-bold border-none hover:bg-secondaryColor"
+                          ? "bg-secondaryColor text-primaryColor font-bold border-none hover:bg-secondaryColor"
                           : ""
                       }`}
                     >

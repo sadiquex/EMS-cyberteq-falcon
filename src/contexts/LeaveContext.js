@@ -1,12 +1,11 @@
 // context for ui functionality
 import { createContext, useContext, useState } from "react";
-import { employeeLeavesData as leavesArray } from "../data";
 
 const LeaveContext = createContext();
 
 export const LeaveProvider = ({ children }) => {
   const [isAddingLeave, setIsAddingLeave] = useState(false);
-  const [appliedLeaves, setAppliedLeaves] = useState(leavesArray);
+  const [appliedLeaves, setAppliedLeaves] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addLeaveHandler = () => {

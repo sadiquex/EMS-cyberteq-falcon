@@ -1,15 +1,11 @@
-import { useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { MdOutlineEdit } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import Modal from "../_ui/Modal";
 import EmployeeDetails from "../admin/manage-employees/EmployeeDetails";
 import { TableSkeleton } from "../_ui/Skeletons";
-import { FullScreenSpinner } from "../_ui/Spinner";
 import { useSelector } from "react-redux";
+import useEmployees from "../../hooks/useEmployees";
 
 export default function EmployeesTable({ editHandler }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,29 +13,7 @@ export default function EmployeesTable({ editHandler }) {
 
   const { userDetails } = useSelector((state) => state.user);
   const managerDepartmentId = userDetails.departmentId;
-
-  // Fetch employees data using React Query
-  const {
-    isLoading,
-    error,
-    data: employees,
-    refetch,
-  } = useQuery({
-    queryKey: ["employees"],
-
-    queryFn: async () => {
-      try {
-        const response = await API.get(`/Users`);
-
-        if (response.status === 200) {
-          return response.data?.result;
-        }
-      } catch (error) {
-        toast.error(error.message);
-        throw new Error(error.message + " getting employees");
-      }
-    },
-  });
+  const { isLoading, error, employees, refetch } = useEmployees();
 
   // query employees with the same department id as manager
   const filteredEmployees = employees
@@ -67,14 +41,8 @@ export default function EmployeesTable({ editHandler }) {
         setSelectedEmployee(response.data.result);
       }
     } catch (error) {
-      toast.error(error.response.data.errorMessages);
-    }
-  };
-
-  // Delete employee handler
-  const deleteEmployeeHandler = (employeeId) => {
-    if (window.confirm("Are you sure you want to delete")) {
-      API.delete(`/Users/${employeeId}`);
+      // toast.error(error.response.data.errorMessages);
+      toast.warning("User must complete their profile to view details");
     }
   };
 
@@ -99,7 +67,7 @@ export default function EmployeesTable({ editHandler }) {
             {/* table heading */}
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr className="text-[16px] space-x-4">
-                <th className="py-3 px-4">ID</th>
+                <th className="py-3 px-4">No.</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -112,33 +80,39 @@ export default function EmployeesTable({ editHandler }) {
             <tbody>
               {filteredEmployees.map((employee, i) => (
                 // row
-                <tr key={i} className="bg-white px-4 hover:bg-orange-50 ">
-                  <td className="py-3 px-4">{i + 1}</td>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.lastName}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.department.name}</td>
-                  <td>{employee.employmentType.name}</td>
-                  <td className="space-x-2 text-[20px] ">
-                    {/* view btn */}
-                    {/* <button onClick={() => viewDetailsHandler(employee.id)}>
-                      <FaEye />
-                    </button> */}
-                    {/* edit btn */}
-                    <button
-                      onClick={() => editHandler(employee.id)}
+                <React.Fragment key={i}>
+                  <tr key={i} className="bg-white px-4 hover:bg-orange-50">
+                    <td className="py-3 px-4">{i + 1}</td>
+                    <td>{employee.firstName}</td>
+                    <td>{employee.lastName}</td>
+                    <td>{employee.email}</td>
+                    <td>{employee.department.name}</td>
+                    <td>{employee.employmentType.name}</td>
+                    <td className="space-x-2">
+                      <button
+                        className="bg-transparent text-blue-700 rounded-sm py-2 px-4 border-2 border-blue-600 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-primaryColor "
+                        onClick={() => viewDetailsHandler(employee.id)}
+                      >
+                        VIEW
+                      </button>
+
+                      {/* edit btn */}
+                      {/* <button
+                      // onClick={() => editHandler(employee.id)}
                       className="text-red-500"
                     >
                       <MdOutlineEdit />
-                    </button>
-                    <button
-                      onClick={() => deleteEmployeeHandler(employee.id)}
-                      className="text-red-600"
-                    >
-                      <MdDelete />
-                    </button>
-                  </td>
-                </tr>
+                    </button> */}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <hr
+                        style={{ border: "1px solid #E5E7EB", margin: "0" }}
+                      />
+                    </td>
+                  </tr>
+                </React.Fragment>
               ))}
             </tbody>
           </table>

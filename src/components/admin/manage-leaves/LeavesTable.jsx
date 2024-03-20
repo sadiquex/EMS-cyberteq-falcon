@@ -1,54 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../_ui/Modal";
 import { FaEye } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import LeaveApprovalModal from "./LeaveApprovalModal";
-import API from "../../../api/axios";
 import { ChangeDate } from "../../../utils/utilityFunctions";
 import ViewLeaveDetails from "./ViewLeaveDetails";
-import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { TableSkeleton } from "../../_ui/Skeletons";
+import useLeavesData from "../../../hooks/useLeavesData";
 
 export default function LeavesTable() {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [selectedTab, setSelectedTab] = useState("All");
-  const [selectedItemId, setSelectedItemId] = useState(null);
-  const [isApproving, setIsApproving] = useState(false);
-
-  // GET applied leaves using React Query
-  const {
-    isLoading,
-    isError,
-    data: leavesData,
-  } = useQuery({
-    queryKey: ["leavesData"],
-    queryFn: async () => {
-      try {
-        const response = await API.get(`/LeaveRequest`);
-
-        if (response.status === 200) {
-          // Check if response data is an empty array
-          if (
-            Array.isArray(response.data.result) &&
-            response.data.result.length === 0
-          ) {
-            return []; // Return an empty array
-          } else {
-            return response.data.result;
-          }
-        }
-      } catch (error) {
-        toast.error(error.message);
-        throw new Error(error.message + " getting leaves");
-      }
-    },
-  });
-
-  const approveModalHandler = (id) => {
-    setIsApproving(!isApproving);
-    setSelectedItemId(id); // Set the selectedItemId when the button is clicked
-  };
+  const { loadingLeavesData, leavesData, leavesDataError } = useLeavesData();
 
   const viewDetailsHandler = (id) => {
     const leave = leavesData?.find((l) => l.id === id);
@@ -84,10 +45,10 @@ export default function LeavesTable() {
           </button>
         ))}
       </div>
-      {isLoading ? (
+      {loadingLeavesData ? (
         // Show loader if data is loading
         <TableSkeleton />
-      ) : isError ? (
+      ) : loadingLeavesData ? (
         <div>Error loading leaves</div>
       ) : (
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
@@ -101,6 +62,11 @@ export default function LeavesTable() {
               <th>Status</th>
               <th>Action</th>
             </tr>
+            <tr>
+              <td>
+                <hr style={{ border: "1px solid #E5E7EB", margin: "0" }} />
+              </td>
+            </tr>
           </thead>
           {/* body */}
           <tbody>
@@ -108,37 +74,45 @@ export default function LeavesTable() {
               // Display leaves data if available
               filterLeavesHandler()?.map((item) => (
                 // row
-                <tr key={item.id} className="bg-white hover:bg-gray-50 ">
-                  <td className="py-3">{item.user.name}</td>
-                  <td>{item.leaveType.name} Leave</td>
-                  <td>{ChangeDate(item.startDate)}</td>
-                  <td>{ChangeDate(item.endDate)}</td>
-                  <td>{item.status}</td>
-                  <td className="flex gap-2">
-                    <BsThreeDotsVertical
-                      className="cursor-pointer"
-                      size={18}
-                      onClick={() => approveModalHandler(item.id)}
-                    />
-                    {/* approval modal */}
-                    {isApproving && selectedItemId === item.id && (
-                      <LeaveApprovalModal
-                        approveModalHandler={approveModalHandler}
-                        leaveId={item.id}
+                <React.Fragment key={item.id}>
+                  <tr className="bg-white hover:bg-gray-50 ">
+                    <td className="py-3">{item.user.name}</td>
+                    <td>{item.leaveType.name} Leave</td>
+                    <td>{ChangeDate(item.startDate)}</td>
+                    <td>{ChangeDate(item.endDate)}</td>
+                    <td>{item.status}</td>
+                    <td className="flex gap-2">
+                      {/* <button
+                        onClick={() => viewDetailsHandler(item.id)}
+                        className="cursor-pointer py-1 px-2 border-2 hover:bg-gray-200 border-blue-300 rounded-md"
+                      >
+                        VIEW
+                      </button> */}
+
+                      <button
+                        className="bg-transparent text-blue-700 rounded-sm py-2 px-4 border-2 border-blue-600 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-primaryColor "
+                        onClick={() => viewDetailsHandler(item.id)}
+                      >
+                        VIEW
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <hr
+                        style={{
+                          border: "1px solid #E5E7EB",
+                          margin: "0",
+                        }}
                       />
-                    )}
-                    <FaEye
-                      size={18}
-                      onClick={() => viewDetailsHandler(item.id)}
-                      className="cursor-pointer"
-                    />
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                </React.Fragment>
               ))
             ) : (
               // Display message if no leaves found
               <tr className="bg-white border-b text-lg hover:bg-gray-50 ">
-                <td colSpan={6}>No leaves from managers...</td>
+                <td colSpan={6}>No leaves...</td>
               </tr>
             )}
           </tbody>

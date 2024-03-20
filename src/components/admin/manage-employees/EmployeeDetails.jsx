@@ -18,6 +18,12 @@ export default function EmployeeDetails({ selectedEmployee }) {
   const dateOfBirth = ChangeDate(selectedEmployee.dateOfBirth);
   const dateAdded = ChangeDate(selectedEmployee.created);
 
+  const calculateAge = (dateOfBirth) => {
+    const dob = new Date(dateOfBirth);
+    const ageDate = new Date(Date.now() - dob.getTime());
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
   // format gender to capitalize first letter
   const formattedGender =
     selectedEmployee.gender &&
@@ -46,8 +52,17 @@ export default function EmployeeDetails({ selectedEmployee }) {
       title: "Employment Type",
       value: employmentType,
     },
+
     {
-      title: "Date created",
+      title: "Alt. Phone Number",
+      value: alternatePhoneNumber,
+    },
+    {
+      title: "Age",
+      value: calculateAge(selectedEmployee.dateOfBirth),
+    },
+    {
+      title: "Date Added",
       value: dateAdded,
     },
   ];

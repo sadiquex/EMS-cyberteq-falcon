@@ -3,6 +3,7 @@ import {
   ChangeDate,
   calculateLeaveDuration,
 } from "../../../utils/utilityFunctions";
+import Button from "./../../_ui/Button.jsx";
 
 export default function ViewLeaveDetails({ closeModal, selectedLeave }) {
   const leaveDuration = calculateLeaveDuration(
@@ -99,6 +100,7 @@ export default function ViewLeaveDetails({ closeModal, selectedLeave }) {
           </div>
         </div>
       </div>
+      <Button>Okay</Button>
     </div>
   );
 }

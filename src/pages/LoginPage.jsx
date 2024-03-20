@@ -83,6 +83,16 @@ const LoginPage = () => {
             navigate("/manager/dashboard");
           }
         }
+        // CEO
+        else if (role === "CEO") {
+          if (decodedToken.passwordChanged === "False") {
+            navigate("/change-default-password");
+          } else if (decodedToken.profileCompleted === "False") {
+            navigate("/ceo/complete-profile");
+          } else {
+            navigate("/ceo/dashboard");
+          }
+        }
       }
     } catch (error) {
       toast.error(error.response?.data?.errorMessages);

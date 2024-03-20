@@ -8,7 +8,7 @@ function Backdrop({ children, closeModal }) {
 
   return (
     <div
-      className="bg-gray-500 bg-opacity-25 z-50 h-full w-full fixed top-0 left-0 flex items-center justify-center backdrop-filter backdrop-blur-sm"
+      className="bg-gray-800 bg-opacity-25 z-50 h-full w-full fixed top-0 left-0 flex items-center justify-center backdrop-filter backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
       {children}

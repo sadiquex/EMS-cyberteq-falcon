@@ -6,6 +6,7 @@ import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { Spinner } from "../../_ui/Spinner";
 import { useQueryClient } from "@tanstack/react-query";
+import Button from "../../_ui/Button";
 
 export default function Add({ setIsAdding }) {
   const {
@@ -232,12 +233,23 @@ export default function Add({ setIsAdding }) {
           }
         </label>
 
-        <button
-          className="bg-secondaryColor text-primaryColor rounded-full p-4 hover:brightness-110 min-w-[140px]"
-          type="submit"
-        >
-          {loading ? <Spinner /> : "Add"}
-        </button>
+        <div className="w-full flex justify-end gap-2">
+          <div className="">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <Button>
+                <button type="submit">Add</button>
+              </Button>
+            )}
+          </div>
+          <button
+            onClick={closeModal}
+            className="cursor-pointer w-[140px] bg-gray-400 hover:bg-gray-500 text-primaryColor rounded-sm p-4 flex items-center gap-2 justify-center"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </Modal>
   );

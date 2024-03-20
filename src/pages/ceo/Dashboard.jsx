@@ -7,18 +7,13 @@ import API from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import SlidingImage from "../../components/_ui/SlidingImage";
 import { toast } from "react-toastify";
-import Portals from "../../components/Portals";
 import { todayDate } from "../../utils/utilityFunctions";
+import { Spinner } from "../../components/_ui/Spinner";
 import { FaCalendarAlt } from "react-icons/fa";
-import { CardSkeleton } from "../../components/_ui/Skeletons";
 
 export default function Dashboard() {
-  const {
-    id,
-    profileCompleted,
-    name,
-    departmentId: managerDepartmentId,
-  } = useSelector((state) => state.user?.userDetails) || {};
+  const { name, departmentId: managerDepartmentId } =
+    useSelector((state) => state.user?.userDetails) || {};
 
   const {
     isLoading,
@@ -31,12 +26,6 @@ export default function Dashboard() {
       return response.data.result;
     },
   });
-
-  useEffect(() => {
-    if (profileCompleted !== "True") {
-      toast.warning("Please complete your profile");
-    }
-  }, []);
 
   // filter employees in the same department
   const departmentEmployees = employees?.filter(
@@ -65,7 +54,7 @@ export default function Dashboard() {
       {/* user profile card */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 md:max-w-[1000px] flex flex-col md:flex-row justify-between w-full gap-2 bg-gray-100 p-3">
-          <p className="text-lg font-semibold">Welcome, {name}</p>
+          <p className="text-lg font-semibold">Welcome back, {name}</p>
           <p className="text-lg flex items-center gap-2">
             <FaCalendarAlt size={20} />
             {todayDate}
@@ -73,20 +62,20 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <Portals />
-
       {/* top cards container */}
       <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
-        {isLoading
-          ? [1, 2, 3].map((num, i) => <CardSkeleton />)
-          : cardDetails.map((card, i) => (
-              <Card key={i}>
-                <p className="font-normal text-gray-700">{card.heading}</p>
-                <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900 ">
-                  {card.number}
-                </h5>
-              </Card>
-            ))}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          cardDetails.map((card, i) => (
+            <Card key={i}>
+              <p className="font-normal text-gray-700">{card.heading}</p>
+              <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900 ">
+                {card.number}
+              </h5>
+            </Card>
+          ))
+        )}
       </div>
 
       <div className="space-y-4">

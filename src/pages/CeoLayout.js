@@ -1,11 +1,9 @@
 // file for manager's pages
 
 import { Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 // pages
 import CompleteProfile from "./employee/CompleteProfile";
-import Dashboard from "./manager/Dashboard";
 import Leaves from "./manager/Leaves";
 import Lunch from "./employee/Lunch";
 import Profile from "./employee/Profile";
@@ -21,13 +19,12 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
 import ConferenceRoom from "./employee/ConferenceRoom";
+import ChangeDefaultPassword from "./ChangeDefaultPassword";
+import Dashboard from "./ceo/Dashboard";
 
-function ManagerLayout() {
-  const { employmentType } =
-    useSelector((state) => state.user?.userDetails) || {};
-
+function CeoLayout() {
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] ">
       <header className="col-span-2">
         {/* header */}
         <Header />
@@ -46,17 +43,10 @@ function ManagerLayout() {
             {/* manager - APPLY for leave */}
             <Route path="/leave" element={<Leave />} />
 
-            {employmentType === "FTIME" && (
-              <Route path="/leave-status" element={<LeaveStatusTable />} />
-            )}
-
             <Route path="/profile" element={<Profile />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/sensitive-data" element={<SensitiveData />} />
             <Route path="/employees" element={<EmployeesTable />} />
-
-            <Route path="/lunch" element={<Lunch />} />
-            <Route path="/conference-room" element={<ConferenceRoom />} />
 
             <Route path="/*" element={<div>Page not found</div>} />
           </Routes>
@@ -66,4 +56,4 @@ function ManagerLayout() {
   );
 }
 
-export default ManagerLayout;
+export default CeoLayout;

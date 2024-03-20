@@ -5,34 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logOut } from "../../redux/features/UserSlice";
 import { CiLogout } from "react-icons/ci";
-import { useQuery } from "@tanstack/react-query";
-import API from "../../api/axios";
-import { toast } from "react-toastify";
+import useUserData from "../../hooks/useUserData";
+import { Spinner } from "./Spinner";
 
 export default function Header() {
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.user?.userDetails);
+  const { id, role } = useSelector((state) => state.user?.userDetails);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const { role, id } = userDetails || {};
-
-  // Fetch user data using React Query
-  const {
-    isLoading: userDataLoading,
-    isError: userDataError,
-    data: userData,
-  } = useQuery({
-    queryKey: ["userData", id], // query for only that current user
-    queryFn: async () => {
-      const response = await API.get(`/Users/user-profile/${id}`);
-      return response.data.result;
-    },
-    enabled: !!id,
-    onError: (error) => {
-      toast.error(error);
-    },
-  });
+  const { userData, userDataLoading, userDataError } = useUserData(id);
 
   const { profileImageUrl, name } = userData || {};
 
@@ -55,8 +36,8 @@ export default function Header() {
   };
 
   return (
-    <nav className="z-50 w-full fixed mx-auto bg-primaryColor shadow">
-      <div className="px-3 lg:px-5 lg:pl-3">
+    <nav className="z-50 w-full fixed mt-2 bg-primaryColor rounded-2xl">
+      <div className="px-4">
         <div className="flex items-center justify-between py-4">
           {/* left side */}
           <div className="flex items-center gap-2">
@@ -69,7 +50,7 @@ export default function Header() {
               />
             </span>
             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-secondaryColor">
-              Hey, {userDetails?.name.split(" ")[0]}
+              Hey, {name?.split(" ")[0]}
             </span>
           </div>
           {/* right side */}
@@ -80,11 +61,15 @@ export default function Header() {
                 className="h-8 rounded-full flex items-center justify-center"
                 onClick={modalHandler}
               >
-                <img
-                  src={profileImageUrl}
-                  className="w-12 h-12 rounded-full object-cover object-top"
-                  alt={name}
-                />
+                {userDataLoading ? (
+                  <Spinner />
+                ) : (
+                  <img
+                    src={profileImageUrl}
+                    className="w-12 h-12 rounded-full object-cover object-top"
+                    alt={name}
+                  />
+                )}
               </span>
             </span>
 

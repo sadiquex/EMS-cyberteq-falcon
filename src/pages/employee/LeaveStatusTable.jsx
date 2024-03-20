@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Add from "../../components/employee/leaves/Add";
 import Modal from "../../components/_ui/Modal";
 import { Spinner } from "../../components/_ui/Spinner";
@@ -20,7 +20,7 @@ export default function LeaveStatusTable() {
 
   // Fetch applied leaves using React Query
   const {
-    isLoading,
+    isLoading: loadingAppliedLeaves,
     isError,
     data: appliedLeaves,
     refetch,
@@ -88,71 +88,90 @@ export default function LeaveStatusTable() {
 
       {/* table for displaying leaves statuses */}
       <div className="w-[350px] md:w-full overflow-x-auto ">
-        {isLoading && <TableSkeleton />}
-
-        <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
-          {/* head */}
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-            <tr className="text-[16px]">
-              <th className="py-3">Leave Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Duration</th>
-              <th>Reason</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          {/* body */}
-          <tbody>
-            {/* Check if there are applied leaves */}
-            {appliedLeaves?.length > 0 ? (
-              // If there are applied leaves, map and display them
-              appliedLeaves?.map((leave, i) => (
-                // row
-                <tr
-                  key={i}
-                  className="bg-white hover:bg-gray-50 cursor-pointer"
-                  onClick={() => viewDetailsHandler(leave.id)}
-                >
-                  <td className="py-4">
-                    {leave.leaveType?.name || "Unknown"} Leave
-                  </td>
-                  <td>{ChangeDate(leave.startDate)}</td>
-                  <td>{ChangeDate(leave.endDate)}</td>
-                  <td>
-                    {calculateLeaveDuration(leave.startDate, leave.endDate)}
-                  </td>
-                  <td>{leave.purpose}</td>
-                  <td>
-                    {leave.status}
-                    {leave.status === "Pending" && (
-                      <button
-                        className="ml-2 text-md p-2 rounded-lg bg-red-400"
-                        onClick={(e) => {
-                          alert("Please confirm to delete leave");
-                          e.stopPropagation();
-                          deleteLeaveHandler(leave.id);
-                        }}
-                      >
-                        <MdDelete />
-                      </button>
+        {loadingAppliedLeaves ? (
+          <TableSkeleton />
+        ) : (
+          <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
+            {/* head */}
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr className="text-[16px]">
+                <th className="p-4">Leave Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Duration</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            {/* body */}
+            <tbody>
+              {/* Check if there are applied leaves */}
+              {appliedLeaves?.length > 0 ? (
+                // If there are applied leaves, map and display them
+                appliedLeaves?.map((leave, i) => (
+                  // row
+                  <React.Fragment key={i}>
+                    <tr
+                      key={i}
+                      className="bg-white hover:bg-gray-50 cursor-pointer"
+                    >
+                      <td className="p-4">
+                        {leave.leaveType?.name || "Unknown"} Leave
+                      </td>
+                      <td>{ChangeDate(leave.startDate)}</td>
+                      <td>{ChangeDate(leave.endDate)}</td>
+                      <td>
+                        {calculateLeaveDuration(leave.startDate, leave.endDate)}
+                      </td>
+                      <td>{leave.purpose}</td>
+                      <td>
+                        {leave.status}
+                        {leave.status === "Pending" && (
+                          <button
+                            className="ml-2 text-md p-2 rounded-lg bg-red-400"
+                            onClick={(e) => {
+                              alert("Please confirm to delete leave");
+                              e.stopPropagation();
+                              deleteLeaveHandler(leave.id);
+                            }}
+                          >
+                            <MdDelete />
+                          </button>
+                        )}
+                      </td>
+                      <td>
+                        <button
+                          className="bg-transparent text-blue-700 rounded-sm py-2 px-4 border-2 border-blue-600 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-primaryColor "
+                          onClick={() => viewDetailsHandler(leave.id)}
+                        >
+                          VIEW
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <hr
+                          style={{ border: "1px solid #E5E7EB", margin: "0" }}
+                        />
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))
+              ) : (
+                <tr className="bg-white border-b  hover:bg-gray-50 ">
+                  <td colSpan={6} className="py-4">
+                    {appliedLeaves?.length === 0 ? (
+                      "You haven't applied for any leave..."
+                    ) : (
+                      <Spinner />
                     )}
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr className="bg-white border-b  hover:bg-gray-50 ">
-                <td colSpan={6} className="py-4">
-                  {appliedLeaves?.length === 0 ? (
-                    "You haven't applied for any leave..."
-                  ) : (
-                    <Spinner />
-                  )}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {selectedLeave && (

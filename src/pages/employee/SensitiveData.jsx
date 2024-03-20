@@ -75,10 +75,10 @@ export default function SensitiveData() {
 
       if (response.status === 200) {
         setLoading(false);
-        // dispatch(updateUserDetails(data));
         toast.success("Sensitive information updated");
-        // dispatch(logOut());
-        navigate(`/${adjustedRole}/dashboard`);
+        // logOut to set the profileCompleted flag to true
+        dispatch(logOut());
+        // navigate(`/${adjustedRole}/dashboard`);
       } else {
         console.error(
           "Failed to update sensitive user details:",

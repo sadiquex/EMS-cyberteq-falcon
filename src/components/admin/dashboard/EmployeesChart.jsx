@@ -5,7 +5,7 @@ import { Bar, Pie } from "react-chartjs-2";
 Chart.register(CategoryScale);
 
 export default function EmployeesChart({ employees }) {
-  employees?.forEach((emp) => console.log(emp.department));
+  // employees?.forEach((emp) => console.log(emp.department));
 
   const Data = [
     {
