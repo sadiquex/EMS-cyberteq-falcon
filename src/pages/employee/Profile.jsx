@@ -25,6 +25,11 @@ export default function Profile() {
     employmentType,
   } = userData || {};
 
+  // divide the name into firstname and lastname
+  const nameParts = name?.split(" ");
+  const firstName = nameParts[0];
+  const lastName = nameParts.slice(1).join(" "); // Join the remaining parts as the last name
+
   const adjustedRole = role === "user" ? "employee" : role;
 
   // Fetch sensitive user data using React Query
@@ -64,6 +69,14 @@ export default function Profile() {
   // user details table
   const userDetailsTable = [
     {
+      title: "First Name",
+      value: firstName,
+    },
+    {
+      title: "Last Name",
+      value: lastName,
+    },
+    {
       title: "Date of Birth",
       value: formattedDateOfBirth,
     },
@@ -78,20 +91,19 @@ export default function Profile() {
     {
       title: "Gender",
       // format gender to capitalize first letter
-      value:
-        userData?.gender.charAt(0).toUpperCase() + userData?.gender.slice(1),
+      value: userData?.gender,
     },
     {
       title: "Employment Type",
       value: employmentType,
     },
+    {
+      title: "Role",
+      value: role,
+    },
   ];
 
   const sensitiveDataTable = [
-    {
-      title: "Username",
-      value: userName,
-    },
     {
       title: "Alternative Phone No.",
       value: alternatePhoneNumber,
@@ -130,88 +142,70 @@ export default function Profile() {
       {userDataLoading ? (
         <TableSkeleton />
       ) : (
-        <div className="shadow rounded-lg p-3 grid grid-cols-2 divide-x">
-          {/* image and personal info */}
-          <div className="flex items-center gap-4">
+        <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
+          {/* profile info */}
+          <div class="bg-gray-50 row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
+            <div className="w-full text-center">
+              Profile of <span className="font-semibold">{name}</span>
+            </div>
             <img
-              className="w-32 h-32 rounded-full p-[1px] bg-red-200 object-cover object-top"
+              className="w-40 h-40 rounded-full object-cover object-top"
               src={profileImageUrl}
-              alt={name}
+              alt={firstName}
             />
-            {/* personal info */}
-            <div className="">
-              <div>
-                <h3 className="text-lg font-medium">{name}</h3>
-                <p className="text-gray-400 font-semibold">
-                  {employmentType + " Employee"}
-                </p>
-              </div>
-              {/* id */}
-              <div>
-                {/* <h3 className="text-lg font-medium">{id}</h3> */}
-                <p className="text-lg font-medium">{department}</p>
+          </div>
+          {/* account details */}
+          <div class="bg-gray-100 p-4 flex flex-col gap-5">
+            <div className="w-full">
+              Account details of{" "}
+              <span className="font-semibold">
+                {userData.gender === "female" ? "Mrs. " : "Mr. "}
+                {name}
+              </span>
+            </div>
+
+            {/* details */}
+            <div className="w-full flex flex-col gap-4">
+              <div className="flex-1 flex flex-col gap-2">
+                <p>Department</p>
+                <div className="p-2 bg-gray-200 uppercase">{department}</div>
               </div>
             </div>
-          </div>
 
-          {/* line divider here */}
-
-          {/* contact info */}
-          <div className=" h-full flex-1">
-            <div className="p-2">
-              <table className="my-3">
-                <tbody>
-                  {userDetailsTable.map((row, i) => (
-                    <React.Fragment key={i}>
-                      <tr>
-                        <td className="px-2 py-2 text-gray-500 font-semibold">
-                          {row.title}
-                        </td>
-                        <td className="px-2 py-2">{row.value}</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <hr
-                            style={{
-                              border: "1px solid #E5E7EB",
-                              margin: "0",
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
+            <div className="w-full grid grid-cols-2 gap-4">
+              {userDetailsTable.map((detail, i) => (
+                <div className="flex-1 flex flex-col gap-2" key={i}>
+                  <p>{detail.title}</p>
+                  <div className="p-2 bg-gray-200 uppercase">
+                    {detail.value}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       )}
-      {/* other info */}
+      {/* sensitive */}
       {sensitiveDataLoading ? (
         <Spinner />
       ) : (
-        <div className="w-1/2 rounded-lg p-3 grid grid-cols-2 divide-x shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
-          <table className="my-3">
-            <tbody>
-              {sensitiveDataTable.map((row, i) => (
-                <React.Fragment>
-                  <tr key={i} className="whitespace-nowrap">
-                    <td className="px-2 py-2 text-gray-500 font-semibold">
-                      {row.title}
-                    </td>
-                    <td className="px-2 py-2 ">{row.value}</td>
-                  </tr>
-                  <hr
-                    style={{
-                      border: "1px solid #E5E7EB",
-                      margin: "0",
-                    }}
-                  />
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+        <div class="bg-gray-100 p-4 flex flex-col gap-5">
+          <div className="w-full">Other Information</div>
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-2">
+              <p>Username</p>
+              <div className="p-2 bg-gray-200">{userName}</div>
+            </div>
+          </div>
+
+          <div className="w-full grid grid-cols-2 gap-4">
+            {sensitiveDataTable.map((detail, i) => (
+              <div className="flex-1 flex flex-col gap-2" key={i}>
+                <p>{detail.title}</p>
+                <div className="p-2 bg-gray-200">{detail.value}</div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

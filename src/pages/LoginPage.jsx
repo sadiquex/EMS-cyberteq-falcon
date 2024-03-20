@@ -185,7 +185,7 @@ const LoginPage = () => {
           <div className="flex justify-between gap-2">
             <button
               type="submit"
-              className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm w-full md:w-1/2 px-5 py-2.5 text-center"
+              className="text-primaryColor bg-secondaryColor font-medium rounded-md text-sm w-full md:w-1/2 py-3 text-center transition duration-300 ease-in-out hover:bg-primaryColor hover:text-secondaryColor hover:border-2 hover:border-secondaryColor"
             >
               Login
             </button>

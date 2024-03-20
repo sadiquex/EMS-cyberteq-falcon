@@ -17,10 +17,6 @@ export default function Header() {
 
   const { profileImageUrl, name } = userData || {};
 
-  const modalHandler = () => {
-    setModalIsOpen(!modalIsOpen);
-  };
-
   // go to profile page according to role
   const getProfileLink = () => {
     switch (role) {
@@ -59,7 +55,9 @@ export default function Header() {
             <span className="h-8 rounded-full">
               <span
                 className="h-8 rounded-full flex items-center justify-center"
-                onClick={modalHandler}
+                onClick={() => {
+                  setModalIsOpen(!modalIsOpen);
+                }}
               >
                 {userDataLoading ? (
                   <Spinner />
@@ -75,8 +73,8 @@ export default function Header() {
 
             {/* modal */}
             {modalIsOpen && (
-              <ul className="absolute right-[40%] top-[100%] py-2 text-sm w-44  bg-gray-700 divide-y text-white rounded-md shadow text-center">
-                <li className="cursor-pointer hover:bg-gray-600 w-full py-2">
+              <ul className="absolute right-[42%] top-[100%] py-8 w-44 bg-white divide-y text-secondaryColor text-sm rounded-md shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] text-center flex justify-center flex-col">
+                <li className="cursor-pointer hover:bg-gray-100 w-full py-2">
                   <Link
                     to={getProfileLink()}
                     className="flex justify-center items-center gap-1"
@@ -85,7 +83,7 @@ export default function Header() {
                     Profile
                   </Link>
                 </li>
-                <li className="cursor-pointer hover:bg-gray-600 w-full py-2">
+                <li className="cursor-pointer hover:bg-gray-100 w-full py-2">
                   <Link
                     className="flex justify-center items-center gap-1"
                     onClick={() => dispatch(logOut())}
