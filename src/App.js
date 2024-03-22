@@ -14,7 +14,7 @@ export default function App() {
   const isAuthenticated = useSelector((state) => state.user?.userDetails);
 
   return (
-    <div>
+    <div className="">
       <ToastContainer />
       <Routes>
         <Route path="/" element={<LoginPage />} />

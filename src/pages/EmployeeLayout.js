@@ -13,18 +13,18 @@ import Leave from "./employee/Leave";
 import Dashboard from "./employee/Dashboard";
 
 // components
-import Sidebar from "../components/employee/Sidebar";
 import Header from "../components/_ui/Header";
 import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contects
 import { LeaveProvider } from "../contexts/LeaveContext";
+import Sidebar from "../components/_ui/Sidebar";
 
 function EmployeeLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
 
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] md:gap-4">
       <header className="col-span-2">
         <Header />
       </header>

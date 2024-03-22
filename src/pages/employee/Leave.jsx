@@ -54,10 +54,10 @@ export default function Leave() {
               <Link to={leave.route} key={i}>
                 <Card cardType="">
                   <p className="font-normal ">{leave.name} Leave</p>
-                  <LeavesChart leave={leave} />
-                  {/* <h5 className="mb-2 text-3xl font-bold ">
+                  {/* <LeavesChart leave={leave} /> */}
+                  <h5 className="mb-2 text-3xl font-bold ">
                     {leave.allocatedDays} / {leave.allocatedDays}
-                  </h5> */}
+                  </h5>
                 </Card>
               </Link>
             ))}

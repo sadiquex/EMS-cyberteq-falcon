@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "../../_ui/Modal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "../../../api/axios";
 import { toast } from "react-toastify";
 import { Spinner } from "../../_ui/Spinner";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Button from "../../_ui/Button";
 
 export default function Add({ setIsAdding }) {
@@ -15,54 +15,35 @@ export default function Add({ setIsAdding }) {
     reset,
     formState: { errors },
   } = useForm();
-  const [employmentTypes, setEmploymentTypes] = useState([]);
-  const [departments, setDepartments] = useState([]);
-  const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
 
   // GET - departments, roles and employment types
-  useEffect(() => {
-    const fetchData = async () => {
-      // cancel ongoing requests when the component unmounts
-      const controller = new AbortController();
-      setLoading(true);
+  const { data: employmentTypes, isLoading: employmentTypesLoading } = useQuery(
+    {
+      queryKey: "/EmploymentType",
+      queryFn: async () => {
+        const response = await API.get("/EmploymentType");
+        return response.data.result;
+      },
+    }
+  );
 
-      try {
-        const [employmentTypesResponse, departmentsResponse, rolesResponse] =
-          await Promise.all([
-            API.get("/EmploymentType", { signal: controller.signal }),
-            API.get("/Department", { signal: controller.signal }),
-            API.get("/Role", { signal: controller.signal }),
-          ]);
+  const { data: departments, isLoading: departmentsLoading } = useQuery({
+    queryKey: "/Department",
+    queryFn: async () => {
+      const response = await API.get("/Department");
+      return response.data.result;
+    },
+  });
 
-        // cancel ongoin request when the component unmounts
-        if (!controller.signal.aborted) {
-          setEmploymentTypes(employmentTypesResponse.data.result);
-          setDepartments(departmentsResponse.data.result);
-          setRoles(rolesResponse.data.result);
-          setLoading(false);
-        }
-      } catch (error) {
-        if (!controller.signal.aborted) {
-          // toast.error(error.response.data.errorMessages);
-          toast.error("Error loading departments and roles");
-          setLoading(false);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    // Cleanup function
-    // Cancel requests when the component unmounts
-    return () => {
-      const controller = new AbortController();
-      controller.abort();
-    };
-  }, []);
+  const { data: roles, isLoading: rolesLoading } = useQuery({
+    queryKey: "/Role",
+    queryFn: async () => {
+      const response = await API.get("/Role");
+      return response.data.result;
+    },
+  });
 
   const closeModal = () => setIsAdding(false);
 
@@ -120,7 +101,7 @@ export default function Add({ setIsAdding }) {
 
       <form onSubmit={handleSubmit(addEmployeeHandler)} className="space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-[30px] font-bold text-center text-slate-900">
+          <h2 className="text-2xl font-semibold text-center text-slate-900">
             Add an employee
           </h2>
           {/* cancel btn */}
@@ -137,30 +118,52 @@ export default function Add({ setIsAdding }) {
         <label className="block text-sm font-medium ">
           First Name <span className="text-red-600">*</span>
           <input
-            placeholder="Ibrahim"
-            {...register("firstName")}
+            placeholder="Jason"
+            {...register("firstName", { required: "Enter the First Name" })}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
+          {errors.firstName && (
+            <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+          )}
         </label>
+
         {/* lastname */}
         <label className="block text-sm font-medium ">
           Last Name <span className="text-red-600">*</span>
           <input
-            placeholder="Saddik"
-            {...register("lastName")}
+            placeholder="Statham"
+            {...register("lastName", {
+              required: "Enter the employee's last name",
+            })}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
           />
+          {errors.lastName && (
+            <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+          )}
         </label>
+
         {/* email */}
-        <label className="block text-sm font-medium ">
+        <label className="block text-sm font-medium">
           Email <span className="text-red-600">*</span>
           <input
-            {...register("email")}
+            {...register("email", {
+              required: "Email field is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Please enter a valid email address",
+              },
+            })}
             type="email"
-            placeholder="employeemail@cyberteq.com"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+            placeholder="jasonstatham@falcontech.com"
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 ${
+              errors.email ? "border-red-500" : ""
+            }`}
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
         </label>
+
         {/* phoneNumber */}
         <label className="block text-sm font-medium ">
           Phone Number <span className="text-red-600">*</span>
@@ -187,32 +190,40 @@ export default function Add({ setIsAdding }) {
         {/* role */}
         <label className="block text-sm font-medium ">
           Role <span className="text-red-600">*</span>
-          <select
-            {...register("role")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
-            defaultValue="--Select role--"
-          >
-            {roles.map((role) => (
-              <option key={role.id} value={role.name}>
-                {role.name.charAt(0).toUpperCase() + role.name.slice(1)}
-              </option>
-            ))}
-          </select>
+          {rolesLoading ? (
+            <Spinner />
+          ) : (
+            <select
+              {...register("role")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+              defaultValue="--Select role--"
+            >
+              {roles?.map((role) => (
+                <option key={role.id} value={role.name}>
+                  {role.name.charAt(0).toUpperCase() + role.name.slice(1)}
+                </option>
+              ))}
+            </select>
+          )}
         </label>
         {/* departments */}
         <label className="block text-sm font-medium ">
           Department <span className="text-red-600">*</span>
-          <select
-            {...register("departmentId")}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
-            defaultValue="--Select Department--"
-          >
-            {departments.map((department) => (
-              <option key={department.id} value={department.id}>
-                {department.name}
-              </option>
-            ))}
-          </select>
+          {departmentsLoading ? (
+            <Spinner />
+          ) : (
+            <select
+              {...register("departmentId")}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+              defaultValue="--Select Department--"
+            >
+              {departments?.map((department) => (
+                <option key={department.id} value={department.id}>
+                  {department.name}
+                </option>
+              ))}
+            </select>
+          )}
         </label>
 
         {/* employee type*/}
@@ -224,11 +235,15 @@ export default function Add({ setIsAdding }) {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
               defaultValue="--Select Employment--"
             >
-              {employmentTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
+              {employmentTypesLoading ? (
+                <Spinner />
+              ) : (
+                employmentTypes?.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
+                  </option>
+                ))
+              )}
             </select>
           }
         </label>
@@ -245,7 +260,7 @@ export default function Add({ setIsAdding }) {
           </div>
           <button
             onClick={closeModal}
-            className="cursor-pointer w-[140px] bg-gray-400 hover:bg-gray-500 text-primaryColor rounded-sm p-4 flex items-center gap-2 justify-center"
+            className="cursor-pointer w-[140px] bg-secondaryColor hover:bg-primaryColor hover:text-secondaryColor text-primaryColor rounded-sm p-4 flex items-center gap-2 justify-center border-2 border-secondaryColor"
           >
             Cancel
           </button>

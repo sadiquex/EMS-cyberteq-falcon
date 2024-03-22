@@ -11,41 +11,26 @@ import {
   ChangeDate,
   calculateLeaveDuration,
 } from "../../utils/utilityFunctions";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { TableSkeleton } from "../../components/_ui/Skeletons";
+import useLeavesData from "../../hooks/useLeavesData";
 
 export default function LeaveStatusTable() {
+  const queryClient = new QueryClient();
   const [selectedLeave, setSelectedLeave] = useState(null);
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
-
-  // Fetch applied leaves using React Query
   const {
-    isLoading: loadingAppliedLeaves,
-    isError,
-    data: appliedLeaves,
-    refetch,
-  } = useQuery({
-    queryKey: ["appliedLeaves"],
-    queryFn: async () => {
-      try {
-        const response = await API.get(`/LeaveRequest/`);
-
-        if (response.status === 200) {
-          return response.data?.result;
-        } else if (response.status === 500) {
-          toast.error("Failed to fetch applied leaves");
-        }
-      } catch (error) {
-        toast.error(error);
-      }
-    },
-  });
+    loadingLeavesData: loadingAppliedLeaves,
+    leavesData: appliedLeaves,
+    leavesDataError,
+    refetchLeavesData,
+  } = useLeavesData();
 
   useEffect(() => {
-    if (isError) {
+    if (leavesDataError) {
       toast.error("Error fetching applied leaves");
     }
-  }, [isError]);
+  }, [leavesDataError]);
 
   // VIEW details
   const viewDetailsHandler = async (id) => {
@@ -65,7 +50,12 @@ export default function LeaveStatusTable() {
       const response = await API.delete(`/LeaveRequest/${leaveId}`);
       if (response.status === 200) {
         toast.success("Leave deleted");
-        refetch(); // Refresh the data after deletion
+        // invalidate the query to get update
+        // queryClient.invalidateQueries();
+        // Invalidate every query with a key that starts with `todos`
+        queryClient.invalidateQueries({ queryKey: ["leavesData"] });
+
+        // refetchLeavesData();
       }
     } catch (error) {
       toast.error("Error deleting leave");

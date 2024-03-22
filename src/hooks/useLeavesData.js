@@ -1,5 +1,3 @@
-// used my Manager and Admin to see who has applied for leaves
-
 import { useQuery } from "@tanstack/react-query";
 import API from "../api/axios";
 import { toast } from "react-toastify";
@@ -10,6 +8,7 @@ const useLeavesData = () => {
     isLoading: loadingLeavesData,
     isError: leavesDataError,
     data: leavesData,
+    refetch: refetchLeavesData,
   } = useQuery({
     queryKey: ["leavesData"],
     queryFn: async () => {
@@ -38,6 +37,7 @@ const useLeavesData = () => {
     loadingLeavesData,
     leavesData,
     leavesDataError,
+    refetchLeavesData,
   };
 };
 

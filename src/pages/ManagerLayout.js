@@ -13,7 +13,6 @@ import SensitiveData from "./employee/SensitiveData";
 import Leave from "./employee/Leave";
 
 // components
-import Sidebar from "../components/manager/Sidebar";
 import Header from "../components/_ui/Header";
 import EmployeesTable from "../components/manager/EmployeesTable";
 import LeaveStatusTable from "./employee/LeaveStatusTable";
@@ -21,6 +20,7 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 // contexts
 import { LeaveProvider } from "../contexts/LeaveContext";
 import ConferenceRoom from "./employee/ConferenceRoom";
+import Sidebar from "../components/_ui/Sidebar";
 
 function ManagerLayout() {
   const { employmentType } =

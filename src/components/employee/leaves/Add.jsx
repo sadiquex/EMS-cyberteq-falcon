@@ -9,7 +9,9 @@ import { useSelector } from "react-redux";
 import { Spinner } from "../../_ui/Spinner";
 import useUserData from "../../../hooks/useUserData";
 import Button from "./../../_ui/Button.jsx";
+import { QueryClient } from "@tanstack/react-query";
 export default function Add() {
+  const queryClient = new QueryClient();
   const navigate = useNavigate();
   const {
     register,
@@ -42,6 +44,7 @@ export default function Add() {
       const response = await API.post(`/LeaveRequest`, requestData);
       if (response.status === 200 || response.status === 201) {
         toast.success("Leave request successful");
+        queryClient.invalidateQueries({ queryKey: ["leavesData"] });
         reset();
         setIsAddingLeave(false);
 

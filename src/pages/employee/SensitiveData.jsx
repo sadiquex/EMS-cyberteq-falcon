@@ -1,15 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Spinner } from "../../components/_ui/Spinner";
-import { logOut, updateUserDetails } from "../../redux/features/UserSlice";
 import Button from "../../components/_ui/Button";
 import API from "../../api/axios";
 
 export default function SensitiveData() {
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -76,9 +74,7 @@ export default function SensitiveData() {
       if (response.status === 200) {
         setLoading(false);
         toast.success("Sensitive information updated");
-        // logOut to set the profileCompleted flag to true
-        dispatch(logOut());
-        // navigate(`/${adjustedRole}/dashboard`);
+        navigate(`/${adjustedRole}/profile`);
       } else {
         console.error(
           "Failed to update sensitive user details:",

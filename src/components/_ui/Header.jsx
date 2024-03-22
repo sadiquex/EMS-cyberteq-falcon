@@ -45,7 +45,7 @@ export default function Header() {
                 alt="Cyberteq Falcon Logo"
               />
             </span>
-            <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-secondaryColor">
+            <span className="self-center text-md font-semibold sm:text-xl whitespace-nowrap text-secondaryColor">
               Hey, {name?.split(" ")[0]}
             </span>
           </div>

@@ -15,11 +15,21 @@ const formFields = [
     label: "Your email",
     type: "email",
     placeholder: "e.g; employee@falcontech.com",
+    validation: {
+      required: "This field is required",
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: "Invalid email address",
+      },
+    },
   },
   {
     name: "password",
     label: "Your password",
     type: "password",
+    validation: {
+      required: "This field is required",
+    },
   },
 ];
 
@@ -132,10 +142,8 @@ const LoginPage = () => {
               />
             </div>
 
-            <h1 className="text-2xl ">
-              Welcome to the Cyberteq-Falcon Dashboard
-            </h1>
-            <ul className="hidden md:block">
+            <h1 className="text-2xl ">Cyberteq-Falcon Dashboard</h1>
+            <ul className="hidden md:flex flex-col gap-1 items-center">
               {[
                 "Manage leave",
                 "Order for lunch",
@@ -151,8 +159,8 @@ const LoginPage = () => {
         </div>
         {/* login form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 w-full flex-1">
-          <h1 className="text-xl mb-4 font-bold whitespace-normal">
-            Login to your account
+          <h1 className="text-2xl mb-4 font-semibold whitespace-normal">
+            Login
           </h1>
 
           {formFields.map((field, i) => (
@@ -166,7 +174,12 @@ const LoginPage = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5"
                   name={field.name}
                   {...register(field.name, {
-                    required: "This field is required",
+                    required:
+                      field.validation?.required || "This field is required",
+                    pattern: {
+                      value: field.validation?.pattern?.value,
+                      message: field.validation?.pattern?.message,
+                    },
                   })}
                 />
                 {errors[field.name]?.message && (

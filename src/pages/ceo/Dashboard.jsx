@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Card from "../../components/_ui/Card";
-import RecentInformation from "../../components/admin/dashboard/RecentInformation";
+import RecentInformation from "../../components/_ui/RecentInformation";
 import { useEffect } from "react";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import API from "../../api/axios";

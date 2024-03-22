@@ -5,7 +5,7 @@ import Dashboard from "./admin/Dashboard";
 import Employees from "./admin/Employees";
 import Leaves from "./admin/Leaves";
 
-import Sidebar from "../components/admin/Sidebar";
+import Sidebar from "../components/_ui/Sidebar";
 import Header from "../components/_ui/Header";
 import Profile from "./employee/Profile";
 import CompleteProfile from "./employee/CompleteProfile";

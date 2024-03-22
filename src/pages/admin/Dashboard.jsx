@@ -1,13 +1,19 @@
 import Card from "../../components/_ui/Card";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
-import RecentInformation from "../../components/admin/dashboard/RecentInformation";
+import RecentInformation from "../../components/_ui/RecentInformation";
 import SlidingImage from "../../components/_ui/SlidingImage";
 import { useQuery } from "@tanstack/react-query";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
+import useUserData from "../../hooks/useUserData";
+import { useSelector } from "react-redux";
+import GreetingCard from "../../components/_ui/GreetingCard";
 
 export default function Dashboard() {
+  const { id } = useSelector((state) => state.user?.userDetails);
+  const { userData } = useUserData(id);
+
   // Use React Query to fetch employees
   const {
     data: employees,
@@ -49,8 +55,10 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:max-w-[1000px]">
       <h2>Dashboard</h2>
+
+      <GreetingCard userData={userData} />
 
       {/* Display loading indicator while data is fetching */}
       {isLoading ? (
@@ -78,8 +86,9 @@ export default function Dashboard() {
           <figure className="flex-1 flex items-center justify-center rounded-lg overflow-hidden">
             <SlidingImage />
           </figure>
-          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
-            {employees && <EmployeesChart employees={employees} />}
+
+          <div className="flex-1 max-h-64 overflow-y-auto bg-primaryColor rounded-lg">
+            <RecentInformation />
           </div>
         </div>
         {/* Second column */}
@@ -88,8 +97,8 @@ export default function Dashboard() {
             {/* Some other content here */}.
           </div>
 
-          <div className="flex-1 max-h-64 overflow-y-scroll bg-gray-200 rounded-lg">
-            <RecentInformation />
+          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
+            {employees && <EmployeesChart employees={employees} />}
           </div>
         </div>
       </div>

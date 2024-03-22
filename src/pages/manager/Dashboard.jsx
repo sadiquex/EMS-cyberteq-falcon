@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Card from "../../components/_ui/Card";
-import RecentInformation from "../../components/admin/dashboard/RecentInformation";
+import RecentInformation from "../../components/_ui/RecentInformation";
 import { useEffect } from "react";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import API from "../../api/axios";
@@ -11,6 +11,8 @@ import Portals from "../../components/Portals";
 import { todayDate } from "../../utils/utilityFunctions";
 import { FaCalendarAlt } from "react-icons/fa";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
+import useUserData from "../../hooks/useUserData";
+import GreetingCard from "../../components/_ui/GreetingCard";
 
 export default function Dashboard() {
   const {
@@ -19,6 +21,7 @@ export default function Dashboard() {
     name,
     departmentId: managerDepartmentId,
   } = useSelector((state) => state.user?.userDetails) || {};
+  const { userData } = useUserData(id);
 
   const {
     isLoading,
@@ -59,26 +62,18 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:max-w-[1000px]">
       <h2>Dashboard</h2>
 
       {/* user profile card */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 md:max-w-[1000px] flex flex-col md:flex-row justify-between w-full gap-2 bg-gray-100 p-3">
-          <p className="text-lg font-semibold">Welcome, {name}</p>
-          <p className="text-lg flex items-center gap-2">
-            <FaCalendarAlt size={20} />
-            {todayDate}
-          </p>
-        </div>
-      </div>
+      <GreetingCard userData={userData} />
 
       <Portals />
 
       {/* top cards container */}
       <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
         {isLoading
-          ? [1, 2, 3].map((num, i) => <CardSkeleton />)
+          ? [1, 2, 3].map((num, i) => <CardSkeleton key={i} />)
           : cardDetails.map((card, i) => (
               <Card key={i}>
                 <p className="font-normal text-gray-700">{card.heading}</p>
@@ -90,13 +85,13 @@ export default function Dashboard() {
       </div>
 
       <div className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4 h-64">
           <figure className="flex-1 flex items-center justify-center rounded-lg overflow-hidden">
             <SlidingImage />
           </figure>
 
-          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
-            <EmployeesChart />
+          <div className="flex-1 overflow-y-auto bg-primaryColor rounded-lg">
+            <RecentInformation />
           </div>
         </div>
         {/* second column */}
@@ -104,8 +99,9 @@ export default function Dashboard() {
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-blue-100 rounded-lg">
             some other content here
           </div>
-          <div className="flex-1 max-h-64 overflow-y-scroll bg-gray-200 rounded-lg">
-            <RecentInformation />
+
+          <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
+            <EmployeesChart />
           </div>
         </div>
       </div>

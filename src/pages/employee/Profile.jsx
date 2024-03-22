@@ -144,18 +144,18 @@ export default function Profile() {
       ) : (
         <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
           {/* profile info */}
-          <div class="bg-gray-50 row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
+          <div class="bg-primaryColor row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
             <div className="w-full text-center">
               Profile of <span className="font-semibold">{name}</span>
             </div>
             <img
-              className="w-40 h-40 rounded-full object-cover object-top"
+              className="w-48 h-48 rounded-full object-cover object-top"
               src={profileImageUrl}
               alt={firstName}
             />
           </div>
           {/* account details */}
-          <div class="bg-gray-100 p-4 flex flex-col gap-5">
+          <div class="bg-primaryColor p-4 flex flex-col gap-5">
             <div className="w-full">
               Account details of{" "}
               <span className="font-semibold">
@@ -168,15 +168,15 @@ export default function Profile() {
             <div className="w-full flex flex-col gap-4">
               <div className="flex-1 flex flex-col gap-2">
                 <p>Department</p>
-                <div className="p-2 bg-gray-200 uppercase">{department}</div>
+                <div className="p-2 bg-gray-100 uppercase">{department}</div>
               </div>
             </div>
 
-            <div className="w-full grid grid-cols-2 gap-4">
+            <div className="w-full grid md:grid-cols-2 gap-4">
               {userDetailsTable.map((detail, i) => (
                 <div className="flex-1 flex flex-col gap-2" key={i}>
                   <p>{detail.title}</p>
-                  <div className="p-2 bg-gray-200 uppercase">
+                  <div className="p-2 bg-gray-100 uppercase">
                     {detail.value}
                   </div>
                 </div>
@@ -189,20 +189,20 @@ export default function Profile() {
       {sensitiveDataLoading ? (
         <Spinner />
       ) : (
-        <div class="bg-gray-100 p-4 flex flex-col gap-5">
-          <div className="w-full">Other Information</div>
+        <div class="bg-primaryColor p-4 flex flex-col gap-5">
+          <div className="w-full font-semibold">Other Information</div>
           <div className="w-full flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-2">
               <p>Username</p>
-              <div className="p-2 bg-gray-200">{userName}</div>
+              <div className="p-2 bg-gray-100">{userName}</div>
             </div>
           </div>
 
-          <div className="w-full grid grid-cols-2 gap-4">
+          <div className="w-full grid md:grid-cols-2 gap-4">
             {sensitiveDataTable.map((detail, i) => (
               <div className="flex-1 flex flex-col gap-2" key={i}>
                 <p>{detail.title}</p>
-                <div className="p-2 bg-gray-200">{detail.value}</div>
+                <div className="p-2 bg-gray-100">{detail.value}</div>
               </div>
             ))}
           </div>
