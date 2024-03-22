@@ -53,7 +53,7 @@ export default function LeavesTable() {
       ) : (
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
           {/* head */}
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+          <thead className="text-xs text-black font-medium uppercase bg-gray-50 ">
             <tr className="text-[16px]">
               <th className="py-3">Employee</th>
               <th>Leave Type</th>

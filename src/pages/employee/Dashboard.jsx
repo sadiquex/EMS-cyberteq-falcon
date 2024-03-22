@@ -3,10 +3,8 @@ import { MdOutlineTimeToLeave } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { todayDate } from "../../utils/utilityFunctions";
 import SlidingImage from "../../components/_ui/SlidingImage";
 import Portals from "../../components/Portals";
-import { FaCalendarAlt } from "react-icons/fa";
 import useUserData from "../../hooks/useUserData";
 import GreetingCard from "../../components/_ui/GreetingCard";
 

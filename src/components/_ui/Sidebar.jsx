@@ -110,7 +110,7 @@ export default function Sidebar() {
   return (
     <div className="fixed rounded-md px-2">
       <aside className="z-40 h-screen">
-        <div className="px-3 pt-4 bg-primaryColor rounded-2xl flex flex-col justify-between h-full md:h-[calc(100%-18%)]">
+        <div className="px-3 pt-4 bg-primaryColor rounded-2xl flex flex-col justify-between shadow-sm h-full md:h-[calc(100%-18%)]">
           <ul className="space-y-6 font-medium w-[50px] md:w-[230px] transition-all duration-300">
             {links.map((link, i) => (
               <li key={i}>

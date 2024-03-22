@@ -6,7 +6,7 @@ export default function EmployeeDetails({ selectedEmployee }) {
     age,
     userName,
     department,
-    // gender,
+    gender,
     email,
     // id,
     profileImageUrl,
@@ -14,6 +14,8 @@ export default function EmployeeDetails({ selectedEmployee }) {
     phoneNumber,
     employmentType,
   } = selectedEmployee || {};
+
+  // console.log(selectedEmployee);
 
   const dateOfBirth = ChangeDate(selectedEmployee.dateOfBirth);
   const dateAdded = ChangeDate(selectedEmployee.created);
@@ -24,29 +26,23 @@ export default function EmployeeDetails({ selectedEmployee }) {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
-  // format gender to capitalize first letter
-  const formattedGender =
-    selectedEmployee.gender &&
-    selectedEmployee.gender.charAt(0).toUpperCase() +
-      selectedEmployee.gender.slice(1);
-
   // user details table
   const userDetailsTable = [
-    {
-      title: "Date of Birth",
-      value: dateOfBirth,
-    },
     {
       title: "Phone",
       value: phoneNumber,
     },
+    // {
+    //   title: "Email",
+    //   value: email,
+    // },
     {
-      title: "Email",
-      value: email,
+      title: "User name",
+      value: userName,
     },
     {
       title: "Gender",
-      value: formattedGender,
+      value: gender,
     },
     {
       title: "Employment Type",
@@ -56,6 +52,10 @@ export default function EmployeeDetails({ selectedEmployee }) {
     {
       title: "Alt. Phone Number",
       value: alternatePhoneNumber,
+    },
+    {
+      title: "Date of Birth",
+      value: dateOfBirth,
     },
     {
       title: "Age",
@@ -73,53 +73,46 @@ export default function EmployeeDetails({ selectedEmployee }) {
         <h2>Employee Details</h2>
       </div>
       {/* personal info card */}
-      <div className="shadow rounded-lg p-3 grid grid-cols-2 divide-x">
-        {/* image and personal info */}
-        <div className="flex items-center gap-4">
+      <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
+        <div className="bg-gray-50 row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
+          <div className="w-full text-center">
+            Profile of{" "}
+            <span className="font-semibold">
+              {gender === "female" ? "Mrs. " : "Mr. "}
+              {name}
+            </span>
+          </div>
           <img
-            className="w-32 h-32 rounded-full object-cover object-top"
+            className="w-48 h-48 rounded-full object-cover object-center"
             src={profileImageUrl}
             alt={name}
           />
-          {/* personal info */}
-          <div className="">
-            <div>
-              <h3 className="text-lg font-medium">{name}</h3>
-              <p className="text-gray-400 text-xs font-semibold">
-                {employmentType} Employee
-              </p>
-            </div>
-            {/* id */}
-            <div>
-              <h3 className="text-lg font-medium">Department: {department}</h3>
-              {/* <p className="text-gray-400 text-xs font-semibold">
-                {department}
-              </p> */}
+        </div>
+        {/* account info */}
+        <div className="bg-gray-50 p-4 flex flex-col gap-5">
+          <div className="w-full">Account details</div>
+
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-2">
+              <p>Department</p>
+              <div className="p-2 bg-gray-100 font-medium">{department}</div>
             </div>
           </div>
-        </div>
 
-        {/* line divider here */}
-
-        {/* contact info */}
-        <div className="flex-1">
-          <div className="p-2">
-            <table className="text-xs my-3">
-              <tbody>
-                {userDetailsTable.map((row, i) => (
-                  <tr key={i}>
-                    <td className="px-2 py-2 font-semibold md:text-sm lg:text-lg">
-                      {row.title}
-                    </td>
-                    <td className="px-2 py-2 sm:text-sm lg:text-lg">
-                      {row.value}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="w-full grid md:grid-cols-2 gap-4">
+            {userDetailsTable.map((detail, i) => (
+              <div className="flex-1 flex flex-col gap-2" key={i}>
+                <p>{detail.title}</p>
+                <div className="p-2 bg-gray-100 capitalize font-medium">
+                  {detail.value}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+        {/* <div className="bg-primaryColor font-semibold gap-4 p-4 shadow-sm">
+          Other info
+        </div> */}
       </div>
     </div>
   );

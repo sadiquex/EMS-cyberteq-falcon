@@ -6,9 +6,12 @@ import EmployeeDetails from "../admin/manage-employees/EmployeeDetails";
 import { TableSkeleton } from "../_ui/Skeletons";
 import { useSelector } from "react-redux";
 import useEmployees from "../../hooks/useEmployees";
+import useUserData from "../../hooks/useUserData";
+import { FullScreenSpinner } from "../_ui/Spinner";
 
 export default function EmployeesTable({ editHandler }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const { userDetails } = useSelector((state) => state.user);
@@ -36,15 +39,20 @@ export default function EmployeesTable({ editHandler }) {
   // View details handler
   const viewDetailsHandler = async (id) => {
     try {
+      setLoading(true);
       const response = await API.get(`/Users/user-profile/${id}`);
       if (response.status === 200) {
+        setLoading(false);
         setSelectedEmployee(response.data.result);
       }
     } catch (error) {
       // toast.error(error.response.data.errorMessages);
+      setLoading(false);
       toast.warning("User must complete their profile to view details");
     }
   };
+
+  const getUserId = (id) => id;
 
   return (
     <div className="w-[350px] md:w-full overflow-x-auto p-[1px]">
@@ -117,18 +125,22 @@ export default function EmployeesTable({ editHandler }) {
             </tbody>
           </table>
         ) : (
-          <p>Sorry, no employee found</p>
+          <p className="p-4 bg-primaryColor">User not found...</p>
         )}
       </div>
 
       {/* Modal for View Details */}
-      {selectedEmployee && (
-        <Modal
-          type="employeeDetails"
-          closeModal={() => setSelectedEmployee(null)}
-        >
-          <EmployeeDetails selectedEmployee={selectedEmployee} />
-        </Modal>
+      {loading ? (
+        <FullScreenSpinner />
+      ) : (
+        selectedEmployee && (
+          <Modal
+            type="employeeDetails"
+            closeModal={() => setSelectedEmployee(null)}
+          >
+            <EmployeeDetails selectedEmployee={selectedEmployee} />
+          </Modal>
+        )
       )}
     </div>
   );

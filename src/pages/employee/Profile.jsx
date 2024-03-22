@@ -144,22 +144,22 @@ export default function Profile() {
       ) : (
         <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
           {/* profile info */}
-          <div class="bg-primaryColor row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
+          <div className="bg-primaryColor row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
             <div className="w-full text-center">
               Profile of <span className="font-semibold">{name}</span>
             </div>
             <img
-              className="w-48 h-48 rounded-full object-cover object-top"
+              className="w-48 h-48 rounded-full object-cover object-center"
               src={profileImageUrl}
               alt={firstName}
             />
           </div>
           {/* account details */}
-          <div class="bg-primaryColor p-4 flex flex-col gap-5">
+          <div className="bg-primaryColor p-4 flex flex-col gap-5">
             <div className="w-full">
               Account details of{" "}
               <span className="font-semibold">
-                {userData.gender === "female" ? "Mrs. " : "Mr. "}
+                {userData?.gender === "female" ? "Mrs. " : "Mr. "}
                 {name}
               </span>
             </div>
@@ -189,7 +189,7 @@ export default function Profile() {
       {sensitiveDataLoading ? (
         <Spinner />
       ) : (
-        <div class="bg-primaryColor p-4 flex flex-col gap-5">
+        <div className="bg-primaryColor p-4 flex flex-col gap-5">
           <div className="w-full font-semibold">Other Information</div>
           <div className="w-full flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-2">

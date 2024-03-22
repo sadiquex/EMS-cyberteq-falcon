@@ -83,7 +83,8 @@ export default function LeaveStatusTable() {
         ) : (
           <table className="text-sm w-full text-left rtl:text-right whitespace-nowrap">
             {/* head */}
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+            {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50"> */}
+            <thead className="text-xs text-black font-medium uppercase bg-gray-50 ">
               <tr className="text-[16px]">
                 <th className="p-4">Leave Type</th>
                 <th>Start date</th>
