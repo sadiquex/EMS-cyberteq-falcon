@@ -11,7 +11,7 @@ const useUserData = (id) => {
     queryKey: ["userData", id], // query for only that current user
     queryFn: async () => {
       const response = await API.get(`/Users/user-profile/${id}`);
-      return response.data.result;
+      return response.data?.result;
     },
     enabled: !!id,
     onError: (error) => {

@@ -26,7 +26,7 @@ export default function Employees() {
         <Button onClick={() => setIsAdding(!isAdding)}>+ Add Employee</Button>
       </div>
       <div className="w-full">
-        <EmployeesTable editHandler={editHandler} employees={employees} />
+        <EmployeesTable />
       </div>
 
       {/* adding */}

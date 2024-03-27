@@ -21,7 +21,7 @@ export default function Add() {
     formState: { errors },
   } = useForm();
   const { setIsAddingLeave, addLeaveHandler } = useLeaveContext();
-  const { id, userName, departmentId, role } = useSelector(
+  const { id, name, departmentId, role } = useSelector(
     (state) => state.user?.userDetails
   );
   const { userDataLoading, userDataError, userData } = useUserData(id);
@@ -36,7 +36,7 @@ export default function Add() {
     try {
       const requestData = {
         ...data,
-        userName: userName,
+        userName: name,
         departmentId: departmentId,
         purpose: purpose,
       };

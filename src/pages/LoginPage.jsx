@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../api/axios";
@@ -94,13 +94,13 @@ const LoginPage = () => {
           }
         }
         // CEO
-        else if (role === "CEO") {
+        else if (role === "head") {
           if (decodedToken.passwordChanged === "False") {
             navigate("/change-default-password");
           } else if (decodedToken.profileCompleted === "False") {
-            navigate("/ceo/complete-profile");
+            navigate("/head/complete-profile");
           } else {
-            navigate("/ceo/dashboard");
+            navigate("/head/dashboard");
           }
         }
       }
@@ -195,14 +195,12 @@ const LoginPage = () => {
             {loading && <Spinner />}
           </div>
 
-          <div className="flex justify-between gap-2">
-            <button
-              type="submit"
-              className="text-primaryColor bg-secondaryColor font-medium rounded-md text-sm w-full md:w-1/2 py-3 text-center transition duration-300 ease-in-out hover:bg-primaryColor hover:text-secondaryColor hover:border-2 hover:border-secondaryColor"
-            >
-              Login
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="text-primaryColor bg-secondaryColor font-medium rounded-md text-sm w-full md:w-1/2 py-3 text-center transition duration-300 ease-in-out"
+          >
+            Login
+          </button>
         </form>
       </div>
     </div>

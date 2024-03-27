@@ -63,7 +63,7 @@ export default function Portals() {
   ) : error ? (
     <div>Error: {error.message}</div>
   ) : (
-    <div className=" md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="w-full flex justify-between flex-wrap gap-4">
       {portals?.map((portal, i) => (
         <Link to={mapRouteAndIcon(portal.id).route} key={i}>
           <Card>

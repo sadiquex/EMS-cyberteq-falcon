@@ -10,10 +10,14 @@ import LeavesChart from "../../components/employee/leaves/LeavesChart";
 import LeaveStatusTable from "./LeaveStatusTable";
 import Button from "../../components/_ui/Button";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import useLeavesData from "../../hooks/useLeavesData";
 
 export default function Leave() {
   const { isAddingLeave, addLeaveHandler } = useLeaveContext();
-  const [appliedLeaves, setAppliedLeaves] = useState(null);
+  const { id } = useSelector((state) => state.user?.userDetails);
+  const { loadingLeavesData, leavesData, leavesDataError, refetchLeavesData } =
+    useLeavesData();
 
   // react query
   const {
@@ -49,7 +53,8 @@ export default function Leave() {
         {loadingtypesofLeave ? (
           <CardSkeleton />
         ) : (
-          <div className=" md:max-w-[1100px] grid grid-cols-1 md:grid-cols-4 gap-4 text-gray-900">
+          // <div className=" md:max-w-[1100px] grid grid-cols-1 md:grid-cols-4 gap-4 text-gray-900">
+          <div className="w-full flex justify-between flex-wrap gap-4">
             {typesofLeave?.map((leave, i) => (
               <Link to={leave.route} key={i}>
                 <Card cardType="">
@@ -71,12 +76,7 @@ export default function Leave() {
       </div>
 
       {/* adding leave */}
-      {isAddingLeave && (
-        <Add
-          appliedLeaves={appliedLeaves}
-          setAppliedLeaves={setAppliedLeaves}
-        />
-      )}
+      {isAddingLeave && <Add />}
     </div>
   );
 }

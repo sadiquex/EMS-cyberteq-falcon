@@ -26,13 +26,15 @@ export default function Header() {
         return "/employee/profile";
       case "admin":
         return "/admin/profile";
+      case "head":
+        return "/head/profile";
       default:
         return "/";
     }
   };
 
   return (
-    <nav className="z-50 w-full fixed mt-2 bg-primaryColor rounded-2xl">
+    <nav className="z-50 w-full fixed bg-primaryColor rounded-2xl">
       <div className="px-4">
         <div className="flex items-center justify-between py-4">
           {/* left side */}

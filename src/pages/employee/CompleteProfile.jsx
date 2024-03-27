@@ -32,8 +32,8 @@ export default function CompleteProfile() {
           Gender: data.Gender,
           DateOfBirth: data.DateOfBirth,
           Age: data.Age,
-          AlternatePhoneNumber: data.AlternatePhoneNumber,
-          ProfileImage: data.ProfileImage[0],
+          AlternatePhoneNumber: data.AlternatePhoneNumber || "",
+          ProfileImage: data.ProfileImage[0] || "",
         },
         {
           headers: {
@@ -110,13 +110,12 @@ export default function CompleteProfile() {
 
           {/* alternative phone number */}
           <label className="block text-sm font-medium ">
-            Alternative Phone Number <span className="text-red-700">*</span>
+            Alternative Phone Number
             <input
               type="number"
               {...register("AlternatePhoneNumber", {
-                required: true,
-                // accept only 10 digits
-                pattern: /^\d{10}$/,
+                // optionally accept 10 digits or an empty value
+                pattern: /^$|^\d{10}$/, // Matches either empty string or exactly 10 digits
               })}
               className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                 errors.AlternatePhoneNumber ? "border-red-500" : ""
@@ -125,14 +124,16 @@ export default function CompleteProfile() {
             />
             {errors.AlternatePhoneNumber && (
               <span className="text-red-500">
-                Enter a valid phone number (10 digits)
+                {errors.AlternatePhoneNumber?.type === "pattern"
+                  ? "Enter a valid phone number (10 digits)"
+                  : "This field must contain 10 digits"}
               </span>
             )}
           </label>
 
           {/* profile picture */}
           <label className="block text-sm font-medium ">
-            Profile Picture<span className="text-red-700">*</span>
+            Profile Picture <span className="text-red-700">*</span>
             <input
               type="file"
               {...register("ProfileImage", { required: true })}

@@ -51,11 +51,8 @@ export default function LeaveStatusTable() {
       if (response.status === 200) {
         toast.success("Leave deleted");
         // invalidate the query to get update
-        // queryClient.invalidateQueries();
-        // Invalidate every query with a key that starts with `todos`
+        queryClient.invalidateQueries();
         queryClient.invalidateQueries({ queryKey: ["leavesData"] });
-
-        // refetchLeavesData();
       }
     } catch (error) {
       toast.error("Error deleting leave");

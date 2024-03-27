@@ -23,12 +23,21 @@ export default function Profile() {
     phoneNumber,
     alternatePhoneNumber,
     employmentType,
-  } = userData || {};
+  } = userData || {
+    name: "",
+    userName: "",
+    department: "",
+    dateOfBirth: "",
+    profileImageUrl: "",
+    phoneNumber: "",
+    alternatePhoneNumber: "",
+    employmentType: "",
+  };
 
   // divide the name into firstname and lastname
   const nameParts = name?.split(" ");
   const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(" "); // Join the remaining parts as the last name
+  const lastName = nameParts?.slice(1).join(" "); // Join the remaining parts as the last name
 
   const adjustedRole = role === "user" ? "employee" : role;
 
@@ -173,11 +182,11 @@ export default function Profile() {
             </div>
 
             <div className="w-full grid md:grid-cols-2 gap-4">
-              {userDetailsTable.map((detail, i) => (
+              {userDetailsTable?.map((detail, i) => (
                 <div className="flex-1 flex flex-col gap-2" key={i}>
-                  <p>{detail.title}</p>
+                  <p>{detail?.title}</p>
                   <div className="p-2 bg-gray-100 uppercase">
-                    {detail.value}
+                    {detail?.value}
                   </div>
                 </div>
               ))}

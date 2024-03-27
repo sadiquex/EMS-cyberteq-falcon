@@ -12,7 +12,6 @@ import Leave from "./employee/Leave";
 
 // components
 import Header from "../components/_ui/Header";
-import EmployeesTable from "../components/manager/EmployeesTable";
 import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 // contexts
@@ -21,10 +20,11 @@ import ConferenceRoom from "./employee/ConferenceRoom";
 import ChangeDefaultPassword from "./ChangeDefaultPassword";
 import Dashboard from "./ceo/Dashboard";
 import Sidebar from "../components/_ui/Sidebar";
+import EmployeesTable from "../components/admin/manage-employees/EmployeesTable";
 
-function CeoLayout() {
+function HeadLayout() {
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] ">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[256px,1fr] grid-rows-[60px,1fr] gap-4">
       <header className="col-span-2">
         {/* header */}
         <Header />
@@ -56,4 +56,4 @@ function CeoLayout() {
   );
 }
 
-export default CeoLayout;
+export default HeadLayout;

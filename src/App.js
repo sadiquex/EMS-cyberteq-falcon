@@ -8,7 +8,7 @@ import ChangeDefaultPassword from "./pages/ChangeDefaultPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-import CeoLayout from "./pages/CeoLayout";
+import HeadLayout from "./pages/HeadLayout";
 
 export default function App() {
   const isAuthenticated = useSelector((state) => state.user?.userDetails);
@@ -38,7 +38,7 @@ export default function App() {
         <Route element={<ProtectedRoutes allowedRoles={["CEO"]} />}>
           {/* ceo layout haer */}
         </Route>
-        <Route element={<CeoLayout />} path="/ceo/*" />
+        <Route element={<HeadLayout />} path="/head/*" />
 
         {/* Route for change default password */}
         <Route

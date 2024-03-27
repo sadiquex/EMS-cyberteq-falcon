@@ -47,7 +47,7 @@ export default function LeaveApprovalModal({ approveModalHandler, leaveId }) {
   };
 
   return (
-    <ul className="absolute right-[11%] py-4 text-sm w-44 flex flex-col items-center justify-center gap-3 bg-gray-100 rounded-md shadow">
+    <ul className="absolute right-[11%] py-4 text-sm w-44 flex flex-col items-center justify-center gap-3 rounded-md">
       <li
         className="cursor-pointer bg-green-700 hover:bg-green-800 text-primaryColor rounded-md p-2.5 w-full flex items-center gap-2 justify-center"
         onClick={approveLeaveHandler}

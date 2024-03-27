@@ -2,38 +2,21 @@ import Card from "../../components/_ui/Card";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import RecentInformation from "../../components/_ui/RecentInformation";
 import SlidingImage from "../../components/_ui/SlidingImage";
-import { useQuery } from "@tanstack/react-query";
-import API from "../../api/axios";
-import { toast } from "react-toastify";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
 import useUserData from "../../hooks/useUserData";
 import { useSelector } from "react-redux";
 import GreetingCard from "../../components/_ui/GreetingCard";
+import useEmployees from "../../hooks/useEmployees";
 
 export default function Dashboard() {
   const { id } = useSelector((state) => state.user?.userDetails);
   const { userData } = useUserData(id);
-
-  // Use React Query to fetch employees
   const {
-    data: employees,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["employees"],
-    queryFn: async () => {
-      try {
-        const response = await API.get("/Users");
-
-        if (response.status === 200) {
-          return response.data?.result;
-        }
-      } catch (error) {
-        toast.error(error.message);
-        throw new Error(error.message + " getting leaves");
-      }
-    },
-  });
+    isLoading: isEmployeesLoading,
+    error: isError,
+    employees,
+    refetch,
+  } = useEmployees();
 
   const cardDetails = [
     {
@@ -61,14 +44,14 @@ export default function Dashboard() {
       <GreetingCard userData={userData} />
 
       {/* Display loading indicator while data is fetching */}
-      {isLoading ? (
+      {isEmployeesLoading ? (
         <CardSkeleton />
       ) : isError ? (
         // Display error message if data fetching fails
         <div>Error fetching data...</div>
       ) : (
         // Display top cards container if data is available
-        <div className="md:max-w-[1000px] grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="w-full flex justify-between flex-wrap gap-4">
           {cardDetails.map((card, i) => (
             <Card key={i}>
               <p className="font-normal text-gray-700">{card.heading}</p>
@@ -98,7 +81,7 @@ export default function Dashboard() {
           </div>
 
           <div className="flex-1 h-64 flex items-center justify-center overflow-hidden bg-gray-100 rounded-lg">
-            {employees && <EmployeesChart employees={employees} />}
+            {employees && <EmployeesChart />}
           </div>
         </div>
       </div>

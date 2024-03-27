@@ -105,6 +105,27 @@ export default function Sidebar() {
           ]
         : []),
     ];
+  } else if (role === "head") {
+    links = [
+      {
+        name: "Dashboard",
+        route: "/head/dashboard",
+        icon: <MdDashboard size={24} />,
+        child: "",
+      },
+      {
+        name: "Manage Employees",
+        route: "/head/employees",
+        icon: <FaUsers size={24} />,
+        child: "",
+      },
+      {
+        name: "Leave Requests",
+        route: "/head/leaves",
+        icon: <MdTimeToLeave size={24} />,
+        child: pendingLeaves?.length || "",
+      },
+    ];
   }
 
   return (

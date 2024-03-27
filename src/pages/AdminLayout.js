@@ -10,6 +10,9 @@ import Header from "../components/_ui/Header";
 import Profile from "./employee/Profile";
 import CompleteProfile from "./employee/CompleteProfile";
 import SensitiveData from "./employee/SensitiveData";
+import Leave from "./employee/Leave";
+import { LeaveProvider } from "../contexts/LeaveContext";
+import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 export default function AdminLayout() {
   return (
@@ -24,20 +27,26 @@ export default function AdminLayout() {
       </aside>
       {/* main content */}
       {/* taking column - vertical (1fr) */}
-      <main className="col-span-1 p-4">
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/sensitive-data" element={<SensitiveData />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/leaves" element={<Leaves />} />
+      <LeaveProvider>
+        <main className="col-span-1 p-4">
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/sensitive-data" element={<SensitiveData />} />
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/leave-status" element={<LeaveStatusTable />} />
 
-          <Route path="/complete-profile" element={<CompleteProfile />} />
+            <Route path="/leaves" element={<Leaves />} />
+            {/* admin - APPLY for leave */}
+            <Route path="/leave" element={<Leave />} />
 
-          <Route path="/profile" element={<Profile />} />
+            <Route path="/complete-profile" element={<CompleteProfile />} />
 
-          <Route path="/*" element={<div>Page not found</div>} />
-        </Routes>
-      </main>
+            <Route path="/profile" element={<Profile />} />
+
+            <Route path="/*" element={<div>Page not found</div>} />
+          </Routes>
+        </main>
+      </LeaveProvider>
     </div>
   );
 }

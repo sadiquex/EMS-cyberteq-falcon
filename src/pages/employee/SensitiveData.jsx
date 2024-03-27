@@ -38,21 +38,21 @@ export default function SensitiveData() {
     {
       name: "tin",
       label: "TIN Number",
-      type: "number",
+      type: "text",
       placeholder: "eg: **** **** ****",
       errorMessage: "Enter a valid TIN number",
     },
     {
       name: "ssnit",
       label: "SSNIT Number",
-      type: "number",
+      type: "text",
       placeholder: "eg: **** **** ****",
       errorMessage: "Enter a valid SSNIT number",
     },
     {
       name: "apexNumber",
       label: "Apex Number",
-      type: "number",
+      type: "text",
       placeholder: "eg: **** **** ****",
       errorMessage: "Enter a valid Apex number",
     },
@@ -96,10 +96,14 @@ export default function SensitiveData() {
         <div className="grid grid-cols-2 gap-4 mb-4">
           {sensitiveDataFields.map((field, index) => (
             <label key={index} className="block text-sm font-medium">
-              {field.label} <span className="text-red-700">*</span>
+              {field.label}
+              {/* <span className="text-red-700">*</span> */}
               <input
                 type={field.type}
-                {...register(field.name, { required: true })}
+                {...register(
+                  field.name
+                  // { required: true }
+                )}
                 className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                   errors[field.name] ? "border-red-500" : ""
                 }`}

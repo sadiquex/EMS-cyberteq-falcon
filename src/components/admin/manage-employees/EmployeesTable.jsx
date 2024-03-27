@@ -11,7 +11,7 @@ import EmployeeDetails from "./EmployeeDetails";
 import { useQueryClient } from "@tanstack/react-query";
 import useEmployees from "../../../hooks/useEmployees";
 
-export default function EmployeesTable({ editHandler }) {
+export default function EmployeesTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -159,8 +159,8 @@ export default function EmployeesTable({ editHandler }) {
             </tbody>
           </table>
         ) : (
-          // <p>Sorry, no employee found</p>
-          <TableSkeleton />
+          <p>Sorry, no employee found</p>
+          // <TableSkeleton />
         )}
       </div>
 

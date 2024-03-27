@@ -1,39 +1,39 @@
+import React, { useEffect, useState } from "react";
 import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
-import { Bar, Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+import useEmployees from "../../../hooks/useEmployees";
 
-Chart.register(CategoryScale);
+export default function EmployeesChart() {
+  const [departmentData, setDepartmentData] = useState({});
+  const {
+    isLoading: isEmployeesLoading,
+    error: isError,
+    employees,
+    refetch,
+  } = useEmployees();
 
-export default function EmployeesChart({ employees }) {
-  // employees?.forEach((emp) => console.log(emp.department));
+  // Aggregate employees by department
+  useEffect(() => {
+    if (employees) {
+      const data = {};
+      employees.forEach((emp) => {
+        if (data[emp.department.name]) {
+          data[emp.department.name]++;
+        } else {
+          data[emp.department.name] = 1;
+        }
+      });
+      setDepartmentData(data);
+    }
+  }, [employees]);
 
-  const Data = [
-    {
-      id: 3,
-      department: "Falcon",
-      staffOnDuty: 7,
-      staffOnLeave: 2,
-    },
-    {
-      id: 4,
-      department: "InfoSec",
-      staffOnDuty: 4,
-      staffOnLeave: 3,
-    },
-    {
-      id: 5,
-      department: "SOC",
-      staffOnDuty: 13,
-      staffOnLeave: 4,
-    },
-  ];
-
+  // Prepare data for the chart
   const chartData = {
-    labels: Data.map((data) => data.department),
+    labels: Object.keys(departmentData),
     datasets: [
       {
-        label: "On Duty",
-        data: Data.map((data) => data.staffOnDuty),
+        label: "Total Staff From each department",
+        data: Object.values(departmentData),
         backgroundColor: [
           "#A4A9AD",
           "#E58F65",
@@ -43,13 +43,6 @@ export default function EmployeesChart({ employees }) {
         ],
         borderColor: "transparent",
         borderWidth: 2,
-      },
-      {
-        label: "On Leave",
-        data: Data.map((data) => data.staffOnLeave),
-        backgroundColor: ["#FEEFDD"],
-        borderColor: "#777",
-        borderWidth: 1,
       },
     ],
   };
@@ -62,7 +55,7 @@ export default function EmployeesChart({ employees }) {
           plugins: {
             title: {
               display: true,
-              text: "Employees Data for the week",
+              text: "Employees Data by Department",
             },
           },
         }}
