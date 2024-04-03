@@ -73,7 +73,7 @@ export default function EmployeeDetails({ selectedEmployee }) {
         <h2>Employee Details</h2>
       </div>
       {/* personal info card */}
-      <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
+      <div className="grid grid-cols-[4,1fr] md:grid-cols-[220px,1fr] gap-4">
         <div className="bg-gray-50 row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
           <div className="w-full text-center">
             Profile of{" "}

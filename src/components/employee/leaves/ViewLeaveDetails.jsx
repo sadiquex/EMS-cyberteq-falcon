@@ -100,9 +100,6 @@ export default function ViewLeaveDetails({ closeModal, selectedLeave }) {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center">
-        <Button onClick={closeModal}>Okay</Button>
-      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import Card from "../../components/_ui/Card";
 import EmployeesChart from "../../components/admin/dashboard/EmployeesChart";
 import RecentInformation from "../../components/_ui/RecentInformation";
 import SlidingImage from "../../components/_ui/SlidingImage";
+import Carousel from "../../components/_ui/Carousel";
 import { CardSkeleton } from "../../components/_ui/Skeletons";
 import useUserData from "../../hooks/useUserData";
 import { useSelector } from "react-redux";
@@ -67,7 +68,8 @@ export default function Dashboard() {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Display image */}
           <figure className="flex-1 flex items-center justify-center rounded-lg overflow-hidden">
-            <SlidingImage />
+            {/* <SlidingImage /> */}
+            <Carousel />
           </figure>
 
           <div className="flex-1 max-h-64 overflow-y-auto bg-primaryColor rounded-lg">

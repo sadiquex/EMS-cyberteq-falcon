@@ -44,7 +44,7 @@ export default function Add() {
       const response = await API.post(`/LeaveRequest`, requestData);
       if (response.status === 200 || response.status === 201) {
         toast.success("Leave request successful");
-        queryClient.invalidateQueries({ queryKey: ["leavesData"] });
+        await queryClient.invalidateQueries({ queryKey: ["leavesData"] });
         reset();
         setIsAddingLeave(false);
 

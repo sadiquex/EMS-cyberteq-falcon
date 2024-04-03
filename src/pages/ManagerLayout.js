@@ -27,7 +27,7 @@ function ManagerLayout() {
     useSelector((state) => state.user?.userDetails) || {};
 
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[220px,1fr] grid-rows-[70px,1fr] gap-4">
       <header className="col-span-2">
         {/* header */}
         <Header />
@@ -38,7 +38,7 @@ function ManagerLayout() {
       {/* for providing context */}
       <LeaveProvider>
         {/* main content */}
-        <main className="col-span-1 p-4">
+        <main className="col-span-1 p-4 mx-auto">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             {/* leaves - from THEIR DEPARTMENT */}

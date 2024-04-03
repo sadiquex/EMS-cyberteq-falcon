@@ -51,8 +51,7 @@ export default function LeaveStatusTable() {
       if (response.status === 200) {
         toast.success("Leave deleted");
         // invalidate the query to get update
-        queryClient.invalidateQueries();
-        queryClient.invalidateQueries({ queryKey: ["leavesData"] });
+        await queryClient.invalidateQueries({ queryKey: ["leavesData"] });
       }
     } catch (error) {
       toast.error("Error deleting leave");
@@ -62,7 +61,7 @@ export default function LeaveStatusTable() {
   const closeModal = () => setSelectedLeave(null);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-[1000px]">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
         <h2>My Leaves</h2>
         {/* <button
@@ -130,7 +129,7 @@ export default function LeaveStatusTable() {
                       </td>
                       <td>
                         <button
-                          className="bg-transparent text-blue-700 rounded-sm py-2 px-4 border-2 border-blue-600 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-primaryColor "
+                          className="bg-transparent text-secondaryColor rounded-sm py-2 px-4 border-2 border-secondaryColor transition-all duration-300 ease-in-out hover:bg-secondaryColor hover:text-primaryColor "
                           onClick={() => viewDetailsHandler(leave.id)}
                         >
                           VIEW

@@ -140,7 +140,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:w-[1000px]">
       <div className="flex justify-between items-center w-full">
         <h2>My Details</h2>
         <button className="text-primaryColor bg-secondaryColor hover:brightness-125 font-medium rounded-lg text-sm px-8 py-2.5 text-center">
@@ -151,7 +151,7 @@ export default function Profile() {
       {userDataLoading ? (
         <TableSkeleton />
       ) : (
-        <div className="grid grid-cols-[4,1fr] md:grid-cols-[260px,1fr] gap-4">
+        <div className="grid grid-cols-[4,1fr] md:grid-cols-[220px,1fr] gap-4">
           {/* profile info */}
           <div className="bg-primaryColor row-span-2 flex flex-col items-center gap-4 p-4 shadow-sm">
             <div className="w-full text-center">

@@ -35,7 +35,7 @@ export default function LeavesTable() {
   };
 
   return (
-    <div className="w-[350px] md:w-full overflow-x-auto ">
+    <div className="w-[350px] md:w-[1000px] overflow-x-auto">
       {/* Tabs for filtering leaves */}
       <div className="mb-4 w-auto space-x-4 border-b border-gray-700">
         {["All", "Accepted", "Pending", "Rejected"].map((button, i) => (

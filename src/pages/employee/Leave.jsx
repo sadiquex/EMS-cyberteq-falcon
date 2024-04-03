@@ -42,7 +42,7 @@ export default function Leave() {
   });
 
   return (
-    <div>
+    <div className="w-[1000px]">
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2>Leave Dashboard</h2>

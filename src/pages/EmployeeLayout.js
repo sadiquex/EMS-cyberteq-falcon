@@ -1,6 +1,6 @@
 // file to manage employees' routes
 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // pages
@@ -24,7 +24,7 @@ function EmployeeLayout() {
   const { employmentType } = useSelector((state) => state.user?.userDetails);
 
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] md:gap-4">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[220px,1fr] grid-rows-[70px,1fr] ">
       <header className="col-span-2">
         <Header />
       </header>
@@ -32,7 +32,7 @@ function EmployeeLayout() {
         <Sidebar />
       </aside>
       <LeaveProvider>
-        <main className="col-span-1 p-4">
+        <main className="col-span-1 p-4 mx-auto">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />

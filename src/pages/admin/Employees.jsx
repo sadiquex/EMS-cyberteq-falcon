@@ -20,7 +20,7 @@ export default function Employees() {
   };
 
   return (
-    <div className="flex-1 flex flex-col gap-2 p-1">
+    <div className="flex-1 flex flex-col gap-2 p-1 w-[1000px]">
       <div className="flex flex-col md:flex-row gap-4 justify-between items-center py-2">
         <h2>Manage Employees</h2>
         <Button onClick={() => setIsAdding(!isAdding)}>+ Add Employee</Button>

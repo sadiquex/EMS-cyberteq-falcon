@@ -62,7 +62,7 @@ export default function EmployeesTable() {
       if (response.status === 200) {
         toast.success("Employee deleted successfully");
         // Invalidate the query to trigger a refetch
-        queryClient.invalidateQueries("employees");
+        await queryClient.invalidateQueries({ queryKey: ["employees"] });
       } else {
         console.error("Failed to delete employee ", response.status);
       }

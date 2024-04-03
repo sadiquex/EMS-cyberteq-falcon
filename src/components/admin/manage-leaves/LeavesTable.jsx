@@ -27,14 +27,14 @@ export default function LeavesTable() {
   };
 
   return (
-    <div className="w-full p-2 md:w-full overflow-x-auto">
+    <div className="w-full p-2 md:w-[1000px] overflow-x-auto">
       {/* Tabs for filtering leaves */}
       <div className="mb-4 w-full flex gap-2 flex-wrap border-b border-gray-700">
         {["All", "Accepted", "Pending", "Rejected"].map((button, i) => (
           <button
             key={i}
             onClick={() => setSelectedTab(button)}
-            className={`p-4 border-b-2 hover:bg-gray-100 ${
+            className={`p-4 border-b-2 hover:bg-gray-100 uppercase font-medium ${
               selectedTab === button
                 ? // active style
                   "bg-secondaryColor text-white hover:bg-secondaryColor hover:text-white"
@@ -53,9 +53,9 @@ export default function LeavesTable() {
       ) : (
         <table className="w-full text-sm text-left rtl:text-right whitespace-nowrap">
           {/* head */}
-          <thead className="text-xs text-black font-medium uppercase bg-gray-50 ">
+          <thead className="text-xs text-black font-medium uppercase bg-gray-50">
             <tr className="text-[16px]">
-              <th className="py-3">Employee</th>
+              <th className="py-3 px-4">Employee</th>
               <th>Leave Type</th>
               <th>Start Date</th>
               <th>End Date</th>
@@ -76,7 +76,7 @@ export default function LeavesTable() {
                 // row
                 <React.Fragment key={item.id}>
                   <tr className="bg-white hover:bg-gray-50 ">
-                    <td className="py-3">{item.user.name}</td>
+                    <td className="py-3 px-4">{item.user.name}</td>
                     <td>{item.leaveType.name} Leave</td>
                     <td>{ChangeDate(item.startDate)}</td>
                     <td>{ChangeDate(item.endDate)}</td>
@@ -90,7 +90,7 @@ export default function LeavesTable() {
                       </button> */}
 
                       <button
-                        className="bg-transparent text-blue-700 rounded-sm py-2 px-4 border-2 border-blue-600 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-primaryColor "
+                        className="bg-transparent text-secondaryColor rounded-sm py-2 px-4 border-2 border-secondaryColor transition-all duration-300 ease-in-out hover:bg-secondaryColor hover:text-primaryColor "
                         onClick={() => viewDetailsHandler(item.id)}
                       >
                         VIEW
@@ -121,7 +121,10 @@ export default function LeavesTable() {
       {/* display leave details */}
       {selectedLeave && (
         <Modal closeModal={closeModal}>
-          <ViewLeaveDetails selectedLeave={selectedLeave} />
+          <ViewLeaveDetails
+            selectedLeave={selectedLeave}
+            closeModal={closeModal}
+          />
         </Modal>
       )}
     </div>

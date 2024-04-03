@@ -16,7 +16,7 @@ import LeaveStatusTable from "./employee/LeaveStatusTable";
 
 export default function AdminLayout() {
   return (
-    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[260px,1fr] grid-rows-[70px,1fr] gap-4">
+    <div className="grid grid-cols-[80px,1fr] md:grid-cols-[220px,1fr] grid-rows-[70px,1fr]">
       {/* taking row - horizontal */}
       <header className="col-span-2">
         <Header />
@@ -28,7 +28,7 @@ export default function AdminLayout() {
       {/* main content */}
       {/* taking column - vertical (1fr) */}
       <LeaveProvider>
-        <main className="col-span-1 p-4">
+        <main className="col-span-1 p-4 mx-auto">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sensitive-data" element={<SensitiveData />} />
