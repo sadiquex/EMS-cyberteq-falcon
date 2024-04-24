@@ -136,12 +136,9 @@ export default function CompleteProfile() {
             Profile Picture <span className="text-red-700">*</span>
             <input
               type="file"
-              {...register("ProfileImage", { required: true })}
+              {...register("ProfileImage")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
-            {errors.ProfileImage && (
-              <span className="text-red-500">Profile Picture is required</span>
-            )}
           </label>
         </div>
         <Button

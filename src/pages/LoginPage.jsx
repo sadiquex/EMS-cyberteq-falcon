@@ -143,13 +143,13 @@ const LoginPage = () => {
             </div>
 
             <h1 className="text-2xl ">Cyberteq-Falcon Dashboard</h1>
-            <ul className="hidden md:flex flex-col gap-1 items-center">
+            <ul className="hidden md:flex flex-col gap-1 items-start ">
               {[
                 "Manage leave",
                 "Order for lunch",
                 "Book the conference room",
               ].map((service, i) => (
-                <li className="text-xl flex gap-2 items-center" key={i}>
+                <li className="text-xl flex gap-2" key={i}>
                   <IoIosCheckboxOutline />
                   {service}
                 </li>

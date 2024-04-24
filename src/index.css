@@ -134,3 +134,13 @@ body {
   background: #f5f5f5;
   box-sizing: border-box;
 }
+
+/* swiper styles */
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+  font-size: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 16px;
+  /* border-radius: 50%; */
+}
